@@ -4,14 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Convergence Index — 2026 U.S. Midterms</title>
-<meta name="description" content="Prediction markets and polling, blended: the chance each party wins the House, Senate and key governor races in the 2026 U.S. midterms. Updated 6 AM and 6 PM ET.">
+<meta name="description" content="Prediction markets and polling, blended: the chance each party wins the House, Senate and key governor races in the 2026 U.S. midterms. Updated every morning at 6 AM ET.">
 <link rel="canonical" href="https://convergence-index.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="The Convergence Index">
 <meta property="og:title" content="The Convergence Index — 2026 U.S. Midterms">
-<meta property="og:description" content="Prediction markets and polling, blended: the chance each party wins the House, Senate and key governor races in the 2026 U.S. midterms. Updated 6 AM and 6 PM ET.">
+<meta property="og:description" content="Prediction markets and polling, blended: the chance each party wins the House, Senate and key governor races in the 2026 U.S. midterms. Updated every morning at 6 AM ET.">
 <meta property="og:url" content="https://convergence-index.com/">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://convergence-index.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Convergence Index logo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Convergence Index — 2026 U.S. Midterms">
+<meta name="twitter:description" content="Prediction markets and polling, blended: the chance each party wins the House, Senate and key governor races in the 2026 U.S. midterms. Updated every morning at 6 AM ET.">
+<meta name="twitter:image" content="https://convergence-index.com/og-image.png">
 <meta name="data-as-of" content="2026-09-21T18:15:00Z">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23fcfbf8'/%3E%3Crect x='4' y='14' width='24' height='4' fill='%239b3a2e'/%3E%3Crect x='16' y='14' width='12' height='4' fill='%232c4a7a'/%3E%3Crect x='15' y='8' width='2' height='16' fill='%2317171a'/%3E%3C/svg%3E">
 </head>
@@ -612,7 +619,7 @@
       <div class="rf-status"><span><span class="rf-live" id="rfDot" aria-hidden="true"></span>Updated <b id="rfAgo">—</b></span><span id="rfNext"></span><span class="rf-msg" id="rfMsg" aria-live="polite"></span></div>
       <div class="rf-actions">
         <button class="btn rf-btn" id="rfBtn" type="button"><span class="ic" aria-hidden="true">↻</span>Refresh</button>
-        <a class="btn btn-sub" id="rfSub" href="#" target="_blank" rel="noopener" hidden>Get the twice-daily read</a>
+        <a class="btn btn-sub" id="rfSub" href="#" target="_blank" rel="noopener" hidden>Get the morning read</a>
         <button class="btn" id="rfAuto" type="button" aria-pressed="true" title="Reload automatically when new figures are published">Auto-refresh: On</button>
       </div>
     </div>
@@ -621,7 +628,7 @@
       <div class="howto-body">
         <p><strong>Two signals, one number.</strong> Prediction markets (Kalshi, Polymarket) put a price on each outcome — a 60¢ contract that pays $1 if Democrats win means traders think it's about a 60% chance. Polls tell us how voters say they'll vote; we convert the polling lead into a chance of winning. The <strong>blend</strong> is a weighted average of the two, and you can move the slider to trust one more than the other.</p>
         <p><strong>Where to look.</strong> The big number is the chance Democrats control each chamber. “Where polls and markets disagree” lists races where the two signals point different ways — the most interesting races to watch. Click any race for its own blend, ☆ it to follow it, and use <em>Copy link</em> or <em>Save image</em> to share what you see.</p>
-        <p><strong>Updated</strong> twice daily, 6 AM and 6 PM ET, with every number linked to its source.</p>
+        <p><strong>Updated</strong> every morning at 6 AM ET, with every number linked to its source.</p>
       </div>
     </details>
     <section class="wc-box" id="whatChanged" aria-live="polite"></section>
@@ -738,7 +745,7 @@
       <p><strong>Following.</strong> Races you follow are stored only in this browser; the “change since your last visit” compares against what this browser last saw.</p>
       <h4 style="margin-top:28px">Sources</h4>
       <div class="sources" id="sourcesList"></div>
-      <p class="disclaimer">For information only — not trading, betting or investment advice. Figures are collected automatically twice daily (6 AM and 6 PM ET) and checked by an automated audit; markets and polls move between updates.</p>
+      <p class="disclaimer">For information only — not trading, betting or investment advice. Figures are collected automatically every morning at 6 AM ET and checked by an automated audit; markets and polls move between updates.</p>
     </div>
   </div>
 
@@ -3470,7 +3477,7 @@
   function trendChart(el, key) {
     const pts = HIST.map(h => Object.assign({ t: new Date(h.t) }, chamberFrom(h, key, 4000)));
     if (key === 'senate') pts[pts.length - 1] = Object.assign({ t: new Date(DATA.asOf) }, CUR.senate);
-    if (pts.length < 2) { el.innerHTML = `<p class="empty-note">Tracking began ${fmtDate(HIST[0].t, true)} ET. The trend line fills in with each 6 AM and 6 PM update.</p>`; return; }
+    if (pts.length < 2) { el.innerHTML = `<p class="empty-note">Tracking began ${fmtDate(HIST[0].t, true)} ET. The trend line fills in with each morning's update.</p>`; return; }
     const W_ = 1000, H = 220, pl = 44, pr = 90, pt = 14, pb = 28;
     const vals = pts.flatMap(p => [p.mkt, p.poll, p.blend]); let lo = Math.floor((Math.min(...vals) - 3) / 5) * 5, hi = Math.ceil((Math.max(...vals) + 3) / 5) * 5; lo = Math.max(0, lo); hi = Math.min(100, hi);
     const t0 = +pts[0].t, t1 = +pts[pts.length - 1].t, X = t => pl + (W_ - pl - pr) * (t1 === t0 ? 1 : (t - t0) / (t1 - t0)), Y = v => pt + (H - pt - pb) * (1 - (v - lo) / (hi - lo));
@@ -3652,7 +3659,7 @@
     const items = [];
     if (prevSnap) { ['house', 'senate'].forEach(k => { const p = chamberFrom(prevSnap, k), c = CUR[k];
       items.push(`<li><strong>${k === 'house' ? 'House' : 'Senate'}</strong> blended chance ${fmtPct(c.blend)} (${fmtDelta(c.blend - p.blend)}) · markets ${fmtDelta(c.mkt - p.mkt)}, polls ${fmtDelta(c.poll - p.poll)}</li>`); }); }
-    else items.push(`<li><strong>House</strong> ${fmtPct(CUR.house.blend)} · <strong>Senate</strong> ${fmtPct(CUR.senate.blend)} blended chance of Democratic control. This is the first fully sourced update, so changes appear from the next one (6 AM and 6 PM ET).</li>`);
+    else items.push(`<li><strong>House</strong> ${fmtPct(CUR.house.blend)} · <strong>Senate</strong> ${fmtPct(CUR.senate.blend)} blended chance of Democratic control. This is the first fully sourced update, so changes appear from the next one (6 AM ET).</li>`);
     const prev = DATA.prev && DATA.prev.races; const moves = [], newPolls = [], ratingCh = [];
     if (prev) allRaces().forEach(([ch, r]) => { const p = prev[r.id]; if (!p) return;
       const now = leadP(raceChance(r)); const was = leadP(raceChance({ mkt: { d: p.d, r: p.r, i: p.i } }));
@@ -3787,7 +3794,7 @@
   /* ===== refresh: detects a newer published version and reloads =====
      Signal 1: db doc meta/latest {asOf, build, results}, written after every publish (live, no polling needed).
      Signal 2 (fallback): re-fetch this page and compare its DATA.asOf. */
-  const BUILD = '2026-09-21b';
+  const BUILD = '2026-09-21c';
   (function refresh() {
     const btn = $('rfBtn'), auto = $('rfAuto'), msg = $('rfMsg'), dot = $('rfDot');
     if (!btn) return;
@@ -3804,7 +3811,7 @@
     function ago() {
       const m = Math.max(0, Math.round((Date.now() - asOf) / 60000));
       $('rfAgo').textContent = m < 1 ? 'just now' : m < 60 ? m + ' min ago' : m < 48 * 60 ? Math.round(m / 60) + ' hr ago' : Math.round(m / 1440) + ' days ago';
-      const h = etHour(new Date()); $('rfNext').textContent = 'Next update ' + (h >= 6 && h < 18 ? '6 PM' : '6 AM') + ' ET';
+      const h = etHour(new Date()); $('rfNext').textContent = 'Next update ' + (h < 6 ? 'today' : 'tomorrow') + ', 6 AM ET';
     }
     function reload(a, b, r) { if (pending === 'stuck') return; ss.set('scrollY', String(window.scrollY)); ss.set('want', (a || asOf) + '|' + (b || '') + '|' + (r || 0)); location.reload(); }
     function found(a, b, r, manual) { if (pending === 'stuck') return; say('New figures published — loading…', 'new'); if (manual || autoOn) setTimeout(() => reload(a, b, r), manual ? 300 : 1500); else { pending = [a, b, r]; say('New figures published — press Refresh', 'new'); } }

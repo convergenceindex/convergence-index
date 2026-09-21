@@ -11,7 +11,7 @@ body = re.sub(r"\s*</body>\s*</html>\s*$", "", body)
 body = re.sub(r"^<title>.*?</title>\s*", "", body, count=1, flags=re.S)
 if "const DATA" not in body or "const BUILD" not in body: sys.exit("DATA/BUILD missing - refusing to build")
 m = re.search(r'"asOf":\s*"([^"]+)"', body)
-desc = "Prediction markets and polling, blended: the chance each party wins the House, Senate and key governor races in the 2026 U.S. midterms. Updated 6 AM and 6 PM ET."
+desc = "Prediction markets and polling, blended: the chance each party wins the House, Senate and key governor races in the 2026 U.S. midterms. Updated every morning at 6 AM ET."
 head = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,7 +25,14 @@ head = f"""<!DOCTYPE html>
 <meta property="og:title" content="The Convergence Index — 2026 U.S. Midterms">
 <meta property="og:description" content="{H.escape(desc)}">
 <meta property="og:url" content="https://convergence-index.com/">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://convergence-index.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Convergence Index logo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Convergence Index — 2026 U.S. Midterms">
+<meta name="twitter:description" content="{H.escape(desc)}">
+<meta name="twitter:image" content="https://convergence-index.com/og-image.png">
 <meta name="data-as-of" content="{m.group(1) if m else ''}">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23fcfbf8'/%3E%3Crect x='4' y='14' width='24' height='4' fill='%239b3a2e'/%3E%3Crect x='16' y='14' width='12' height='4' fill='%232c4a7a'/%3E%3Crect x='15' y='8' width='2' height='16' fill='%2317171a'/%3E%3C/svg%3E">
 </head>
