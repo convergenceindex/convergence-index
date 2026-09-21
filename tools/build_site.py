@@ -11,18 +11,18 @@ body = re.sub(r"\s*</body>\s*</html>\s*$", "", body)
 body = re.sub(r"^<title>.*?</title>\s*", "", body, count=1, flags=re.S)
 if "const DATA" not in body or "const BUILD" not in body: sys.exit("DATA/BUILD missing - refusing to build")
 m = re.search(r'"asOf":\s*"([^"]+)"', body)
-desc = "Prediction markets and polling, blended: the chance each party wins the House, Senate and key governor races in the 2026 U.S. midterms. Updated every morning at 6 AM ET."
+desc = "2026 U.S. midterms: prediction markets and polling, blended — the chance each party wins the House, Senate and key governor races. Updated every morning at 6 AM ET."
 head = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>The Convergence Index — 2026 U.S. Midterms</title>
+<title>The Convergence Index</title>
 <meta name="description" content="{H.escape(desc)}">
 <link rel="canonical" href="https://convergence-index.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="The Convergence Index">
-<meta property="og:title" content="The Convergence Index — 2026 U.S. Midterms">
+<meta property="og:title" content="The Convergence Index">
 <meta property="og:description" content="{H.escape(desc)}">
 <meta property="og:url" content="https://convergence-index.com/">
 <meta property="og:image" content="https://convergence-index.com/og-image.png">
@@ -30,7 +30,7 @@ head = f"""<!DOCTYPE html>
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="The Convergence Index logo">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="The Convergence Index — 2026 U.S. Midterms">
+<meta name="twitter:title" content="The Convergence Index">
 <meta name="twitter:description" content="{H.escape(desc)}">
 <meta name="twitter:image" content="https://convergence-index.com/og-image.png">
 <meta name="data-as-of" content="{m.group(1) if m else ''}">
