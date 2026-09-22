@@ -30,7 +30,7 @@
       --paper-2: #f3f1ec;
       --ink: #17171a;
       --ink-2: #5d5b56;
-      --ink-3: #8f8c85;
+      --ink-3: #75726b;
       --rule: #17171a;
       --hair: #dcd9d2;
       --dem-blue: #2c4a7a;
@@ -47,12 +47,12 @@
     }
     @media (prefers-color-scheme: dark) {
       :root:not([data-theme="light"]) {
-        --paper: #121214; --paper-2: #1b1b1e; --ink: #ecebe6; --ink-2: #a9a69f; --ink-3: #75726c;
+        --paper: #121214; --paper-2: #1b1b1e; --ink: #ecebe6; --ink-2: #a9a69f; --ink-3: #8c8981;
         --rule: #ecebe6; --hair: #34343a; --dem-blue: #8fb0e3; --rep-red: #e2917f; --tossup: #d8b25a; --accent-gold: #d8b25a;
       }
     }
     :root[data-theme="dark"] {
-      --paper: #121214; --paper-2: #1b1b1e; --ink: #ecebe6; --ink-2: #a9a69f; --ink-3: #75726c;
+      --paper: #121214; --paper-2: #1b1b1e; --ink: #ecebe6; --ink-2: #a9a69f; --ink-3: #8c8981;
       --rule: #ecebe6; --hair: #34343a; --dem-blue: #8fb0e3; --rep-red: #e2917f; --tossup: #d8b25a; --accent-gold: #d8b25a;
     }
 
@@ -589,6 +589,58 @@
       .rd-value { font-size: 48px; }
     }
     [hidden] { display: none !important; }
+    /* --- phone readability pass --- */
+    .tab-btn .short { display: none; }
+    .sec-toggle { display: none; }
+    @media (max-width: 640px) {
+      body { font-size: 17px; }
+      #lastUpdated { display: none; }                       /* the refresh bar says the same thing */
+      .subtitle { font-size: 12px; }
+      .chamber-tabs { flex-wrap: nowrap; overflow-x: auto; gap: 22px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+      .chamber-tabs::-webkit-scrollbar { display: none; }
+      .tab-btn { font-size: 13px; letter-spacing: .05em; white-space: nowrap; padding: 16px 0 12px; flex: none; }
+      .tab-btn .long { display: none; } .tab-btn .short { display: inline; }
+      /* small mono text: bigger, less tracking */
+      .blend-label, .card-label, .consensus-label, .weight-label, .sub-h, .alert-label, .wc-kicker, .howto summary, .path-safe summary, .methodology h4 { font-size: 12.5px !important; letter-spacing: .05em; }
+      .card-note, .card-src, .table-note, .rd-src, .dn-note, .filter-count, .wc-when, .share-msg, .g-txt, .trend-legend, .pt-p, .pt-st, .axis-note { font-size: 13px; line-height: 1.55; }
+      .refresh-bar { font-size: 13px; }
+      .rf-status { gap: 2px 14px; }
+      .consensus-endpoints { font-size: 12.5px; }
+      .cm-tick-l, .consensus-mark { font-size: 12px; }
+      .blend-detail { font-size: 18px; }
+      .card-value { font-size: 42px; }
+      .section-title { font-size: 26px; }
+      /* buttons and tap targets */
+      .btn { font-size: 12.5px; min-height: 42px; padding: 8px 14px; }
+      .chip { font-size: 12.5px; padding: 9px 13px; }
+      .race-search { font-size: 16px; padding: 10px; width: 100%; }  /* 16px stops iOS zooming in */
+      .star { font-size: 20px; padding: 6px; margin: -6px; }
+      .race-table tr.race-row { grid-template-columns: 34px 1fr auto; padding: 14px 0; }
+      .race-table { font-size: 14px; }
+      .race-table tr.race-row td:nth-child(n+5) { font-size: 14px; }
+      .cand { font-size: 14px; }
+      .cand .held, .poll-cell small, .thin, .flipnote, .fresh { font-size: 12px; }
+      .heat-badge { font-size: 12px; }
+      .race-name { font-size: 19px; }
+      .gap-row { padding: 14px 0; }
+      .g-name { font-size: 19px; }
+      /* Dem and Rep chance share one line */
+      .race-table tr.race-row td:nth-child(3) { grid-row: 2; }
+      .race-table tr.race-row td:nth-child(5) { grid-row: 3; grid-column: 2; }
+      .race-table tr.race-row td:nth-child(6) { grid-row: 3; grid-column: 3; text-align: right !important; white-space: nowrap; }
+      .race-table tr.race-row td:nth-child(7) { grid-row: 4; grid-column: 2 / -1; }
+      .race-table tr.race-row[aria-expanded="true"] { background: var(--paper-2); }
+      .race-table tr.race-row[aria-expanded="true"] td { background: none; }
+      .race-detail-row td { padding: 6px 12px 18px !important; }
+      /* long secondary sections fold away on phones */
+      .data-section.foldable > .section-title { display: flex; justify-content: space-between; align-items: baseline; cursor: pointer; }
+      .data-section.foldable > .section-title .sec-toggle { display: inline; font-family: var(--mono); font-size: 12.5px; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-2); }
+      .data-section.foldable.folded > :not(.section-title) { display: none !important; }
+      .data-section.foldable.folded { margin-bottom: 8px; }
+      .methodology.foldable.folded > :not(h4) { display: none !important; }
+      .methodology.foldable > h4 { display: flex; justify-content: space-between; cursor: pointer; padding: 6px 0; }
+      .methodology.foldable > h4 .sec-toggle { display: inline; }
+    }
     /* refresh bar */
     .refresh-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; padding: 10px 0; border-bottom: 1px solid var(--hair); font-family: var(--mono); font-size: 11px; color: var(--ink-2); }
     .rf-status { display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: center; }
@@ -599,6 +651,7 @@
     .rf-msg { color: var(--ink-3); }
     .btn.btn-sub { background: var(--ink); color: var(--paper); border-color: var(--ink); text-decoration: none; }
     .btn.btn-sub:hover { opacity: .88; color: var(--paper); }
+    @media (min-width: 761px) { .rf-status > span:not(.rf-msg) + span::before { content: "·"; margin-right: 14px; color: var(--ink-3); } }
     .rf-msg.ok { color: #2f6f73; font-weight: 600; }
     .rf-msg.new { color: var(--tossup); font-weight: 600; }
     .btn.rf-btn .ic { display: inline-block; margin-right: 5px; }
@@ -616,7 +669,7 @@
       <div class="meta" id="lastUpdated">Data as of —</div>
     </header>
     <div class="refresh-bar" id="refreshBar">
-      <div class="rf-status"><span><span class="rf-live" id="rfDot" aria-hidden="true"></span>Updated <b id="rfAgo">—</b></span><span id="rfNext"></span><span class="rf-msg" id="rfMsg" aria-live="polite"></span></div>
+      <div class="rf-status"><span><span class="rf-live" id="rfDot" aria-hidden="true"></span>Figures from <b id="rfAgo">—</b></span><span id="rfChecked"></span><span id="rfNext"></span><span class="rf-msg" id="rfMsg" aria-live="polite"></span></div>
       <div class="rf-actions">
         <button class="btn rf-btn" id="rfBtn" type="button"><span class="ic" aria-hidden="true">↻</span>Refresh</button>
         <a class="btn btn-sub" id="rfSub" href="#" target="_blank" rel="noopener" hidden>Get the morning read</a>
@@ -635,7 +688,7 @@
     <section class="wc-box yr-box" id="yourRaces" hidden></section>
 
     <div class="chamber-tabs" role="tablist">
-      <button class="tab-btn active" data-chamber="house" role="tab" aria-selected="true">House of Representatives</button>
+      <button class="tab-btn active" data-chamber="house" role="tab" aria-selected="true"><span class="long">House of Representatives</span><span class="short">House</span></button>
       <button class="tab-btn" data-chamber="senate" role="tab" aria-selected="false">Senate</button>
       <button class="tab-btn" data-chamber="governors" role="tab" aria-selected="false">Governors</button>
       <button class="tab-btn dn-tabbtn" id="dnTab" data-chamber="decision" role="tab" aria-selected="false" hidden><span class="dn-dot" aria-hidden="true"></span>Decision Night <span class="new-badge">New</span></button>
@@ -3746,6 +3799,21 @@
   }
 
   /* ===== boot ===== */
+  /* ===== phones: fold the long secondary sections so the key races come sooner ===== */
+  (function foldForPhones() {
+    if (!matchMedia('(max-width: 640px)').matches) return;
+    const make = (box, head) => {
+      box.classList.add('foldable', 'folded');
+      const t = document.createElement('span'); t.className = 'sec-toggle'; t.textContent = 'Show +'; head.appendChild(t);
+      head.setAttribute('role', 'button'); head.setAttribute('tabindex', '0'); head.setAttribute('aria-expanded', 'false');
+      const flip = () => { const open = box.classList.toggle('folded') === false; head.setAttribute('aria-expanded', String(open)); t.textContent = open ? 'Hide −' : 'Show +'; };
+      head.addEventListener('click', flip); head.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flip(); } });
+    };
+    ['houseMarkets', 'housePolling', 'houseSeats', 'senateMarkets', 'senatePolling', 'senateSeats'].forEach(id => {
+      const el = document.getElementById(id), box = el && el.closest('.data-section'); if (box) make(box, box.querySelector('.section-title'));
+    });
+    const m = document.getElementById('methodology'); if (m) make(m, m.querySelector('h4'));
+  })();
   (function boot() {
     $('lastUpdated').textContent = 'Data as of ' + fmtDate(DATA.asOf, true) + ' ET';
     renderChamber('house', 'House'); renderChamber('senate', 'Senate');
@@ -3794,7 +3862,7 @@
   /* ===== refresh: detects a newer published version and reloads =====
      Signal 1: db doc meta/latest {asOf, build, results}, written after every publish (live, no polling needed).
      Signal 2 (fallback): re-fetch this page and compare its DATA.asOf. */
-  const BUILD = '2026-09-21c';
+  const BUILD = '2026-09-22b';
   (function refresh() {
     const btn = $('rfBtn'), auto = $('rfAuto'), msg = $('rfMsg'), dot = $('rfDot');
     if (!btn) return;
@@ -3808,11 +3876,22 @@
     if (want) { ss.set('want', null); const [wa, wb, wr] = want.split('|'); if (+wa <= asOf && (!wb || wb <= BUILD) && (+wr || 0) <= resAt) { say('Refreshed to the latest version ✓', 'ok'); setTimeout(() => say(''), 6000); } else { pending = 'stuck'; say('A newer version is out, but this view didn’t load it — reload the page in your browser.', 'new'); } }
     const isNewer = (a, b, r) => (a && a > asOf) || (b && b > BUILD) || (r && r > resAt);
     function etHour(d) { const p = {}; new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: 'numeric', hourCycle: 'h23' }).formatToParts(d).forEach(x => p[x.type] = x.value); return +p.hour; }
+    // When this viewer last refreshed: the Refresh click (kept across the reload it may trigger), else when the page was loaded.
+    let lastRefreshed = Date.now(); { const r = +ss.get('refreshedAt'); if (r && Date.now() - r < 120000) lastRefreshed = r; ss.set('refreshedAt', null); }
+    const etDay = t => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(new Date(t));
+    const etTime = t => new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: 'numeric', minute: '2-digit' }).format(new Date(t));
+    function friendly(t) {
+      const today = etDay(Date.now()), day = etDay(t), yest = etDay(Date.now() - 864e5);
+      const d = day === today ? 'today' : day === yest ? 'yesterday' : new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', month: 'short', day: 'numeric' }).format(new Date(t));
+      return d + ', ' + etTime(t) + ' ET';
+    }
     function ago() {
-      const m = Math.max(0, Math.round((Date.now() - asOf) / 60000));
-      $('rfAgo').textContent = m < 1 ? 'just now' : m < 60 ? m + ' min ago' : m < 48 * 60 ? Math.round(m / 60) + ' hr ago' : Math.round(m / 1440) + ' days ago';
+      $('rfAgo').textContent = friendly(asOf);
+      const m = Math.max(0, Math.floor((Date.now() - lastRefreshed) / 60000));
+      $('rfChecked').textContent = 'Last refreshed ' + friendly(lastRefreshed) + (m < 1 ? ' (just now)' : '');
       const h = etHour(new Date()); $('rfNext').textContent = 'Next update ' + (h < 6 ? 'today' : 'tomorrow') + ', 6 AM ET';
     }
+    const checked = () => {};
     function reload(a, b, r) { if (pending === 'stuck') return; ss.set('scrollY', String(window.scrollY)); ss.set('want', (a || asOf) + '|' + (b || '') + '|' + (r || 0)); location.reload(); }
     function found(a, b, r, manual) { if (pending === 'stuck') return; say('New figures published — loading…', 'new'); if (manual || autoOn) setTimeout(() => reload(a, b, r), manual ? 300 : 1500); else { pending = [a, b, r]; say('New figures published — press Refresh', 'new'); } }
     let dbLatest = null;
@@ -3830,9 +3909,9 @@
         if (pending && pending !== 'stuck') { reload(pending[0], pending[1], pending[2]); return; }
         if (dbLatest && isNewer(...dbLatest)) { found(...dbLatest, manual); return; }
         let a = null, b = null;
-        try { [a, b] = await fetchLatest(); } catch (e) { if (manual && !dbLatest) { reload(); return; } }
+        try { [a, b] = await fetchLatest(); checked(); } catch (e) { if (dbLatest) checked(); else if (manual) { reload(); return; } }
         if (isNewer(a, b)) { found(a, b, 0, manual); return; }
-        if (manual) { say(pending === 'stuck' ? 'Still an older copy in this view — reload the page in your browser.' : 'You have the latest figures.', pending === 'stuck' ? 'new' : ''); if (pending !== 'stuck') setTimeout(() => say(''), 5000); }
+        if (manual) { say(pending === 'stuck' ? 'Still an older copy in this view — reload the page in your browser.' : 'Up to date — these are the newest figures ✓', pending === 'stuck' ? 'new' : 'ok'); if (pending !== 'stuck') setTimeout(() => say(''), 5000); }
       } finally { busy = false; btn.classList.remove('spin'); }
     }
     function setAuto(on) {
@@ -3841,14 +3920,14 @@
       dot.classList.toggle('on', on);
       clearInterval(timer); timer = on ? setInterval(() => { if (!document.hidden) check(false); }, 10 * 60 * 1000) : null;
     }
-    btn.addEventListener('click', () => check(true));
+    btn.addEventListener('click', () => { lastRefreshed = Date.now(); ss.set('refreshedAt', String(lastRefreshed)); ago(); check(true); });
     auto.addEventListener('click', () => setAuto(!autoOn));
     document.addEventListener('visibilitychange', () => { if (!document.hidden) { ago(); if (autoOn) check(false); } });
     setAuto(autoOn); ago(); setInterval(ago, 60 * 1000);
     // live signal from the page's database
     (async () => { try {
       const db = window.claude && window.claude.use ? await window.claude.use('db') : null; if (!db) return;
-      db.doc('meta/latest').onSnapshot(s => { if (!s.exists) return; const d = s.data() || {}; dbLatest = [d.asOf ? new Date(d.asOf).getTime() : null, d.build || null, d.results ? Date.parse(d.results) : 0]; if (isNewer(...dbLatest) && pending !== 'stuck') found(...dbLatest, false); }, () => { dbLatest = null; });
+      db.doc('meta/latest').onSnapshot(s => { if (!s.exists) return; const d = s.data() || {}; dbLatest = [d.asOf ? new Date(d.asOf).getTime() : null, d.build || null, d.results ? Date.parse(d.results) : 0]; checked(); if (isNewer(...dbLatest) && pending !== 'stuck') found(...dbLatest, false); }, () => { dbLatest = null; });
     } catch (e) {} })();
   })();
   </script>
