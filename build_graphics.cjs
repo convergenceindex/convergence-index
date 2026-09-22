@@ -80,6 +80,7 @@ function favor(dem) {
 
   const d = data.asOf ? new Date(data.asOf) : new Date();
   const dateLabel = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', month: 'long', day: 'numeric', year: 'numeric' }).format(d);
+  const DATE_ISO = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(d);
   const shortDate = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', month: 'short', day: 'numeric' }).format(d).toUpperCase();
 
   const H = data.house ?? 0, S = data.senate ?? 0;
@@ -246,7 +247,7 @@ convergence-index.com
 
 ## Instagram
 Where the 2026 midterms stand today 🗳️
-House: ${house.party} ${house.chance}% · Senate: ${senate.party} ${senate.chance}% · ${gm ? gm[2] + '/' + gm[3] + ' governors ' + gm[1].toLowerCase() : 'governors'}.
+House: ${house.party} ${house.chance}% · Senate: ${senate.party} ${senate.chance}% · ${gm ? 'Governors: ' + govParty + ' lead in ' + gm[2] + ' of ' + gm[3] : 'Governors in play'}.
 Prediction markets × polling, blended and updated daily. Link in bio.
 .
 .
@@ -256,6 +257,92 @@ Prediction markets × polling, blended and updated daily. Link in bio.
 The Convergence Index: control of the 2026 U.S. House leans ${house.party} (${house.chance}%) and the Senate ${senate.party} (${senate.chance}%); ${govCap}. ${splitLine}
 `;
   fs.writeFileSync(path.join(OUT, 'captions.md'), captions);
+
+  // ---- Social kit page (published as a claude.ai artifact; images embedded so no uploads are needed) ----
+  const img64 = f => fs.readFileSync(path.join(OUT, f)).toString('base64');
+  const sections = captions.split(/\n## /).slice(1).map(s => { const i = s.indexOf('\n'); return { h: s.slice(0, i).trim(), body: s.slice(i + 1).trim() }; });
+  const graphics = [
+    { file: 'feed-square.png', name: `${DATE_ISO} — feed.png`, label: 'Feed post', use: 'Twitter / X, LinkedIn, Instagram feed · 1080 × 1080', cls: 'sqimg' },
+    { file: 'story.png', name: `${DATE_ISO} — story.png`, label: 'Story', use: 'Instagram and Facebook Stories · 1080 × 1920', cls: 'stimg' },
+    { file: 'watch-square.png', name: `${DATE_ISO} — watch.png`, label: 'Race to watch', use: 'Optional second slide or standalone post · 1080 × 1080', cls: 'sqimg' }
+  ];
+  const kit = `<title>Convergence Social Kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{--paper:#fcfbf8;--card:#f4f2ec;--ink:#17171a;--ink2:#5d5b56;--ink3:#75726b;--hair:#e2ded6;--accent:#2c4a7a;--ok:#2f6f73;
+  --serif:'Newsreader',Georgia,'Times New Roman',serif;--mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#131316;--card:#1c1c20;--ink:#ecebe6;--ink2:#a9a69f;--ink3:#8c8981;--hair:#34343a;--accent:#8fb0e3;--ok:#7cc0c4;color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#131316;--card:#1c1c20;--ink:#ecebe6;--ink2:#a9a69f;--ink3:#8c8981;--hair:#34343a;--accent:#8fb0e3;--ok:#7cc0c4;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:17px;line-height:1.5;margin:0}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:20px;padding-block:32px 64px}
+header{border-top:3px solid var(--ink);padding-top:14px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 20px}
+h1{font-weight:400;font-size:clamp(30px,5vw,44px);letter-spacing:-.015em;margin:0;line-height:1.1}
+.date{font-family:var(--mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink2)}
+.lede{color:var(--ink2);font-style:italic;margin:10px 0 0;max-width:62ch}
+h2{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink2);margin:40px 0 14px;padding-top:12px;border-top:1px solid var(--hair)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;align-items:start}
+figure{margin:0;display:flex;flex-direction:column;gap:10px}
+figure img{width:100%;height:auto;display:block;border:1px solid var(--hair);background:#fcfbf8}
+.stimg{max-width:72%}
+figcaption{display:flex;flex-direction:column;gap:2px}
+.gl{font-size:19px}
+.gu{font-family:var(--mono);font-size:12px;color:var(--ink3)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+button{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--ink2);background:transparent;color:var(--ink);padding:9px 14px;cursor:pointer;min-height:40px}
+button:hover{border-color:var(--ink);background:var(--card)}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.msg{font-family:var(--mono);font-size:12px;color:var(--ok)}
+.hint{font-family:var(--mono);font-size:12px;color:var(--ink3)}
+.caps{display:grid;gap:18px}
+.cap{background:var(--card);padding:16px 18px;border-left:3px solid var(--accent)}
+.cap h3{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin:0 0 8px;color:var(--ink)}
+.cap pre{white-space:pre-wrap;word-wrap:break-word;font-family:var(--serif);font-size:16px;margin:0 0 12px;color:var(--ink)}
+footer{margin-top:40px;font-family:var(--mono);font-size:12px;color:var(--ink3)}
+footer a{color:var(--accent)}
+@media (max-width:600px){.stimg{max-width:100%}}
+</style>
+<div class="wrap">
+  <header><h1>Social kit</h1><span class="date">${esc(dateLabel)}</span></header>
+  <p class="lede">Today's graphics and captions from The Convergence Index, rebuilt every morning after the data update. Figures as of ${esc(dateLabel)}.</p>
+  <h2>Graphics</h2>
+  <div class="grid">
+  ${graphics.map((g, i) => `<figure>
+      <img class="${g.cls}" src="data:image/png;base64,${img64(g.file)}" alt="${esc(g.label)} graphic for ${esc(dateLabel)}" id="img${i}">
+      <figcaption><span class="gl">${esc(g.label)}</span><span class="gu">${esc(g.use)}</span></figcaption>
+      <div class="row"><button type="button" class="save" data-i="${i}" data-name="${esc(g.name)}" hidden>Save image</button><span class="msg" id="m${i}" role="status"></span></div>
+    </figure>`).join('\n  ')}
+  </div>
+  <p class="hint">On a phone you can also press and hold an image to save it.</p>
+  <h2>Captions</h2>
+  <div class="caps">
+  ${sections.map((s, i) => `<div class="cap"><h3>${esc(s.h)}</h3><pre id="c${i}">${esc(s.body)}</pre>
+      <div class="row"><button type="button" class="copy" data-i="${i}">Copy</button><span class="msg" id="cm${i}" role="status"></span></div></div>`).join('\n  ')}
+  </div>
+  <footer>Captions are also saved each morning to Google Drive → “Convergence Index — Social”. Live site: <a href="https://convergence-index.com" target="_blank" rel="noopener">convergence-index.com</a></footer>
+</div>
+<script>
+(function(){
+  var dl=null;
+  function flash(id,t){var e=document.getElementById(id);if(!e)return;e.textContent=t;setTimeout(function(){e.textContent='';},3500);}
+  function toBlob(src){var b=atob(src.split(',')[1]),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return new Blob([a],{type:'image/png'});}
+  var p=(window.claude&&window.claude.use)?window.claude.use('downloads'):Promise.resolve(null);
+  Promise.resolve(p).then(function(d){dl=d;if(d)document.querySelectorAll('.save').forEach(function(b){b.hidden=false;});}).catch(function(){});
+  document.addEventListener('click',function(e){
+    var s=e.target.closest('.save');
+    if(s&&dl){var i=s.dataset.i;dl.save({filename:s.dataset.name,data:toBlob(document.getElementById('img'+i).src)}).then(function(){flash('m'+i,'Saved');},function(err){flash('m'+i,err&&err.code==='declined'?'Not saved':'Could not save — press and hold the image instead');});return;}
+    var c=e.target.closest('.copy');
+    if(c){var j=c.dataset.i,t=document.getElementById('c'+j).textContent;
+      var done=function(){flash('cm'+j,'Copied');};
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){sel(j);});}else sel(j);
+    }
+  });
+  function sel(j){var r=document.createRange();r.selectNodeContents(document.getElementById('c'+j));var s=window.getSelection();s.removeAllRanges();s.addRange(r);flash('cm'+j,'Selected — copy it from the menu');}
+})();
+</script>
+`;
+  fs.writeFileSync(path.join(OUT, 'social-kit.html'), kit);
   console.log(JSON.stringify({ house: `${house.party} ${house.chance}`, senate: `${senate.party} ${senate.chance}`, gov: `${govNum} ${govParty}`, top: top && top.name + ' ' + top.gap, asOf: data.asOf, files: fs.readdirSync(OUT) }, null, 1));
   await browser.close();
 })();
