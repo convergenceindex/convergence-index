@@ -11,8 +11,8 @@
  * control probability, so the graphics read the same whichever party leads (and flip automatically
  * if a lead changes). Nothing hard-codes one party.
  *
- * Outputs into <outDir>: feed-square.png (1080x1080), watch-square.png (1080x1080),
- * story.png (1080x1920), and captions.md.
+ * Outputs into <outDir>: intro-1.png, intro-2.png, intro-3.png (1080x1080 carousel),
+ * feed-square.png (1080x1080), watch-square.png (1080x1080), story.png (1080x1920), and captions.md.
  * Fonts are bundled in tools/fonts/ so the script is self-contained from a fresh clone.
  */
 const fs = require('fs');
@@ -145,6 +145,17 @@ function favor(dem) {
     .st .sval{font-family:var(--serif);font-weight:300;font-size:172px;line-height:1;letter-spacing:-.04em;margin-top:40px}
     .st .sval.small{font-size:120px;margin-top:44px}
     .st .sval .u{font-size:.34em;color:var(--ink2);font-style:italic;margin-left:14px;letter-spacing:0}
+    .introwrap{flex:1;display:flex;flex-direction:column;justify-content:center;padding:20px 0}
+    .intro-head{font-family:var(--serif);font-weight:300;font-size:88px;line-height:1.1;letter-spacing:-.02em}
+    .intro-sub{font-family:var(--serif);font-style:italic;font-size:32px;color:var(--ink2);margin-top:26px;max-width:88%;line-height:1.4}
+    .chips3{display:flex;flex-wrap:wrap;gap:16px;margin-top:52px}
+    .chip3{font-family:var(--mono);font-size:21px;letter-spacing:.06em;text-transform:uppercase;padding:14px 22px;border:1px solid var(--hair);color:var(--ink2);border-radius:999px}
+    .schembar{position:relative;height:14px;border-radius:7px;margin-top:60px;background:linear-gradient(90deg,var(--rep),color-mix(in srgb,var(--rep) 10%,var(--paper)) 50%,var(--dem))}
+    .schem-dot{position:absolute;top:-9px;width:32px;height:32px;border-radius:50%;box-shadow:0 0 0 6px var(--paper);transform:translateX(-50%)}
+    .schem-lbl{display:flex;justify-content:space-between;margin-top:20px;font-family:var(--mono);font-size:23px;font-weight:500}
+    .step-n{font-family:var(--mono);font-size:23px;color:var(--ink3);letter-spacing:.1em}
+    .card>*{position:relative;z-index:1}
+    .wm{position:absolute;right:-24px;bottom:-96px;font-family:var(--serif);font-weight:300;font-size:560px;line-height:1;color:var(--hair);z-index:0;pointer-events:none}
   `;
 
   const chamberRow = (lab, f) => `<div class="row"><span class="lab">${lab}</span>
@@ -162,6 +173,39 @@ function favor(dem) {
         <div class="val small ${govCls}">${esc(govNum)}<span class="u">${esc(govParty)}</span></div></div>
     </div>
     <div class="foot"><span class="tag">markets × polls, blended</span><span><b>convergence-index.com</b></span></div></div>`;
+
+  // intro carousel — 3 distinct slides (no numbers, just framing). Slide 1 also serves as the
+  // single lead image for Twitter/LinkedIn, which don't do native multi-image carousels the same way.
+  const intro1 = `<div class="card sq"><span class="wm">1</span><hr class="top">
+    <div class="kick"><span>2026 U.S. Midterms</span><span class="step-n">1 / 3</span></div>
+    <div class="brand">${LOGO}<span class="nm">The Convergence Index</span></div>
+    <div class="introwrap">
+      <div class="intro-head">Who's favored<br>to win Congress?</div>
+      <div class="intro-sub">One number per chamber, built from prediction markets and polling — updated every morning.</div>
+      <div class="chips3"><span class="chip3">House</span><span class="chip3">Senate</span><span class="chip3">Governors</span></div>
+    </div>
+    <div class="foot"><span class="tag">swipe for how it works →</span><span><b>convergence-index.com</b></span></div></div>`;
+
+  const intro2 = `<div class="card sq"><span class="wm">2</span><hr class="top">
+    <div class="kick"><span>How it works</span><span class="step-n">2 / 3</span></div>
+    <div class="brand">${LOGO}<span class="nm">The Convergence Index</span></div>
+    <div class="introwrap">
+      <div class="intro-head">Two signals.<br>One number.</div>
+      <div class="intro-sub">We blend prediction-market prices — real money, real time — with polling averages into a single daily probability for each chamber.</div>
+      <div class="schembar"><span class="schem-dot" style="left:38%;background:var(--poll)"></span><span class="schem-dot" style="left:62%;background:var(--mkt)"></span></div>
+      <div class="schem-lbl"><span style="color:var(--poll)">Polling</span><span style="color:var(--mkt)">Markets</span></div>
+    </div>
+    <div class="foot"><span class="tag">swipe for today's numbers →</span><span><b>convergence-index.com</b></span></div></div>`;
+
+  const intro3 = `<div class="card sq"><span class="wm">3</span><hr class="top">
+    <div class="kick"><span>Updated daily</span><span class="step-n">3 / 3</span></div>
+    <div class="brand">${LOGO}<span class="nm">The Convergence Index</span></div>
+    <div class="introwrap">
+      <div class="intro-head">New numbers,<br>every morning.</div>
+      <div class="intro-sub">Every figure refreshes by 6&nbsp;AM ET and links back to its source — swipe back for today's read, or follow for tomorrow's.</div>
+      <div class="chips3"><span class="chip3">6 AM ET daily</span><span class="chip3">Every race sourced</span></div>
+    </div>
+    <div class="foot"><span class="tag">today's odds →</span><span><b>convergence-index.com</b></span></div></div>`;
 
   // watch card — reference the market favorite for that seat, so the axis is neutral either way
   const top = data.top;
@@ -215,6 +259,9 @@ function favor(dem) {
     await (await pg.$('.card')).screenshot({ path: path.join(OUT, file) });
     await pg.close();
   }
+  await shoot(shell(intro1), 'intro-1.png');
+  await shoot(shell(intro2), 'intro-2.png');
+  await shoot(shell(intro3), 'intro-3.png');
   await shoot(shell(feed), 'feed-square.png');
   await shoot(shell(watch), 'watch-square.png');
   await shoot(shell(story), 'story.png');
@@ -224,7 +271,7 @@ function favor(dem) {
   const splitLine = top ? `Today's widest poll–market split: ${top.name} (${top.chamber}), ${top.gap} points apart.` : '';
   const captions = `# Convergence Index — captions for ${dateLabel}
 
-Figures as of ${dateLabel} ET. Neutral framing: each line names whichever party is favored, so nothing needs rewriting if a lead changes. Post feed-square.png on Twitter / LinkedIn / Instagram feed; use story.png for Stories; watch-square.png is an optional second slide.
+Figures as of ${dateLabel} ET. Neutral framing: each line names whichever party is favored, so nothing needs rewriting if a lead changes. Instagram feed: post intro-1.png, intro-2.png, intro-3.png as a 3-slide carousel, then feed-square.png as a follow-up post. Twitter / LinkedIn: post intro-1.png as the lead image, then feed-square.png. Use story.png for Instagram Stories; watch-square.png is an optional extra slide.
 
 ## Twitter / X
 Where the 2026 midterms stand today — prediction markets and polling, blended:
@@ -262,13 +309,16 @@ The Convergence Index: control of the 2026 U.S. House leans ${house.party} (${ho
   const img64 = f => fs.readFileSync(path.join(OUT, f)).toString('base64');
   const sections = captions.split(/\n## /).slice(1).map(s => { const i = s.indexOf('\n'); return { h: s.slice(0, i).trim(), body: s.slice(i + 1).trim() }; });
   const graphics = [
-    { file: 'feed-square.png', name: `${DATE_ISO} — feed.png`, label: 'Feed post', use: 'Twitter / X, LinkedIn, Instagram feed · 1080 × 1080', cls: 'sqimg' },
-    { file: 'story.png', name: `${DATE_ISO} — story.png`, label: 'Story', use: 'Instagram and Facebook Stories · 1080 × 1920', cls: 'stimg' },
-    { file: 'watch-square.png', name: `${DATE_ISO} — watch.png`, label: 'Race to watch', use: 'Optional second slide or standalone post · 1080 × 1080', cls: 'sqimg' }
+    { file: 'intro-1.png', name: `${DATE_ISO} — intro-1.png`, label: 'Carousel 1/3 · Cover', use: 'Instagram carousel slide 1; also the lead image for Twitter / X and LinkedIn · 1080 × 1080', cls: 'sqimg' },
+    { file: 'intro-2.png', name: `${DATE_ISO} — intro-2.png`, label: 'Carousel 2/3 · How it works', use: 'Instagram carousel slide 2 · 1080 × 1080', cls: 'sqimg' },
+    { file: 'intro-3.png', name: `${DATE_ISO} — intro-3.png`, label: 'Carousel 3/3 · Updated daily', use: 'Instagram carousel slide 3 · 1080 × 1080', cls: 'sqimg' },
+    { file: 'feed-square.png', name: `${DATE_ISO} — feed.png`, label: 'Feed post', use: 'Follow-up post on Twitter / X, LinkedIn, Instagram feed · 1080 × 1080', cls: 'sqimg' },
+    { file: 'story.png', name: `${DATE_ISO} — story.png`, label: 'Story', use: 'Instagram Stories · 1080 × 1920', cls: 'stimg' },
+    { file: 'watch-square.png', name: `${DATE_ISO} — watch.png`, label: 'Race to watch', use: 'Optional extra slide or standalone post · 1080 × 1080', cls: 'sqimg' }
   ];
   const kit = `<title>Convergence Social Kit</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..500;1,6..72,300..500&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
 :root{--paper:#fcfbf8;--card:#f4f2ec;--ink:#17171a;--ink2:#5d5b56;--ink3:#75726b;--hair:#e2ded6;--accent:#2c4a7a;--ok:#2f6f73;
   --serif:'Newsreader',Georgia,'Times New Roman',serif;--mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;color-scheme:light}
