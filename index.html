@@ -19,7 +19,7 @@
 <meta name="twitter:title" content="The Convergence Index">
 <meta name="twitter:description" content="2026 U.S. midterms: prediction markets and polling, blended — the chance each party wins the House, Senate and key governor races. Updated every morning at 6 AM ET.">
 <meta name="twitter:image" content="https://convergence-index.com/og-image.png">
-<meta name="data-as-of" content="2026-09-21T18:15:00Z">
+<meta name="data-as-of" content="2026-09-22T10:05:45.706745Z">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23fcfbf8'/%3E%3Crect x='4' y='14' width='24' height='4' fill='%239b3a2e'/%3E%3Crect x='16' y='14' width='12' height='4' fill='%232c4a7a'/%3E%3Crect x='15' y='8' width='2' height='16' fill='%2317171a'/%3E%3C/svg%3E">
 </head>
 <body>
@@ -589,12 +589,26 @@
       .rd-value { font-size: 48px; }
     }
     [hidden] { display: none !important; }
+    /* endnotes */
+    sup.en { font-size: 0.6em; line-height: 0; margin-left: 2px; vertical-align: super; }
+    sup.en a { font-family: var(--mono); font-weight: 500; color: var(--ink-2); text-decoration: none; padding: 0 2px; }
+    sup.en a:hover, sup.en a:focus-visible { color: var(--ink); text-decoration: underline; }
+    .card-label sup.en { font-size: 0.85em; }
+    .endnotes { margin-top: 28px; padding-top: 14px; border-top: 1px solid var(--rule); font-family: var(--mono); font-size: 12px; color: var(--ink-2); line-height: 1.6; }
+    .endnotes h4 { font-family: var(--mono); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-2); margin: 0 0 10px; }
+    .en-list { margin: 0 0 12px; padding-left: 2.2em; columns: 2 320px; column-gap: 32px; }
+    .en-list li, .en-other li { margin-bottom: 4px; break-inside: avoid; }
+    .en-list li:target { background: color-mix(in srgb, var(--tossup) 18%, transparent); }
+    .endnotes a { color: inherit; text-decoration: underline; text-decoration-color: var(--hair); text-underline-offset: 2px; }
+    .en-more, .en-h { margin: 10px 0 4px; } .en-h { color: var(--ink-3); }
+    .en-other { margin: 0 0 6px; padding-left: 18px; }
+    @media (max-width: 640px) { .endnotes { font-size: 13px; } sup.en a { padding: 4px 4px; } .en-list { columns: 1; } }
     /* --- phone readability pass --- */
     .tab-btn .short { display: none; }
     .sec-toggle { display: none; }
     @media (max-width: 640px) {
       body { font-size: 17px; }
-      #lastUpdated { display: none; }                       /* the refresh bar says the same thing */
+      .meta { margin-top: 6px; }
       .subtitle { font-size: 12px; }
       .chamber-tabs { flex-wrap: nowrap; overflow-x: auto; gap: 22px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
       .chamber-tabs::-webkit-scrollbar { display: none; }
@@ -669,7 +683,7 @@
       <div class="meta" id="lastUpdated">Data as of —</div>
     </header>
     <div class="refresh-bar" id="refreshBar">
-      <div class="rf-status"><span><span class="rf-live" id="rfDot" aria-hidden="true"></span>Figures from <b id="rfAgo">—</b></span><span id="rfChecked"></span><span id="rfNext"></span><span class="rf-msg" id="rfMsg" aria-live="polite"></span></div>
+      <div class="rf-status"><span><span class="rf-live" id="rfDot" aria-hidden="true"></span>Last refreshed <b id="rfChecked">—</b></span><span id="rfNext"></span><span class="rf-msg" id="rfMsg" aria-live="polite"></span></div>
       <div class="rf-actions">
         <button class="btn rf-btn" id="rfBtn" type="button"><span class="ic" aria-hidden="true">↻</span>Refresh</button>
         <a class="btn btn-sub" id="rfSub" href="#" target="_blank" rel="noopener" hidden>Get the morning read</a>
@@ -796,16 +810,18 @@
       <p><strong>Path to 51.</strong> Seats not on the 2026 ballot (34 Democratic-caucus, 31 Republican) are fixed. Each 2026 race starts at its market favorite; the tipping-point race is the one that gives Democrats their 51st seat when races are ranked by Democratic market chance. Louisiana has no market and is shown as a Republican hold.</p>
       <p><strong>Seats.</strong> Market-implied seat counts come from Kalshi's seat-bracket markets, normalized to sum to 100%. The range shown covers roughly the middle two-thirds of the probability.</p>
       <p><strong>Following.</strong> Races you follow are stored only in this browser; the “change since your last visit” compares against what this browser last saw.</p>
-      <h4 style="margin-top:28px">Sources</h4>
-      <div class="sources" id="sourcesList"></div>
       <p class="disclaimer">For information only — not trading, betting or investment advice. Figures are collected automatically every morning at 6 AM ET and checked by an automated audit; markets and polls move between updates.</p>
     </div>
+    <section class="endnotes" id="endnotes" aria-labelledby="endnotesH">
+      <h4 id="endnotesH">Sources</h4>
+      <div id="endnotesList"></div>
+    </section>
   </div>
 
   <script>
   /* ===== DATA — the only block the scheduled update edits. Every number here has a source. ===== */
   const DATA = {
- "asOf": "2026-09-21T18:15:00Z",
+ "asOf": "2026-09-22T10:05:45.706745Z",
  "weights": {
   "polling": 40,
   "markets": 60
@@ -2877,9 +2893,451 @@
      3.1
     ]
    }
+  },
+  {
+   "t": "2026-09-22T10:05:45.706745Z",
+   "house": {
+    "k": [
+     85,
+     86
+    ],
+    "p": [
+     92,
+     93
+    ],
+    "gb": [
+     8.1,
+     7.5,
+     7.3,
+     7
+    ]
+   },
+   "senate": {
+    "k": [
+     59,
+     60
+    ],
+    "p": [
+     60,
+     61
+    ],
+    "m": []
+   }
   }
  ],
- "prev": null,
+ "prev": {
+  "t": "2026-09-21T18:15:00Z",
+  "races": {
+   "AZ-01": {
+    "d": [
+     0.71,
+     0.72
+    ],
+    "r": [
+     0.27,
+     0.3
+    ],
+    "i": null,
+    "pm": -5.5
+   },
+   "AZ-06": {
+    "d": [
+     0.81,
+     0.83
+    ],
+    "r": [
+     0.17,
+     0.2
+    ],
+    "i": null,
+    "pm": 2
+   },
+   "CA-22": {
+    "d": [
+     0.9,
+     0.907
+    ],
+    "r": [
+     0.087,
+     0.1
+    ],
+    "i": null,
+    "pm": 4
+   },
+   "CO-08": {
+    "d": [
+     0.76,
+     0.8
+    ],
+    "r": [
+     0.18,
+     0.26
+    ],
+    "i": null,
+    "pm": -1
+   },
+   "IA-01": {
+    "d": [
+     0.76,
+     0.77
+    ],
+    "r": [
+     0.23,
+     0.24
+    ],
+    "i": null,
+    "pm": 5
+   },
+   "IA-03": {
+    "d": [
+     0.74,
+     0.75
+    ],
+    "r": [
+     0.27,
+     0.28
+    ],
+    "i": null,
+    "pm": null
+   },
+   "MI-03": {
+    "d": [
+     0.912,
+     0.944
+    ],
+    "r": [
+     0.075,
+     0.099
+    ],
+    "i": null,
+    "pm": null
+   },
+   "MI-07": {
+    "d": [
+     0.53,
+     0.54
+    ],
+    "r": [
+     0.46,
+     0.47
+    ],
+    "i": null,
+    "pm": null
+   },
+   "MI-10": {
+    "d": [
+     0.65,
+     0.66
+    ],
+    "r": [
+     0.34,
+     0.37
+    ],
+    "i": null,
+    "pm": null
+   },
+   "NJ-07": {
+    "d": [
+     0.8,
+     0.81
+    ],
+    "r": [
+     0.18,
+     0.19
+    ],
+    "i": null,
+    "pm": null
+   },
+   "NY-17": {
+    "d": [
+     0.61,
+     0.62
+    ],
+    "r": [
+     0.39,
+     0.4
+    ],
+    "i": null,
+    "pm": 0.5
+   },
+   "OH-09": {
+    "d": [
+     0.73,
+     0.74
+    ],
+    "r": [
+     0.27,
+     0.29
+    ],
+    "i": null,
+    "pm": null
+   },
+   "OH-13": {
+    "d": [
+     0.932,
+     0.95
+    ],
+    "r": [
+     0.024,
+     0.05
+    ],
+    "i": null,
+    "pm": null
+   },
+   "PA-07": {
+    "d": [
+     0.79,
+     0.81
+    ],
+    "r": [
+     0.19,
+     0.2
+    ],
+    "i": null,
+    "pm": 4
+   },
+   "PA-08": {
+    "d": [
+     0.64,
+     0.65
+    ],
+    "r": [
+     0.34,
+     0.35
+    ],
+    "i": null,
+    "pm": 2
+   },
+   "PA-10": {
+    "d": [
+     0.79,
+     0.8
+    ],
+    "r": [
+     0.22,
+     0.23
+    ],
+    "i": null,
+    "pm": null
+   },
+   "TX-34": {
+    "d": [
+     0.77,
+     0.79
+    ],
+    "r": [
+     0.24,
+     0.25
+    ],
+    "i": null,
+    "pm": 0
+   },
+   "VA-02": {
+    "d": [
+     0.79,
+     0.8
+    ],
+    "r": [
+     0.19,
+     0.2
+    ],
+    "i": null,
+    "pm": 0
+   },
+   "VA-07": {
+    "d": [
+     0.918,
+     0.934
+    ],
+    "r": [
+     0.08,
+     0.084
+    ],
+    "i": null,
+    "pm": null
+   },
+   "WA-03": {
+    "d": [
+     0.904,
+     0.905
+    ],
+    "r": [
+     0.072,
+     0.1
+    ],
+    "i": null,
+    "pm": -1
+   },
+   "WI-03": {
+    "d": [
+     0.72,
+     0.73
+    ],
+    "r": [
+     0.28,
+     0.3
+    ],
+    "i": null,
+    "pm": 4
+   },
+   "Texas": {
+    "d": [
+     0.49,
+     0.5
+    ],
+    "r": [
+     0.5,
+     0.51
+    ],
+    "i": null,
+    "pm": 3.1
+   },
+   "Ohio (special)": {
+    "d": [
+     0.51,
+     0.52
+    ],
+    "r": [
+     0.48,
+     0.49
+    ],
+    "i": null,
+    "pm": 4.6
+   },
+   "Iowa": {
+    "d": [
+     0.8,
+     0.81
+    ],
+    "r": [
+     0.2,
+     0.21
+    ],
+    "i": null,
+    "pm": 4.4
+   },
+   "Alaska": {
+    "d": [
+     0.832,
+     0.834
+    ],
+    "r": [
+     0.166,
+     0.168
+    ],
+    "i": null,
+    "pm": 10
+   },
+   "Michigan": {
+    "d": [
+     0.61,
+     0.62
+    ],
+    "r": [
+     0.38,
+     0.39
+    ],
+    "i": null,
+    "pm": 2.4
+   },
+   "Maine": {
+    "d": [
+     0.67,
+     0.68
+    ],
+    "r": [
+     0.32,
+     0.33
+    ],
+    "i": null,
+    "pm": 2.5
+   },
+   "New Hampshire": {
+    "d": [
+     0.82,
+     0.83
+    ],
+    "r": [
+     0.17,
+     0.18
+    ],
+    "i": null,
+    "pm": 2.2
+   },
+   "Nebraska": {
+    "d": null,
+    "r": [
+     0.68,
+     0.69
+    ],
+    "i": [
+     0.31,
+     0.32
+    ],
+    "pm": 0.5
+   },
+   "Georgia": {
+    "d": [
+     0.6,
+     0.61
+    ],
+    "r": [
+     0.41,
+     0.43
+    ],
+    "i": null,
+    "pm": 2.7
+   },
+   "Nevada": {
+    "d": [
+     0.42,
+     0.44
+    ],
+    "r": [
+     0.57,
+     0.58
+    ],
+    "i": null,
+    "pm": -2.4
+   },
+   "Ohio": {
+    "d": [
+     0.58,
+     0.59
+    ],
+    "r": [
+     0.42,
+     0.43
+    ],
+    "i": null,
+    "pm": 0.8
+   },
+   "Kansas": {
+    "d": [
+     0.3,
+     0.31
+    ],
+    "r": [
+     0.7,
+     0.71
+    ],
+    "i": null,
+    "pm": -7.5
+   },
+   "Wisconsin": {
+    "d": [
+     0.83,
+     0.84
+    ],
+    "r": [
+     0.17,
+     0.18
+    ],
+    "i": null,
+    "pm": 4.5
+   }
+  }
+ },
  "decisionNight": {
   "launch": "2026-11-03T05:01:00Z",
   "electionDate": "Tuesday, November 3, 2026",
@@ -3436,6 +3894,19 @@
   const fmtDelta = (d, unit = ' pts') => (Math.abs(d) < 0.5 ? 'no change' : (d > 0 ? '+' : '−') + Math.abs(d).toFixed(1) + unit);
   const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const link = (t, u) => `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)}</a>`;
+  /* endnotes: sources cited in the page are numbered and listed once, at the very bottom */
+  const NOTES = [];
+  function note(label, url) {
+    let i = NOTES.findIndex(n => n.url === url); if (i < 0) { NOTES.push({ label, url }); i = NOTES.length - 1; }
+    return `<sup class="en"><a href="#en-${i + 1}" aria-label="Source ${i + 1}: ${esc(label)}">${i + 1}</a></sup>`;
+  }
+  function renderEndnotes() {
+    const used = new Set(NOTES.map(n => n.url));
+    const rest = DATA.sources.map(([h, items]) => [h, items.filter(([, u]) => !used.has(u))]).filter(([, items]) => items.length);
+    $('endnotesList').innerHTML = `<ol class="en-list">${NOTES.map((n, i) => `<li id="en-${i + 1}">${link(n.label, n.url)}</li>`).join('')}</ol>` +
+      `<p class="en-more">Each race’s own market and polling sources are linked in its detail panel — tap or click a race in any Key Races table.</p>` +
+      (rest.length ? `<p class="en-more">Also used:</p>` + rest.map(([h, items]) => `<p class="en-h">${esc(h)}</p><ul class="en-other">${items.map(([t, u]) => `<li>${link(t, u)}</li>`).join('')}</ul>`).join('') : '');
+  }
   const fmtDate = (iso, withTime) => new Date(iso).toLocaleString('en-US', Object.assign({ timeZone: 'America/New_York', month: 'short', day: 'numeric' }, withTime ? { hour: 'numeric', minute: '2-digit' } : {}));
   const tip = (term, text) => `<span class="tip" tabindex="0" data-tip="${esc(text)}">${term}</span>`;
   const LS = { get(k, d) { try { const v = localStorage.getItem('ci:' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
@@ -3452,7 +3923,7 @@
   function raceChance(row) { const m = row.mkt; if (m.i && !m.d) { const pi = mid(m.i), pr = mid(m.r); return { d: null, i: pi / (pi + pr), r: pr / (pi + pr) }; }
     const pd = mid(m.d), pr = mid(m.r); return { d: pd / (pd + pr), r: pr / (pd + pr) }; }
   const leadP = ch => ch.d != null ? ch.d : ch.i;
-  function card(label, value, note, src, cls) { return `<div class="data-card"><div class="card-label">${label}</div><div class="card-value ${cls || ''}">${value}</div>${note ? `<div class="card-note">${note}</div>` : ''}${src ? `<div class="card-src">${src}</div>` : ''}</div>`; }
+  function card(label, value, note, src, cls) { if (src && src.startsWith('<sup')) { label += src; src = ''; } return `<div class="data-card"><div class="card-label">${label}</div><div class="card-value ${cls || ''}">${value}</div>${note ? `<div class="card-note">${note}</div>` : ''}${src ? `<div class="card-src">${src}</div>` : ''}</div>`; }
   const RACE_SIGMA = 5;
   const racePollP = row => row.poll ? Phi(row.poll.m / RACE_SIGMA) * 100 : null;
   function pollAge(p) { if (!p || !p.date) return null; return Math.round((new Date(DATA.asOf) - new Date(p.date + 'T12:00:00Z')) / 864e5); }
@@ -3549,15 +4020,15 @@
     const C = DATA[key], c = CUR[key];
     const kM = mid([C.markets.kalshi.bid, C.markets.kalshi.ask]), pMk = mid([C.markets.polymarket.bid, C.markets.polymarket.ask]);
     $(key + 'Markets').innerHTML =
-      card('Kalshi — Democrats win', fmtPct(kM, 1), `${tip('Bid', 'Highest price a buyer will pay for a $1 “Democrats win” contract')} ${C.markets.kalshi.bid}¢ · ${tip('Ask', 'Lowest price a seller will accept')} ${C.markets.kalshi.ask}¢`, link(C.markets.kalshi.ticker, C.markets.kalshi.url), 'blend-dem') +
-      card('Polymarket — Democrats win', fmtPct(pMk, 1), `Bid ${C.markets.polymarket.bid}¢ · Ask ${C.markets.polymarket.ask}¢`, link('Polymarket market', C.markets.polymarket.url), 'blend-dem') +
+      card('Kalshi — Democrats win', fmtPct(kM, 1), `${tip('Bid', 'Highest price a buyer will pay for a $1 “Democrats win” contract')} ${C.markets.kalshi.bid}¢ · ${tip('Ask', 'Lowest price a seller will accept')} ${C.markets.kalshi.ask}¢`, note('Kalshi — ' + C.markets.kalshi.ticker + ' market', C.markets.kalshi.url), 'blend-dem') +
+      card('Polymarket — Democrats win', fmtPct(pMk, 1), `Bid ${C.markets.polymarket.bid}¢ · Ask ${C.markets.polymarket.ask}¢`, note('Polymarket — ' + name + ' control market', C.markets.polymarket.url), 'blend-dem') +
       card('Market average', fmtPct(c.mkt, 1), 'Midpoint of bid and ask, averaged across both', '', 'blend-dem');
     const sm = C.seatMarket, pr = sm.brackets.map(b => mid([b[2], b[3]])), tot = avg(pr) * pr.length, n = pr.map(x => x / tot);
     let cc = 0; const cum = n.map(x => (cc += x)), find = q => sm.brackets[cum.findIndex(v => v >= q)][0], maj = sm.brackets.reduce((a, b, i) => a + (b[1] >= sm.majority ? n[i] : 0), 0);
     $(key + 'Seats').innerHTML =
-      card('Market-implied Democratic seats', find(0.5), `Middle two-thirds: ${find(0.17)} to ${find(0.83)}`, link(sm.label, sm.url), 'blend-dem') +
+      card('Market-implied Democratic seats', find(0.5), `Middle two-thirds: ${find(0.17)} to ${find(0.83)}`, note(sm.label, sm.url), 'blend-dem') +
       card('Seat market: chance of majority', fmtPct(maj * 100), `Probability on ${sm.majority}+ Democratic seats`, '', 'blend-dem') +
-      card('Current chamber', C.composition.text, C.composition.note, link('Source', C.composition.url), 'small-val');
+      card('Current chamber', C.composition.text, C.composition.note, note('Current ' + name + ' composition', C.composition.url), 'small-val');
     const slider = $(key + 'WeightSlider');
     const update = () => {
       const w = +slider.value, bl = (c.poll * w + c.mkt * (100 - w)) / 100;
@@ -3774,7 +4245,7 @@
     tick(); setInterval(tick, 1000);
     const nextIdx = DN.pollClosings.findIndex(p => Date.parse(p[0]) > now);
     $('dnTimeline').innerHTML = DN.pollClosings.map((p, i) => `<li class="${Date.parse(p[0]) <= now ? 'past' : i === nextIdx ? 'next' : ''}"><span class="tl-t">${p[1]}</span><span class="tl-s">${p[2].map(esc).join(' · ')}</span></li>`).join('');
-    $('dnTimelineNote').innerHTML = esc(DN.closingsNote) + ' ' + link('Source', DN.closingsSource);
+    $('dnTimelineNote').innerHTML = esc(DN.closingsNote) + note('Poll closing times', DN.closingsSource);
     // Road to 51
     const A = DATA.senate.all, calls = R.senate || {}; const c = { D: A.notInPlay.D, R: A.notInPlay.R, I: 0, U: 0 };
     A.races.forEach(r => { const k = calls[r.st]; if (k) c[k]++; else c.U++; });
@@ -3820,9 +4291,9 @@
     const hp = CUR.house; $('fHouseM').textContent = hp.m.toFixed(1); $('fHouseP').textContent = fmtPct(hp.poll, 1);
     const gb = DATA.house.genericBallot, lo = Math.min(...gb.map(g => g.m)), hi = Math.max(...gb.map(g => g.m));
     $('housePolling').innerHTML =
-      card('Generic ballot — average of averages', fmtMargin(hp.m), `Range across the four: ${fmtMargin(lo)} to ${fmtMargin(hi)}`, gb.map(g => `${link(g.src, g.url)} ${fmtMargin(g.m)} (${g.asOf})`).join('<br>'), 'blend-dem') +
+      card('Generic ballot — average of averages', fmtMargin(hp.m), `Range across the four: ${fmtMargin(lo)} to ${fmtMargin(hi)}`, gb.map(g => `${esc(g.src)} ${fmtMargin(g.m)} (${g.asOf})${note(g.src + ' — generic ballot', g.url)}`).join('<br>'), 'blend-dem') +
       card(tip('Polling-implied chance', 'Converts the national polling lead into a chance of winning the House — see Methodology'), fmtPct(hp.poll, 1), 'Normal curve, majority threshold D+2, σ = 4', '', 'blend-dem') +
-      card('Latest RealClearPolling', gb[0].d != null ? `${gb[0].d} – ${gb[0].r}` : fmtMargin(gb[0].m), 'Democrats – Republicans, % of vote', link('RealClearPolling', gb[0].url), '');
+      card('Latest RealClearPolling', gb[0].d != null ? `${gb[0].d} – ${gb[0].r}` : fmtMargin(gb[0].m), 'Democrats – Republicans, % of vote', note('RealClearPolling — generic ballot', gb[0].url), '');
     const M = DATA.senate.model, sp = CUR.senate.poll;
     $('senatePolling').innerHTML =
       card(tip('Polling-implied chance', 'Share of 20,000 simulated elections, built from state polling, in which Democrats reach 51 seats'), fmtPct(sp, 1), `${M.sims.toLocaleString()} simulated elections across ${M.races.length} races`, '', sp >= 50 ? 'blend-dem' : 'blend-rep') +
@@ -3843,9 +4314,8 @@
     $('govHero').onclick = e => { const b = e.target.closest('.gov-chip'); if (b) openRace('gov', b.dataset.id); };
     const list = a => a.length <= 1 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1], net = flips.D.length - flips.R.length, parts = [];
     if (flips.D.length) parts.push(`Democrats gain ${list(flips.D)}`); if (flips.R.length) parts.push(`Republicans gain ${list(flips.R)}`);
-    $('govHeroDetail').innerHTML = `If every favorite wins: ${parts.join('; ') || 'no seats change hands'}` + (net ? ` — a net gain of ${Math.abs(net)} for ${net > 0 ? 'Democrats' : 'Republicans'}.` : '.') + ` Governors today: ${G.composition.R} R · ${G.composition.D} D (${link('source', G.composition.url)}).`;
+    $('govHeroDetail').innerHTML = `If every favorite wins: ${parts.join('; ') || 'no seats change hands'}` + (net ? ` — a net gain of ${Math.abs(net)} for ${net > 0 ? 'Democrats' : 'Republicans'}.` : '.') + ` Governors today: ${G.composition.R} R · ${G.composition.D} D${note('Current governors by party', G.composition.url)}.`;
     renderChanged(); renderFollowing();
-    $('sourcesList').innerHTML = DATA.sources.map(([h, items]) => `<p><strong>${esc(h)}</strong></p><ul>${items.map(([t, u]) => `<li>${link(t, u)}</li>`).join('')}</ul>`).join('');
     // tabs
     const tabs = document.querySelectorAll('.tab-btn'), views = document.querySelectorAll('.chamber-view');
     tabs.forEach(btn => btn.addEventListener('click', () => { tabs.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); }); views.forEach(v => v.classList.remove('active'));
@@ -3857,12 +4327,13 @@
     const parts2 = hash.split('/'), tab = parts2[0], kv = Object.fromEntries(parts2.slice(1).map(p => p.split('=')));
     if (/^(house|senate|governors)$/.test(tab)) { const w = kv.w != null ? Math.max(0, Math.min(100, +kv.w)) : null;
       if (kv.race) openRace(tab === 'governors' ? 'gov' : tab, kv.race, w); else { document.querySelector(`.tab-btn[data-chamber="${tab}"]`).click(); if (w != null && $(tab + 'WeightSlider')) { $(tab + 'WeightSlider').value = w; $(tab + 'WeightSlider').dispatchEvent(new Event('input')); } } }
+    renderEndnotes();
     setTimeout(markSeen, 1500);
   })();
   /* ===== refresh: detects a newer published version and reloads =====
      Signal 1: db doc meta/latest {asOf, build, results}, written after every publish (live, no polling needed).
      Signal 2 (fallback): re-fetch this page and compare its DATA.asOf. */
-  const BUILD = '2026-09-22b';
+  const BUILD = '2026-09-22d';
   (function refresh() {
     const btn = $('rfBtn'), auto = $('rfAuto'), msg = $('rfMsg'), dot = $('rfDot');
     if (!btn) return;
@@ -3886,9 +4357,8 @@
       return d + ', ' + etTime(t) + ' ET';
     }
     function ago() {
-      $('rfAgo').textContent = friendly(asOf);
       const m = Math.max(0, Math.floor((Date.now() - lastRefreshed) / 60000));
-      $('rfChecked').textContent = 'Last refreshed ' + friendly(lastRefreshed) + (m < 1 ? ' (just now)' : '');
+      $('rfChecked').textContent = friendly(lastRefreshed) + (m < 1 ? ' (just now)' : '');
       const h = etHour(new Date()); $('rfNext').textContent = 'Next update ' + (h < 6 ? 'today' : 'tomorrow') + ', 6 AM ET';
     }
     const checked = () => {};
