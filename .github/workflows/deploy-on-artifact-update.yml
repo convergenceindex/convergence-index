@@ -20,8 +20,26 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
-      - name: Build site from artifact
-        run: python tools/build_site.py
+      - name: Fetch artifact and build site
+        run: |
+          python << 'EOF'
+          import requests
+          import subprocess
+          
+          # Fetch the artifact HTML
+          artifact_url = "https://claude.ai/artifact/9NAM7hucPmQJ7Nni8CMZmh"
+          response = requests.get(artifact_url)
+          
+          if response.status_code == 200:
+              # Save to temp file
+              with open('/tmp/artifact.html', 'w') as f:
+                  f.write(response.text)
+              
+              # Run build_site.py with the artifact file
+              subprocess.run(['python', 'tools/build_site.py', '/tmp/artifact.html'], check=True)
+          else:
+              raise Exception(f"Failed to fetch artifact: {response.status_code}")
+          EOF
 
       - name: Commit updated site
         run: |
@@ -35,5 +53,5 @@ jobs:
 
       - name: Verify deployment
         run: |
-          echo "✓ Site deployment triggered"
+          echo "✓ Site deployment complete"
           ls -lh index.html
