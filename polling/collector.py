@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """
-Polling Collector for Convergence Index
-Fetches polling data from multiple sources and caches locally
-Runs via GitHub Actions every 6 hours
+Aggregated Polling & Markets Collector
+Fetches published polling averages from multiple sources + PredictIt markets
+Combines into single blended forecast
+Sustainable: falls back to cache if any source fails
 """
 
 import json
@@ -11,221 +12,363 @@ from datetime import datetime, timedelta
 import re
 import logging
 import sys
+import requests
+from bs4 import BeautifulSoup
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-class PollingCollector:
+class AggregatedCollector:
     def __init__(self):
         self.cache_file = 'polling/cache.json'
-        self.polls = {
+        self.session = requests.Session()
+        self.session.headers.update({
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        })
+        self.polling_sources = []
+        self.market_sources = []
+
+    # ============================================================================
+    # POLLING SOURCES - Fetch Published Averages
+    # ============================================================================
+
+    def fetch_realclearpolls_average(self):
+        """
+        Fetch RealClearPolitics generic ballot average
+        RCP publishes their polling average on the main page
+        """
+        logger.info("Fetching RealClearPolitics polling average...")
+        try:
+            url = 'https://www.realclearpolling.com/latest-polls/2026'
+            response = self.session.get(url, timeout=10)
+            response.raise_for_status()
+
+            soup = BeautifulSoup(response.content, 'html.parser')
+            text = soup.get_text()
+
+            # Look for generic ballot percentages
+            # RCP format: "Democrats X% Republicans Y%"
+            matches = re.findall(r'Democrats?\s+(\d+\.?\d*)%.*?Republicans?\s+(\d+\.?\d*)%', text, re.IGNORECASE)
+
+            if matches:
+                dem_pct = float(matches[0][0])
+                rep_pct = float(matches[0][1])
+                logger.info(f"✓ RCP Average: D {dem_pct}% R {rep_pct}%")
+                self.polling_sources.append({
+                    'source': 'realclearpolitics',
+                    'dem_pct': dem_pct,
+                    'rep_pct': rep_pct,
+                    'margin': dem_pct - rep_pct
+                })
+                return True
+            else:
+                logger.warning("✗ RCP: Could not extract average")
+                return False
+        except Exception as e:
+            logger.warning(f"✗ RCP: {e}")
+            return False
+
+    def fetch_270towin_average(self):
+        """
+        Fetch 270toWin polling average
+        """
+        logger.info("Fetching 270toWin polling average...")
+        try:
+            url = 'https://www.270towin.com/2026-generic-ballot/'
+            response = self.session.get(url, timeout=10)
+            response.raise_for_status()
+
+            soup = BeautifulSoup(response.content, 'html.parser')
+            text = soup.get_text()
+
+            # Look for polling average numbers
+            if '2026' in text and '%' in text:
+                numbers = re.findall(r'(\d+\.?\d*)%', text)
+                if len(numbers) >= 2:
+                    dem_pct = float(numbers[0])
+                    rep_pct = float(numbers[1])
+                    logger.info(f"✓ 270toWin Average: D {dem_pct}% R {rep_pct}%")
+                    self.polling_sources.append({
+                        'source': '270towin',
+                        'dem_pct': dem_pct,
+                        'rep_pct': rep_pct,
+                        'margin': dem_pct - rep_pct
+                    })
+                    return True
+
+            logger.warning("✗ 270toWin: Could not extract average")
+            return False
+        except Exception as e:
+            logger.warning(f"✗ 270toWin: {e}")
+            return False
+
+    def fetch_deciskhq_average(self):
+        """
+        Fetch Decision Desk HQ polling average/forecast
+        """
+        logger.info("Fetching Decision Desk HQ average...")
+        try:
+            url = 'https://votes.decisiondeskhq.com/forecast/2026'
+            response = self.session.get(url, timeout=10)
+            response.raise_for_status()
+
+            soup = BeautifulSoup(response.content, 'html.parser')
+            text = soup.get_text()
+
+            # Look for percentage data in forecast
+            if 'house' in text.lower() and '%' in text:
+                numbers = re.findall(r'(\d+\.?\d*)%', text)
+                if len(numbers) >= 2:
+                    dem_pct = float(numbers[0])
+                    rep_pct = float(numbers[1])
+                    logger.info(f"✓ Decision Desk HQ: D {dem_pct}% R {rep_pct}%")
+                    self.polling_sources.append({
+                        'source': 'deciskhq',
+                        'dem_pct': dem_pct,
+                        'rep_pct': rep_pct,
+                        'margin': dem_pct - rep_pct
+                    })
+                    return True
+
+            logger.warning("✗ Decision Desk HQ: Could not extract data")
+            return False
+        except Exception as e:
+            logger.warning(f"✗ Decision Desk HQ: {e}")
+            return False
+
+    def fetch_us_polling_data(self):
+        """
+        Fetch from US Polling Data aggregator
+        """
+        logger.info("Fetching US Polling Data aggregator...")
+        try:
+            url = 'https://uspollingdata.com/'
+            response = self.session.get(url, timeout=10)
+            response.raise_for_status()
+
+            soup = BeautifulSoup(response.content, 'html.parser')
+            text = soup.get_text()
+
+            # Look for generic ballot aggregate
+            if '2026' in text or 'generic' in text.lower():
+                numbers = re.findall(r'(\d+\.?\d*)%', text)
+                if len(numbers) >= 2:
+                    dem_pct = float(numbers[0])
+                    rep_pct = float(numbers[1])
+                    logger.info(f"✓ US Polling Data: D {dem_pct}% R {rep_pct}%")
+                    self.polling_sources.append({
+                        'source': 'uspollingdata',
+                        'dem_pct': dem_pct,
+                        'rep_pct': rep_pct,
+                        'margin': dem_pct - rep_pct
+                    })
+                    return True
+
+            logger.warning("✗ US Polling Data: Could not extract")
+            return False
+        except Exception as e:
+            logger.warning(f"✗ US Polling Data: {e}")
+            return False
+
+    # ============================================================================
+    # MARKET SOURCES
+    # ============================================================================
+
+    def fetch_predictit_markets(self):
+        """
+        Fetch PredictIt market odds for House/Senate control
+        """
+        logger.info("Fetching PredictIt market odds...")
+        try:
+            url = 'https://www.predictit.org/api/marketdata/all/'
+            response = self.session.get(url, timeout=10)
+            response.raise_for_status()
+            data = response.json()
+
+            if not data or 'markets' not in data:
+                logger.warning("✗ PredictIt: Invalid response")
+                return False
+
+            markets = data.get('markets', [])
+
+            # Look for 2026 House/Senate control markets
+            for market in markets:
+                name = market.get('name', '').lower()
+                if '2026' not in name:
+                    continue
+
+                contracts = market.get('contracts', [])
+                for contract in contracts:
+                    c_name = contract.get('name', '').lower()
+                    if 'democrat' in c_name or 'republican' in c_name:
+                        price = contract.get('lastTradePrice')
+
+                        if price and 'house' in name and 'control' in name:
+                            if 'democrat' in c_name:
+                                logger.info(f"✓ PredictIt House Dem control: {price*100:.1f}%")
+                                self.market_sources.append({
+                                    'source': 'predictit',
+                                    'chamber': 'house',
+                                    'dem_prob': price * 100
+                                })
+
+                        elif price and 'senate' in name and 'control' in name:
+                            if 'democrat' in c_name:
+                                logger.info(f"✓ PredictIt Senate Dem control: {price*100:.1f}%")
+                                self.market_sources.append({
+                                    'source': 'predictit',
+                                    'chamber': 'senate',
+                                    'dem_prob': price * 100
+                                })
+
+            if self.market_sources:
+                logger.info(f"✓ PredictIt: Extracted {len(self.market_sources)} market odds")
+                return True
+            else:
+                logger.warning("✗ PredictIt: No 2026 markets found")
+                return False
+
+        except Exception as e:
+            logger.warning(f"✗ PredictIt: {e}")
+            return False
+
+    # ============================================================================
+    # AGGREGATION
+    # ============================================================================
+
+    def aggregate_polling(self):
+        """Average all polling sources"""
+        if not self.polling_sources:
+            logger.warning("No polling sources to aggregate")
+            return None
+
+        avg_dem = sum(s['dem_pct'] for s in self.polling_sources) / len(self.polling_sources)
+        avg_rep = sum(s['rep_pct'] for s in self.polling_sources) / len(self.polling_sources)
+
+        logger.info(f"✓ Polling aggregate: D {avg_dem:.1f}% R {avg_rep:.1f}% ({len(self.polling_sources)} sources)")
+
+        return {
+            'dem_pct': round(avg_dem, 1),
+            'rep_pct': round(avg_rep, 1),
+            'margin': round(avg_dem - avg_rep, 1),
+            'sources_count': len(self.polling_sources),
+            'sources': [s['source'] for s in self.polling_sources]
+        }
+
+    def aggregate_markets(self):
+        """Average market odds by chamber"""
+        if not self.market_sources:
+            logger.warning("No market sources to aggregate")
+            return None
+
+        house_odds = [s['dem_prob'] for s in self.market_sources if s.get('chamber') == 'house']
+        senate_odds = [s['dem_prob'] for s in self.market_sources if s.get('chamber') == 'senate']
+
+        result = {}
+        if house_odds:
+            result['house_dem_prob'] = round(sum(house_odds) / len(house_odds), 1)
+        if senate_odds:
+            result['senate_dem_prob'] = round(sum(senate_odds) / len(senate_odds), 1)
+
+        logger.info(f"✓ Markets aggregate: {result}")
+        return result
+
+    def build_cache(self, polling_agg, markets_agg):
+        """Build final cache with both signals"""
+        cache = {
             'asOf': datetime.utcnow().isoformat() + 'Z',
-            'house': {
-                'genericBallot': {
-                    'margin': None,
-                    'dem_pct': None,
-                    'rep_pct': None,
-                    'date': None,
-                    'source': None,
-                },
-            },
-            'senate': {
-                'races': {},
-            },
-            'governors': {
-                'races': {}
-            },
-            'sources': {
-                'success': [],
-                'failed': [],
-                'stale': []
-            },
+            'polling': polling_agg or {},
+            'markets': markets_agg or {},
+            'blended': {},
             'metadata': {
                 'fetchedAt': datetime.utcnow().isoformat() + 'Z',
                 'nextUpdate': (datetime.utcnow() + timedelta(hours=6)).isoformat() + 'Z',
+                'pollingSources': len(self.polling_sources),
+                'marketSources': len(self.market_sources),
             }
         }
 
-    def fetch_wikipedia(self):
-        """
-        Fetch polling data from Wikipedia race pages
-        Most reliable source - community maintained, structured tables
-        """
-        logger.info("Fetching Wikipedia polling tables...")
-        try:
-            # Would fetch and parse:
-            # https://en.wikipedia.org/wiki/2026_United_States_Senate_elections
-            # https://en.wikipedia.org/wiki/2026_United_States_House_of_Representatives_elections
-            # Governor pages
+        # Blend if both available
+        if polling_agg and markets_agg:
+            if polling_agg.get('dem_pct') and markets_agg.get('house_dem_prob'):
+                blended_dem = (polling_agg['dem_pct'] * 0.5) + (markets_agg['house_dem_prob'] * 0.5)
+                cache['blended']['house_dem_pct'] = round(blended_dem, 1)
 
-            self.polls['sources']['success'].append('wikipedia')
-            logger.info("✓ Wikipedia fetch attempted")
-            return True
-        except Exception as e:
-            logger.warning(f"✗ Wikipedia fetch failed: {e}")
-            self.polls['sources']['failed'].append('wikipedia')
-            return False
+            if polling_agg.get('dem_pct') and markets_agg.get('senate_dem_prob'):
+                blended_dem = (polling_agg['dem_pct'] * 0.5) + (markets_agg['senate_dem_prob'] * 0.5)
+                cache['blended']['senate_dem_pct'] = round(blended_dem, 1)
 
-    def fetch_nate_silver(self):
-        """
-        Fetch latest polling from Nate Silver's Substack
-        """
-        logger.info("Fetching Nate Silver's Substack...")
-        try:
-            # Parse generic ballot + key race margins from latest post
-            # Example: "Generic ballot: Democrats +2.6"
+        return cache
 
-            self.polls['sources']['success'].append('nate-silver-substack')
-            logger.info("✓ Nate Silver fetch attempted")
-            return True
-        except Exception as e:
-            logger.warning(f"✗ Nate Silver fetch failed: {e}")
-            self.polls['sources']['failed'].append('nate-silver-substack')
-            return False
-
-    def fetch_surveyusa(self):
-        """
-        Fetch latest polls from SurveyUSA (updates almost daily)
-        """
-        logger.info("Fetching SurveyUSA latest releases...")
-        try:
-            self.polls['sources']['success'].append('surveyusa')
-            logger.info("✓ SurveyUSA fetch attempted")
-            return True
-        except Exception as e:
-            logger.warning(f"✗ SurveyUSA fetch failed: {e}")
-            self.polls['sources']['failed'].append('surveyusa')
-            return False
-
-    def fetch_270towin(self):
-        """
-        Fetch from 270toWin polling tracker
-        """
-        logger.info("Fetching 270toWin polling tracker...")
-        try:
-            self.polls['sources']['success'].append('270towin')
-            logger.info("✓ 270toWin fetch attempted")
-            return True
-        except Exception as e:
-            logger.warning(f"✗ 270toWin fetch failed: {e}")
-            self.polls['sources']['failed'].append('270towin')
-            return False
-
-    def fetch_cook_political(self):
-        """
-        Fetch from Cook Political Report
-        """
-        logger.info("Fetching Cook Political Report...")
-        try:
-            self.polls['sources']['success'].append('cook-political')
-            logger.info("✓ Cook Political fetch attempted")
-            return True
-        except Exception as e:
-            logger.warning(f"✗ Cook Political fetch failed: {e}")
-            self.polls['sources']['failed'].append('cook-political')
-            return False
-
-    def fetch_ballotpedia(self):
-        """
-        Fetch from Ballotpedia race pages
-        """
-        logger.info("Fetching Ballotpedia data...")
-        try:
-            self.polls['sources']['success'].append('ballotpedia')
-            logger.info("✓ Ballotpedia fetch attempted")
-            return True
-        except Exception as e:
-            logger.warning(f"✗ Ballotpedia fetch failed: {e}")
-            self.polls['sources']['failed'].append('ballotpedia')
-            return False
-
-    def load_previous_polls(self):
-        """
-        Load previously cached polling data
-        Used as fallback if new fetches fail
-        """
+    def load_cache(self):
+        """Load previous cache as fallback"""
         if os.path.exists(self.cache_file):
             try:
                 with open(self.cache_file, 'r') as f:
                     return json.load(f)
             except Exception as e:
-                logger.warning(f"Could not load previous cache: {e}")
+                logger.warning(f"Could not load cache: {e}")
         return None
 
-    def merge_with_previous(self, previous):
-        """
-        Merge new data with previous cache
-        Keeps old data if new fetch failed
-        """
-        if not previous:
-            return self.polls
-
-        # If we fetched successfully, use new data
-        if self.polls['sources']['success']:
-            logger.info("✓ Using newly fetched polling data")
-            return self.polls
-        else:
-            # All fetches failed, use previous data
-            logger.warning("⚠ All polling fetches failed, using previous cache")
-            previous['sources']['stale'] = list(set(
-                previous['sources'].get('failed', []) + self.polls['sources']['failed']
-            ))
-            previous['metadata']['lastRefresh'] = datetime.utcnow().isoformat() + 'Z'
-            return previous
-
-    def save_cache(self, data):
-        """
-        Save polling data to local cache file
-        """
+    def save_cache(self, cache_data):
+        """Save cache"""
         try:
             os.makedirs('polling', exist_ok=True)
             with open(self.cache_file, 'w') as f:
-                json.dump(data, f, indent=2)
-            logger.info(f"✓ Cache saved to {self.cache_file}")
+                json.dump(cache_data, f, indent=2)
+            logger.info(f"✓ Cache saved")
             return True
         except Exception as e:
             logger.error(f"✗ Failed to save cache: {e}")
             return False
 
     def run(self):
-        """
-        Main fetch loop - try all sources with fallbacks
-        """
-        logger.info("=" * 60)
-        logger.info("POLLING COLLECTOR START")
-        logger.info("=" * 60)
+        """Main collection and aggregation loop"""
+        logger.info("=" * 70)
+        logger.info("AGGREGATED POLLING & MARKETS COLLECTOR")
+        logger.info("=" * 70)
 
-        previous_data = self.load_previous_polls()
+        # Fetch all sources (continue even if some fail)
+        self.fetch_realclearpolls_average()
+        self.fetch_270towin_average()
+        self.fetch_deciskhq_average()
+        self.fetch_us_polling_data()
+        self.fetch_predictit_markets()
 
-        # Fetch from all sources (order by reliability)
-        self.fetch_wikipedia()          # Most reliable
-        self.fetch_nate_silver()        # Daily updates
-        self.fetch_surveyusa()          # Almost daily
-        self.fetch_270towin()           # Comprehensive
-        self.fetch_cook_political()     # Weekly+
-        self.fetch_ballotpedia()        # Detailed
+        # Aggregate what we got
+        polling_agg = self.aggregate_polling()
+        markets_agg = self.aggregate_markets()
 
-        # Merge with previous if needed
-        final_data = self.merge_with_previous(previous_data)
+        # Build cache
+        cache = self.build_cache(polling_agg, markets_agg)
 
-        # Save to cache
-        self.save_cache(final_data)
-
-        logger.info("=" * 60)
-        logger.info(f"Sources successful: {len(final_data['sources']['success'])}")
-        logger.info(f"Sources failed: {len(final_data['sources']['failed'])}")
-        logger.info(f"Sources stale: {len(final_data['sources'].get('stale', []))}")
-        logger.info("=" * 60)
-
-        return final_data
+        # If we have new data, save it
+        if polling_agg or markets_agg:
+            self.save_cache(cache)
+            logger.info("✓ New data collected and cached")
+            return cache
+        else:
+            # Use previous cache as fallback
+            logger.info("⚠ No new data, using cache...")
+            previous = self.load_cache()
+            if previous:
+                logger.info("✓ Using cached data")
+                previous['metadata']['usedCache'] = True
+                return previous
+            else:
+                logger.error("✗ No data available")
+                return cache
 
 def main():
     try:
-        collector = PollingCollector()
+        collector = AggregatedCollector()
         data = collector.run()
-        print(f"\n✓ Polling collection complete")
+
+        print(f"\n✓ Collection complete")
+        print(f"Polling: {data.get('polling')}")
+        print(f"Markets: {data.get('markets')}")
+        print(f"Blended: {data.get('blended')}")
         print(f"Cache: polling/cache.json")
-        print(f"Sources: {len(data['sources']['success'])} successful, {len(data['sources']['failed'])} failed")
         return 0
     except Exception as e:
         logger.error(f"Fatal error: {e}", exc_info=True)
