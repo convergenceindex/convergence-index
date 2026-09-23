@@ -1,0 +1,22 @@
+name: Deploy on Artifact Update
+
+on:
+  schedule:
+    - cron: '10 6,18 * * *'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Fetch artifact
+        run: |
+          curl -s https://claude.ai/artifact/9NAM7hucPmQJ7Nni8CMZmh > index.html
+      - name: Commit and push
+        run: |
+          git config user.name "Deploy Bot"
+          git config user.email "deploy-bot@convergence.local"
+          git add index.html
+          git commit -m "Site update: $(date +'%Y-%m-%d %H:%M UTC')" --allow-empty || true
+          git push
