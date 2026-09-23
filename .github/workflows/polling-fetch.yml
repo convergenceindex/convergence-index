@@ -5,6 +5,9 @@ on:
     - cron: '0 2,8,14,20 * * *'  # 2 AM, 8 AM, 2 PM, 8 PM ET
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   fetch-polling:
     runs-on: ubuntu-latest
@@ -25,17 +28,18 @@ jobs:
       - name: Fetch polling data
         run: python polling/collector.py
 
-      - name: Commit polling cache
+      - name: Configure git
         run: |
           git config user.name "Polling Bot"
           git config user.email "polling-bot@convergence.local"
-          git add polling/cache.json
-          git commit -m "Polling update: $(date +'%Y-%m-%d %H:%M UTC')" --allow-empty || true
 
-      - name: Push to GitHub
-        run: git push
+      - name: Commit and push polling cache
+        run: |
+          if [ -f polling/cache.json ]; then
+            git add polling/cache.json
+            git commit -m "Polling update: $(date +'%Y-%m-%d %H:%M UTC')" --allow-empty || true
+            git push
+          fi
 
       - name: Report status
-        run: |
-          echo "✓ Polling fetch complete"
-          python -c "import json; data=json.load(open('polling/cache.json')); print(f'Sources: {len(data[\"sources\"][\"success\"])} ok, {len(data[\"sources\"][\"failed\"])} failed')"
+        run: echo "✓ Polling fetch complete"
