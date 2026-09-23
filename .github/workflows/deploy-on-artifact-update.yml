@@ -1,0 +1,39 @@
+name: Deploy on Artifact Update
+
+on:
+  schedule:
+    - cron: '10 6,18 * * *'  # 6:10 AM & 6:10 PM ET (after artifact updates)
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Build site from artifact
+        run: python tools/build_site.py
+
+      - name: Commit updated site
+        run: |
+          git config user.name "Deploy Bot"
+          git config user.email "deploy-bot@convergence.local"
+          git add index.html
+          git commit -m "Site update: $(date +'%Y-%m-%d %H:%M UTC')" --allow-empty || true
+
+      - name: Push to GitHub
+        run: git push
+
+      - name: Verify deployment
+        run: |
+          echo "✓ Site deployment triggered"
+          ls -lh index.html
