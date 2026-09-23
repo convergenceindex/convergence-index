@@ -1,0 +1,63 @@
+name: Update market data
+
+# Every 6 hours (times are UTC: 10:20 = 6:20 AM ET, 16:20, 22:20, 04:20), plus a manual "Run workflow" button.
+on:
+  schedule:
+    - cron: '20 4,10,16,22 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: update-markets
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install headless browser for the safety check
+        run: |
+          pip install --quiet playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Fetch Kalshi and Polymarket prices
+        id: update
+        run: |
+          cp index.html /tmp/prev.html
+          UPDATER=$(find . -name '*update_markets.py' -not -path './.git/*' | head -1)
+          set +e
+          python "$UPDATER" index.html
+          code=$?
+          set -e
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          if [ "$code" = "1" ]; then exit 1; fi
+
+      - name: Safety check (must print PASS)
+        if: steps.update.outputs.code == '0'
+        run: |
+          CHECK=$(find . -name '*check_page.py' -not -path './.git/*' | head -1)
+          python "$CHECK" --prev /tmp/prev.html --new index.html
+
+      - name: Publish to the website
+        if: steps.update.outputs.code == '0'
+        run: |
+          git config user.name "Convergence Index bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git commit -m "Market data update $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git push
+          # ask GitHub Pages to rebuild (pushes made by this workflow don't always trigger it)
+          curl -s -X POST \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/pages/builds" || true
