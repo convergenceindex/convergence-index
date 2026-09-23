@@ -1,15 +1,50 @@
+name: Deploy on Artifact Update
+
+on:
+  schedule:
+    - cron: '10 6,18 * * *'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
       - name: Fetch artifact and save as index.html
+        run: python3 << 'SCRIPT'
+import requests
+
+artifact_url = "https://claude.ai/artifact/9NAM7hucPmQJ7Nni8CMZmh"
+response = requests.get(artifact_url)
+
+if response.status_code == 200:
+    with open('index.html', 'w') as f:
+        f.write(response.text)
+    print("✓ Artifact saved to index.html")
+else:
+    raise Exception(f"Failed to fetch artifact: {response.status_code}")
+SCRIPT
+
+      - name: Commit updated site
         run: |
-          python << 'EOF'
-          import requests
-          
-          artifact_url = "https://claude.ai/artifact/9NAM7hucPmQJ7Nni8CMZmh"
-          response = requests.get(artifact_url)
-          
-          if response.status_code == 200:
-              with open('index.html', 'w') as f:
-                  f.write(response.text)
-              print("✓ Artifact saved to index.html")
-          else:
-              raise Exception(f"Failed to fetch artifact: {response.status_code}")
-          EOF
+          git config user.name "Deploy Bot"
+          git config user.email "deploy-bot@convergence.local"
+          git add index.html
+          git commit -m "Site update: $(date +'%Y-%m-%d %H:%M UTC')" --allow-empty || true
+
+      - name: Push to GitHub
+        run: git push
+
+      - name: Verify deployment
+        run: |
+          echo "✓ Site deployment complete"
+          ls -lh index.html
