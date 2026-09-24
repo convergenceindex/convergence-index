@@ -62,7 +62,7 @@ def check_shape(D, errs):
         need(is_num(sm.get("majority")), f"{ch}.seatMarket.majority missing")
     for g in D["house"].get("genericBallot", []):
         need(isinstance(g, dict) and "src" in g and (g.get("m") is None or is_num(g["m"])), f"bad genericBallot entry {g!r}")
-       need(len(D["house"].get("genericBallot", [])) >= 2, "house.genericBallot must have at least 2 sources")
+    need(len(D["house"].get("genericBallot", [])) >= 2, "house.genericBallot must have at least 2 sources")
     for r in D["senate"].get("model", {}).get("races", []):
         need(is_num(r.get("m")), f"senate.model race margin not a number: {r!r}")
     for ch in ["house", "senate", "governors"]:
