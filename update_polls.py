@@ -210,21 +210,96 @@ def span(a, b):
     if a[:7] == b[:7]: return f"{md(a)}–{md(b).split()[-1]}"
     return f"{md(a)}–{md(b)}"
 
+# ------------------------------------------------------------------ generic ballot (Mon/Wed/Fri)
+# The four averages shown on the page. None of them has a free data feed, so each page is read
+# as text and the headline numbers are picked out. Anything that can't be read cleanly, or that
+# fails the sanity checks, keeps its previous value.
+MONTHS = "January February March April May June July August September October November December".split()
+
+def page_text(url):
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (compatible; convergence-index-updater/1.0)", "Accept": "text/html"})
+    with urllib.request.urlopen(req, timeout=40) as r:
+        h = r.read().decode("utf-8", "replace")
+    import html as _html
+    h = re.sub(r"(?is)<(script|style)[^>]*>.*?</\1>", " ", h)
+    t = _html.unescape(re.sub(r"(?s)<[^>]+>", " ", h))
+    return re.sub(r"\s+", " ", t)
+
+def short_date(s):
+    """'September 23, 2026' / 'Sep 23, 2026' / '9/23' -> 'Sep 23'."""
+    m = re.match(r"([A-Z][a-z]+)\.? (\d{1,2})", s or "")
+    if m:
+        mon = next((x for x in MONTHS if x.startswith(m.group(1)[:3])), None)
+        if mon: return f"{mon[:3]} {int(m.group(2))}"
+    m = re.match(r"(\d{1,2})/(\d{1,2})", s or "")
+    if m: return f"{MONTHS[int(m.group(1)) - 1][:3]} {int(m.group(2))}"
+    return None
+
+def parse_gb(src, t):
+    """Return (d, r, m, date) or raise. d/r may be None when the source only publishes a margin."""
+    sgn = lambda party: 1 if party.lower().startswith("d") else -1
+    if src == "RealClearPolling":
+        i = t.find("RCP Average"); seg = t[i:i + 300] if i >= 0 else ""
+        mm = re.search(r"(\d{1,2}/\d{1,2})\s*-\s*(\d{1,2}/\d{1,2}).{0,40}?(\d{2}\.\d)\s+(\d{2}\.\d)\s+(Democrats?|Republicans?)\s*\+\s*(\d+(?:\.\d+)?)", seg)
+        if not mm: raise ValueError("RCP Average row not found")
+        d, r = float(mm.group(3)), float(mm.group(4))
+        return d, r, round(d - r, 1), short_date(mm.group(2))
+    if src == "Silver Bulletin":
+        up = re.search(r"Updated\s+([A-Z][a-z]+\.? \d{1,2}, 20\d\d)", t)
+        seg = t[up.start():up.start() + 2000] if up else t
+        mm = re.search(r"\b([DR])\s*\+\s*(\d+(?:\.\d)?)\b", seg)
+        if not mm: raise ValueError("margin not found")
+        return None, None, sgn(mm.group(1)) * float(mm.group(2)), short_date(up.group(1)) if up else None
+    if src == "Decision Desk HQ":
+        mm = re.search(r"Democrat\w*\s*([\d.]+)%.{0,60}?Republican\w*\s*([\d.]+)%", t)
+        if not mm: raise ValueError("Democrat/Republican percentages not found")
+        dt = re.search(r"(?:as of|updated)?\s*([A-Z][a-z]{2}\.? \d{1,2}),? \d{1,2}:\d\d", t)
+        d, r = float(mm.group(1)), float(mm.group(2))
+        return round(d, 1), round(r, 1), round(d - r, 1), short_date(dt.group(1)) if dt else None
+    if src == "FiftyPlusOne":
+        md_ = re.search(r"Democrats\s*([\d.]+)%", t); mr = re.search(r"Republicans\s*([\d.]+)%", t)
+        if not (md_ and mr): raise ValueError("Democrats/Republicans percentages not found")
+        dt = re.search(r"([A-Z][a-z]{2} \d{1,2}, 20\d\d)\s*Democrats", t)
+        d, r = float(md_.group(1)), float(mr.group(1))
+        return d, r, round(d - r, 1), short_date(dt.group(1)) if dt else None
+    raise ValueError("unknown source")
+
+def update_generic(D):
+    log("Generic ballot")
+    today = TODAY.strftime("%b ") + str(TODAY.day)
+    n = 0
+    for g in D["house"]["genericBallot"]:
+        try:
+            d, r, m, when = parse_gb(g["src"], page_text(g["url"]))
+            if not (-5 <= m <= 20): raise ValueError(f"margin {m} outside the plausible range")
+            if d is not None and not (30 <= d <= 65 and 30 <= r <= 65): raise ValueError(f"shares {d}/{r} implausible")
+            if g.get("m") is not None and abs(m - g["m"]) > 3: raise ValueError(f"moved {g['m']} -> {m} (> 3 pts) — needs review")
+            new = {"m": m, "asOf": when or today}
+            if d is not None: new.update(d=d, r=r)
+            if any(g.get(x) != v for x, v in new.items()): g.update(new); n += 1
+            log(f"  {g['src']}: {fmt_m(m)} ({new['asOf']})")
+        except Exception as e:
+            log(f"  ! {g['src']}: kept {fmt_m(g['m']) if g.get('m') is not None else '—'} ({g.get('asOf')}) — {e}")
+    return n
+
 # ------------------------------------------------------------------ main
-def main(path, after_markets, dry):
+def main(path, after_markets, dry, generic=False):
     src = open(path, encoding="utf-8").read()
     k = src.index("const DATA = "); st = src.index("{", k)
     D, end = json.JSONDecoder().raw_decode(src, st)
     orig = json.loads(json.dumps(D))
 
+    gb_changes = update_generic(D) if generic else 0
+
     log("Fetching polls from VoteHub")
+    EMPTY = {t: [] for t in ("us-senator", "governor", "us-representative")}
     try:
         polls = {t: fetch_votehub(t) for t in ("us-senator", "governor", "us-representative")}
+        for t, v in polls.items(): log(f"  {t}: {len(v)} polls in the last 75 days")
+        if sum(len(v) for v in polls.values()) < 20:
+            log("Suspiciously few polls returned — race polling left unchanged."); polls = EMPTY
     except Exception as e:
-        log(f"VoteHub unavailable — polling left unchanged: {e}"); return 3
-    for t, v in polls.items(): log(f"  {t}: {len(v)} polls in the last 75 days")
-    if sum(len(v) for v in polls.values()) < 20:
-        log("Suspiciously few polls returned — polling left unchanged."); return 3
+        log(f"VoteHub unavailable — race polling left unchanged: {e}"); polls = EMPTY
     cook = fetch_cook()
     log("  Cook ratings: " + ("not configured (COOK_EMAIL / COOK_PASSWORD secrets not set)" if cook is None else f"{len(cook)} loaded"))
 
@@ -304,8 +379,9 @@ def main(path, after_markets, dry):
     for lab, o, n, b in table:
         log(f"{lab[:28]:28} {fmt_m(o) if o is not None else '—':>7} {fmt_m(n) if n is not None else '—':>7}  {b}")
     for h in held: log("  ! " + h)
-    log(f"\n{changes} polling values changed.")
+    log(f"\n{changes} race polling values changed" + (f"; {gb_changes} generic-ballot averages changed." if generic else "."))
 
+    changes += gb_changes
     if dry:
         log("DRY RUN — nothing was written. (Scheduled runs are live unless the repository variable POLLS_LIVE is set to 'no'.)"); return 3
     if changes == 0: return 3
@@ -324,6 +400,7 @@ def main(path, after_markets, dry):
     S = D["senate"]
     if after_markets and D["history"] and D["history"][-1].get("t") == D["asOf"]:
         D["history"][-1]["senate"]["m"] = [r["m"] for r in S["model"]["races"]]   # the entry markets appended this run
+        D["history"][-1]["house"]["gb"] = [g.get("m") for g in D["house"]["genericBallot"]]
     else:
         prev = {"t": orig["asOf"], "races": {}}
         for ch, key in (("house", "house"), ("senate", "senate"), ("governors", "gov")):
@@ -343,6 +420,6 @@ if __name__ == "__main__":
     args = sys.argv[1:]
     path = next((a for a in args if not a.startswith("--")), "index.html")
     try:
-        sys.exit(main(path, "--after-markets" in args, "--dry-run" in args))
+        sys.exit(main(path, "--after-markets" in args, "--dry-run" in args, "--generic" in args))
     except Exception as e:
         import traceback; traceback.print_exc(); print(f"ERROR: {e}"); sys.exit(1)
