@@ -245,11 +245,11 @@ def parse_gb(src, t):
         d, r = float(mm.group(3)), float(mm.group(4))
         return d, r, round(d - r, 1), short_date(mm.group(2))
     if src == "Silver Bulletin":
-        up = re.search(r"Updated\s+([A-Z][a-z]+\.? \d{1,2}, 20\d\d)", t)
-        seg = t[up.start():up.start() + 2000] if up else t
-        mm = re.search(r"\b([DR])\s*\+\s*(\d+(?:\.\d)?)\b", seg)
-        if not mm: raise ValueError("margin not found")
-        return None, None, sgn(mm.group(1)) * float(mm.group(2)), short_date(up.group(1)) if up else None
+        # the headline sentence reads like "As of today, they're up to D +8.1"; other margins on the page are history
+        mm = re.search(r"(?:up to|now at|stands at|currently at)\s+([DR])\s*\+\s*(\d+(?:\.\d)?)\b", t, re.I)
+        if not mm: raise ValueError("headline margin ('up to D +x') not found")
+        up = re.search(r"Updated\s+([A-Z][a-z]+\.? \d{1,2},? 20\d\d)", t, re.I)
+        return None, None, sgn(mm.group(1)) * float(mm.group(2)), short_date(up.group(1).title()) if up else None
     if src == "Decision Desk HQ":
         mm = re.search(r"Democrat\w*\s*([\d.]+)%.{0,60}?Republican\w*\s*([\d.]+)%", t)
         if not mm: raise ValueError("Democrat/Republican percentages not found")
