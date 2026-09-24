@@ -1,10 +1,17 @@
 name: Update market data
 
 # Every 6 hours (times are UTC: 10:20 = 6:20 AM ET, 16:20, 22:20, 04:20), plus a manual "Run workflow" button.
+# Each run refreshes Kalshi/Polymarket prices (update_markets.py) and race polling from VoteHub
+# (update_polls.py), then publishes only if check_page.py prints PASS.
 on:
   schedule:
     - cron: '20 4,10,16,22 * * *'
   workflow_dispatch:
+    inputs:
+      polls_dry_run:
+        description: 'Polling: preview only (print the new polling numbers without publishing them)'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -50,7 +57,7 @@ jobs:
               git config user.email "actions@users.noreply.github.com"
               git add index.html
               git commit -m "Restore last good page (from ${sha:0:7}) — the live page was broken"
-              git push
+              git pull --rebase origin main && git push
               echo "restored=$sha" >> "$GITHUB_OUTPUT"
               echo "::warning::Restored index.html from ${sha:0:7}"
               exit 0
@@ -71,21 +78,48 @@ jobs:
           echo "code=$code" >> "$GITHUB_OUTPUT"
           if [ "$code" = "1" ]; then exit 1; fi
 
+      - name: Fetch polls (VoteHub) and Cook ratings
+        id: polls
+        env:
+          COOK_EMAIL: ${{ secrets.COOK_EMAIL }}
+          COOK_PASSWORD: ${{ secrets.COOK_PASSWORD }}
+        run: |
+          POLLS=$(find . -name '*update_polls.py' -not -path './.git/*' | head -1)
+          if [ -z "$POLLS" ]; then echo "update_polls.py not found — skipping polls"; echo "code=3" >> "$GITHUB_OUTPUT"; exit 0; fi
+          ARGS=""
+          if [ "${{ steps.update.outputs.code }}" = "0" ]; then ARGS="$ARGS --after-markets"; fi
+          if [ "${{ inputs.polls_dry_run }}" = "true" ] || [ "${{ vars.POLLS_LIVE }}" = "no" ]; then ARGS="$ARGS --dry-run"; fi
+          cp index.html /tmp/before-polls.html
+          set +e
+          python "$POLLS" index.html $ARGS
+          code=$?
+          set -e
+          if [ "$code" = "1" ]; then
+            echo "::warning::Polling update failed — publishing market prices only"
+            cp /tmp/before-polls.html index.html
+            code=3
+          fi
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+
       - name: Safety check (must print PASS)
-        if: steps.update.outputs.code == '0'
+        if: steps.update.outputs.code == '0' || steps.polls.outputs.code == '0'
         run: python "${{ steps.guard.outputs.check }}" --prev /tmp/prev.html --new index.html
 
       - name: Publish to the website
-        if: steps.update.outputs.code == '0'
+        if: steps.update.outputs.code == '0' || steps.polls.outputs.code == '0'
         run: |
           git config user.name "Convergence Index bot"
           git config user.email "actions@users.noreply.github.com"
           git add index.html
-          git commit -m "Market data update $(date -u +'%Y-%m-%d %H:%M UTC')"
-          git push
+          WHAT="Market data"
+          if [ "${{ steps.polls.outputs.code }}" = "0" ]; then WHAT="$WHAT + polls"; fi
+          if [ "${{ steps.update.outputs.code }}" != "0" ]; then WHAT="Polls"; fi
+          git commit -m "$WHAT update $(date -u +'%Y-%m-%d %H:%M UTC')"
+          # if someone uploaded a file while this ran, fold our commit on top of theirs instead of failing
+          git pull --rebase origin main && git push
 
       - name: Ask GitHub Pages to rebuild
-        if: steps.update.outputs.code == '0' || steps.guard.outputs.restored != ''
+        if: steps.update.outputs.code == '0' || steps.polls.outputs.code == '0' || steps.guard.outputs.restored != ''
         run: |
           # pushes made by this workflow don't always trigger a Pages build on their own
           curl -s -X POST \
