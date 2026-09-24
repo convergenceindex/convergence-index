@@ -77,8 +77,8 @@ jobs:
           cp index.html /tmp/prev.html
           UPDATER=$(find . -name '*update_markets.py' -not -path './.git/*' | head -1)
           set +e
-          python "$UPDATER" index.html
-          code=$?
+          python "$UPDATER" index.html 2>&1 | tee /tmp/markets-log.txt
+          code=${PIPESTATUS[0]}
           set -e
           echo "code=$code" >> "$GITHUB_OUTPUT"
           if [ "$code" = "1" ]; then exit 1; fi
@@ -99,8 +99,8 @@ jobs:
           if [ "${{ inputs.generic_ballot }}" = "true" ] || { [ "${{ github.event_name }}" = "schedule" ] && [[ "$DOW" =~ ^[135]$ ]] && [ "$HR" -ge 11 ] && [ "$HR" -le 13 ]; }; then ARGS="$ARGS --generic"; fi
           cp index.html /tmp/before-polls.html
           set +e
-          python "$POLLS" index.html $ARGS
-          code=$?
+          python "$POLLS" index.html $ARGS 2>&1 | tee /tmp/polls-log.txt
+          code=${PIPESTATUS[0]}
           set -e
           if [ "$code" = "1" ]; then
             echo "::warning::Polling update failed — publishing market prices only"
@@ -118,7 +118,9 @@ jobs:
         run: |
           git config user.name "Convergence Index bot"
           git config user.email "actions@users.noreply.github.com"
-          git add index.html
+          # keep this run's log in the repo (update-log.txt) so every update can be reviewed later
+          { echo "Run $(date -u +'%Y-%m-%d %H:%M UTC') (${{ github.event_name }})"; echo; echo "== Markets =="; cat /tmp/markets-log.txt 2>/dev/null; echo; echo "== Polls =="; cat /tmp/polls-log.txt 2>/dev/null; } > update-log.txt
+          git add index.html update-log.txt
           WHAT="Market data"
           if [ "${{ steps.polls.outputs.code }}" = "0" ]; then WHAT="$WHAT + polls"; fi
           if [ "${{ steps.update.outputs.code }}" != "0" ]; then WHAT="Polls"; fi
