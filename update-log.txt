@@ -1,0 +1,74 @@
+Run 2026-09-24 20:47 UTC (workflow_dispatch)
+
+== Markets ==
+Chamber control
+  house Kalshi control: 91.6¢ / 91.7¢
+  house Polymarket control: 92.0¢ / 93.0¢
+  senate Kalshi control: 60.0¢ / 61.0¢
+  senate Polymarket control: 62.0¢ / 63.0¢
+Seat brackets
+  house seat brackets: 12 updated (KXDHOUSESEATS-27)
+  senate seat brackets: 10 updated (KXDSENATESEATS-27)
+Race markets
+  ! governors Kansas: kept previous prices (expected one '-26' event, found ['GOVPARTYKS-27'])
+  80 of 81 race markets updated
+Updated index.html: asOf 2026-09-24T20:47:09Z
+
+== Polls ==
+Generic ballot
+  ! RealClearPolling: kept D+8.5 (Sep 24) — HTTP Error 403: Forbidden
+  Silver Bulletin: D+8.1 (Sep 24)
+  ! Decision Desk HQ: kept D+8 (Sep 23) — Democrat/Republican percentages not found
+  FiftyPlusOne: D+7.6 (Sep 24)
+Fetching polls from VoteHub
+  us-senator: 118 polls in the last 75 days
+  governor: 106 polls in the last 75 days
+  us-representative: 42 polls in the last 75 days
+  Cook ratings: not configured (COOK_EMAIL / COOK_PASSWORD secrets not set)
+Senate
+Governors
+House
+
+Race                             old     new  basis
+Texas                          D+3.1   D+3.1  kept — current number uses newer polls (to 2026-09-23) than VoteHub has (to 2026-09-19)
+Ohio (special)                 D+4.2   D+4.2  Our average of 2 polls, Sep 9–16: Trafalgar D+3, InsiderAdvantage D+5.4
+Iowa                           D+2.4   D+2.4  Our average of 4 polls, Sep 1–20: Marist D+8, YouGov D+4, co/efficient R+4, Emerson R+5
+Alaska                         D+3.9   D+3.9  kept — current number uses newer polls (to 2026-09-22) than VoteHub has (to 2026-09-17)
+Michigan                       D+2.9   D+2.9  Our average of 8 polls, Aug 28–Sep 23: co/efficient tie, InsiderAdvantage D+2, NYT/Siena D+5, Emerson D+2.5 …
+Maine                          D+0.9   D+0.9  Our average of 4 polls, Sep 8–22: NYT/Siena R+3, YouGov D+4, Quantus R+0.7, UMass Lowell/YouGov D+5
+New Hampshire                  D+6.6   D+6.6  Our average of 2 polls, Sep 17–22: InsiderAdvantage D+8, NYT/Siena D+5
+Nebraska                       D+0.5       —  no recent polls — kept
+Georgia (model)                    —   D+7.5  1 polls: InsiderAdvantage D+7.5
+Minnesota (model)                  —   D+1.8  2 polls: SurveyUSA tie, Quantus D+3.8
+North Carolina (model)             —   D+9.1  5 polls: InsiderAdvantage D+5.9, High Point D+8, Harper D+15, East Carolina D+8 …
+Georgia                        D+0.1   D+0.1  kept — current number uses newer polls (to 2026-09-23) than VoteHub has (to 2026-08-17)
+Nevada                         D+0.5       —  no recent polls — kept
+Ohio                           D+2.2   D+2.2  kept — current number uses newer polls (to 2026-09-22) than VoteHub has (to 2026-08-13)
+Kansas                           R+7     R+7  Our average of 1 poll, Sep 16: Emerson R+7
+Wisconsin                      D+4.1   D+4.1  kept — current number uses newer polls (to 2026-09-17) than VoteHub has (to 2026-08-20)
+Iowa                           D+8.1   D+8.1  Our average of 5 polls, Aug 29–Sep 20: Marist D+12, YouGov D+10, co/efficient D+4, Emerson D+3 …
+Alaska                          D+10    D+10  kept — current number uses newer polls (to 2026-09-17) than VoteHub has (to 2026-09-11)
+AZ-01                          R+5.5       —  no recent polls — kept
+AZ-06                            D+2       —  no recent polls — kept
+CA-22                            D+4       —  no recent polls — kept
+CO-08                            R+1       —  no recent polls — kept
+IA-01                            D+5       —  no recent polls — kept
+IA-03                              —       —  no recent polls — kept
+MI-03                              —       —  no recent polls — kept
+MI-07                            D+2     D+2  Our average of 1 poll, Aug 13: Global Strategy D+2
+MI-10                            tie     tie  Our average of 1 poll, Aug 13: Global Strategy tie
+NJ-07                              —       —  no recent polls — kept
+NY-17                          D+0.5       —  no recent polls — kept
+OH-09                              —       —  no recent polls — kept
+OH-13                              —       —  no recent polls — kept
+PA-07                            D+5     D+5  Our average of 1 poll, Sep 20: Franklin & Marshall D+5
+PA-08                            D+2       —  no recent polls — kept
+PA-10                            D+3     D+3  Our average of 1 poll, Sep 20: Franklin & Marshall D+3
+TX-34                            tie     tie  kept — current number uses newer polls (to 2026-08-22) than VoteHub has (to 2026-07-30)
+VA-02                            tie       —  no recent polls — kept
+VA-07                              —       —  no recent polls — kept
+WA-03                            R+1       —  no recent polls — kept
+WI-03                            D+4       —  no recent polls — kept
+
+0 race polling values changed; 1 generic-ballot averages changed.
+Updated index.html
