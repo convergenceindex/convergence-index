@@ -1,6 +1,7 @@
 name: Update market data
 
 # Every 6 hours (times are UTC: 10:20 = 6:20 AM ET, 16:20, 22:20, 04:20), plus a manual "Run workflow" button.
+# The generic-ballot averages are refreshed on the midday run (16:20 UTC = 12:20 PM ET) on Mondays, Wednesdays and Fridays.
 # Each run refreshes Kalshi/Polymarket prices (update_markets.py) and race polling from VoteHub
 # (update_polls.py), then publishes only if check_page.py prints PASS.
 on:
@@ -10,6 +11,10 @@ on:
     inputs:
       polls_dry_run:
         description: 'Polling: preview only (print the new polling numbers without publishing them)'
+        type: boolean
+        default: false
+      generic_ballot:
+        description: 'Also refresh the generic-ballot averages now (normally Mon/Wed/Fri midday)'
         type: boolean
         default: false
 
@@ -78,7 +83,7 @@ jobs:
           echo "code=$code" >> "$GITHUB_OUTPUT"
           if [ "$code" = "1" ]; then exit 1; fi
 
-      - name: Fetch polls (VoteHub) and Cook ratings
+      - name: Fetch polls (VoteHub), Cook ratings and (Mon/Wed/Fri) the generic ballot
         id: polls
         env:
           COOK_EMAIL: ${{ secrets.COOK_EMAIL }}
@@ -89,6 +94,9 @@ jobs:
           ARGS=""
           if [ "${{ steps.update.outputs.code }}" = "0" ]; then ARGS="$ARGS --after-markets"; fi
           if [ "${{ inputs.polls_dry_run }}" = "true" ] || [ "${{ vars.POLLS_LIVE }}" = "no" ]; then ARGS="$ARGS --dry-run"; fi
+          # generic ballot: Mon/Wed/Fri on the midday run (11 AM–1 PM ET covers GitHub's start delays and daylight-saving time), or on request
+          DOW=$(TZ=America/New_York date +%u); HR=$(TZ=America/New_York date +%-H)
+          if [ "${{ inputs.generic_ballot }}" = "true" ] || { [ "${{ github.event_name }}" = "schedule" ] && [[ "$DOW" =~ ^[135]$ ]] && [ "$HR" -ge 11 ] && [ "$HR" -le 13 ]; }; then ARGS="$ARGS --generic"; fi
           cp index.html /tmp/before-polls.html
           set +e
           python "$POLLS" index.html $ARGS
