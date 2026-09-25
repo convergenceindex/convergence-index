@@ -117,6 +117,7 @@ const partyWord = p => ({ D: 'Democratic', R: 'Republican', I: 'Independent' }[p
 const pColor = p => ({ D: DEM, R: REP, I: GOLD }[p]);
 const last = n => String(n || '').split(',')[0].trim().split(/\s+/).slice(-1)[0];
 const raceLabel = x => x.chamber === 'house' ? x.id : x.chamber === 'senate' ? `${x.id} Senate` : `${x.id} Governor`;
+const raceLabelShort = x => x.chamber === 'house' ? x.id : x.chamber === 'senate' ? `${x.id} Sen` : `${x.id} Gov`;
 const chamberFavor = dem => dem >= 50 ? { p: 'D', v: dem } : { p: 'R', v: 100 - dem };
 const signed = d => (d > 0 ? '+' : d < 0 ? '−' : '±') + Math.abs(d).toFixed(0);
 function lead(r) { const o = r.dem != null ? { p: 'D', v: r.dem, name: r.d } : { p: 'I', v: r.ind, name: r.i }; return o.v >= r.rep ? o : { p: 'R', v: r.rep, name: r.r }; }
@@ -211,8 +212,20 @@ function compare(T, Y) {
     movers.push({ key: k, t, y, delta: tv - yv, flip: lead(t).p !== lead(y).p }); }
   movers.sort((a, b) => (b.flip - a.flip) || (Math.abs(b.delta) - Math.abs(a.delta)));
   const hY = pct(Y.house), hT = pct(T.house), sY = pct(Y.senate), sT = pct(T.senate);
+  // Balance: how many races moved each way, so a lopsided period is stated, not implied.
+  const balance = { d: movers.filter(m => m.delta >= 0.5).length, r: movers.filter(m => m.delta <= -0.5).length,
+    flat: movers.filter(m => Math.abs(m.delta) < 0.5).length, total: movers.length };
+  // Counterweight: if the top movers all run one way, reserve the last slot for the
+  // largest qualifying move the other way. Ranking is untouched; only the cutoff yields.
+  const eligible = movers.filter(m => Math.abs(m.delta) >= 2);
+  const baseTop = eligible.slice(0, 5);
+  const dir = x => (x > 0 ? 1 : -1);
+  let counter = null;
+  if (baseTop.length && baseTop.every(m => dir(m.delta) === dir(baseTop[0].delta)))
+    counter = eligible.find(m => dir(m.delta) !== dir(baseTop[0].delta)) || null;
+  const top = counter ? baseTop.slice(0, 4).concat([counter]) : baseTop;
   return { per: periodLabel(Y.asOf, T.asOf), hY, hT, sY, sT, gY: govCount(Y.gov), gT: govCount(T.gov), movers,
-    flips: movers.filter(m => m.flip), top: movers.filter(m => Math.abs(m.delta) >= 2).slice(0, 5),
+    flips: movers.filter(m => m.flip), top, counter, balance,
     maxChamber: Math.max(Math.abs(hT - hY), Math.abs(sT - sY)), maxRace: movers.reduce((a, m) => Math.max(a, Math.abs(m.delta)), 0) };
 }
 function newsLevel(c) {
@@ -223,6 +236,47 @@ function newsLevel(c) {
 }
 
 // ---------------------------------------------------------------- building blocks
+function balanceLine(c) {
+  const b = c && c.balance; if (!b || !b.total) return '';
+  const parts = [];
+  if (b.d) parts.push(`${b.d} toward Democrats`);
+  if (b.r) parts.push(`${b.r} toward Republicans`);
+  if (!parts.length) return '';
+  return `Of ${b.total} races tracked: ${parts.join(', ')}${b.flat ? `, ${b.flat} unchanged` : ''}.`;
+}
+// Same line, with each party's count in that party's colour.
+function balanceHTML(c) {
+  const b = c && c.balance; if (!b || !b.total) return '';
+  const parts = [];
+  if (b.d) parts.push(`<span style="color:${pColor('D')}">${b.d} toward Democrats</span>`);
+  if (b.r) parts.push(`<span style="color:${pColor('R')}">${b.r} toward Republicans</span>`);
+  if (!parts.length) return '';
+  return `Of ${b.total} races tracked: ${parts.join(', ')}${b.flat ? `, ${b.flat} unchanged` : ''}.`;
+}
+// Who is ahead right now — shown every day, whichever way the period broke.
+function standing(T) {
+  const rows = Object.values(T.rows).filter(r => sideV(r) != null);
+  const rLed = rows.filter(r => lead(r).p === 'R').sort((a, b) => lead(b).v - lead(a).v);
+  const dLed = rows.filter(r => lead(r).p !== 'R');
+  return { rLed, dLed, total: rows.length };
+}
+function standingLine(T) {
+  const st = standing(T); if (!st.total) return '';
+  if (!st.rLed.length) return `Democrats are favored in all ${st.total} tracked races.`;
+  if (!st.dLed.length) return `Republicans are favored in all ${st.total} tracked races.`;
+  const shown = st.rLed.slice(0, 4).map(raceLabelShort).join(', ');
+  const more = st.rLed.length > 4 ? ` +${st.rLed.length - 4} more` : '';
+  return `Favored now: Democrats in ${st.dLed.length} of ${st.total} tracked races, Republicans in ${st.rLed.length} (${shown}${more}).`;
+}
+function standingHTML(T, compact = false) {
+  const st = standing(T); if (!st.total) return '';
+  if (!st.rLed.length) return `<span style="color:${pColor('D')}">Democrats favored in all ${st.total} tracked races.</span>`;
+  if (!st.dLed.length) return `<span style="color:${pColor('R')}">Republicans favored in all ${st.total} tracked races.</span>`;
+  const shown = st.rLed.slice(0, 4).map(raceLabelShort).join(', ');
+  const more = st.rLed.length > 4 ? ` +${st.rLed.length - 4} more` : '';
+  const tail = compact ? '' : ` — ${esc(shown + more)}`;
+  return `Favored now: <span style="color:${pColor('D')}">Democrats in ${st.dLed.length} of ${st.total}</span>, <span style="color:${pColor('R')}">Republicans in ${st.rLed.length}${tail}</span>.`;
+}
 function chamberBlock(label, y, t, big = false) {
   const Y = chamberFavor(y), T = chamberFavor(t), d = t - y;
   const who = Y.p !== T.p ? `now ${partyWord(T.p)}` : `${partyWord(T.p)} favored`;
@@ -258,9 +312,11 @@ function themeChanges(T, c, dateT, kind = 'daily') {
   const star = c.flips[0] || c.movers.slice().sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta))[0];
   const posts = [
     `<div class="card sq">${header(`${label} · 1 / 3`, dateT)}
-      <div class="head" style="font-size:72px;margin-top:40px">${week ? 'The week in the midterm odds.' : `${per.short}, the markets moved.`}</div>
-      <div style="margin-top:34px">${chamberBlock('U.S. House', c.hY, c.hT)}${chamberBlock('U.S. Senate', c.sY, c.sT)}</div>
-      <div class="sub" style="font-size:26px;margin-top:6px">${esc(govLine)}</div>${footer('swipe for the biggest movers →')}</div>`,
+      <div class="head" style="font-size:72px;margin-top:24px">${week ? 'The week in the midterm odds.' : `${per.short}, the markets moved.`}</div>
+      <div style="margin-top:24px">${chamberBlock('U.S. House', c.hY, c.hT)}${chamberBlock('U.S. Senate', c.sY, c.sT)}</div>
+      <div class="sub" style="font-size:26px;margin-top:6px">${esc(govLine)}</div>
+      ${balanceHTML(c) ? `<div class="mono" style="font-size:21px;line-height:1.45;margin-top:14px;color:var(--ink2)">${balanceHTML(c)}</div>` : ''}
+      ${standingHTML(T, true) ? `<div class="mono" style="font-size:21px;line-height:1.45;margin-top:6px;color:var(--ink2)">${standingHTML(T, true)}</div>` : ''}${footer('swipe for the biggest movers →')}</div>`,
     `<div class="card sq">${header(`Biggest movers · 2 / 3`, dateT)}
       <div class="sub" style="margin-top:30px;font-size:28px">Chance each race's favorite wins, from prediction markets — ${per.long}.</div>
       <div style="margin-top:18px">${c.top.map(moverRow).join('') || '<div class="sub">No race moved 2 points or more.</div>'}</div>${footer('swipe →')}</div>`];
@@ -275,21 +331,28 @@ function themeChanges(T, c, dateT, kind = 'daily') {
       ${raceBar(star.t)}<div class="sub" style="font-size:28px;margin-top:34px">${oddsNote(t.v)}</div>${footer('prediction markets × polls')}</div>`);
   } else posts[1] = posts[1].replace('2 / 3', '2 / 2'), posts[0] = posts[0].replace('1 / 3', '1 / 2');
   const story = `<div class="card st">${header(per.short, dateT)}
-    <div class="head" style="margin-top:70px">${week ? 'This week in the odds.' : 'The odds moved.'}</div>
-    <div style="margin-top:40px">${chamberBlock('U.S. House', c.hY, c.hT)}${chamberBlock('U.S. Senate', c.sY, c.sT, true)}</div>
-    <div class="mono" style="margin-top:54px;color:var(--ink2)">Biggest movers</div>
-    <div>${c.top.slice(0, 4).map(moverRow).join('') || '<div class="sub">No race moved 2 points or more.</div>'}</div>${footer('link in bio')}</div>`;
+    <div class="head" style="margin-top:40px">${week ? 'This week in the odds.' : 'The odds moved.'}</div>
+    <div style="margin-top:26px">${chamberBlock('U.S. House', c.hY, c.hT)}${chamberBlock('U.S. Senate', c.sY, c.sT, true)}</div>
+    ${balanceHTML(c) ? `<div class="mono" style="font-size:23px;line-height:1.45;margin-top:20px;color:var(--ink2)">${balanceHTML(c)}</div>` : ''}
+    ${standingHTML(T) ? `<div class="mono" style="font-size:23px;line-height:1.45;margin-top:8px;color:var(--ink2)">${standingHTML(T)}</div>` : ''}
+    <div class="mono" style="margin-top:28px;color:var(--ink2)">Biggest movers</div>
+    <div>${(c.counter ? c.top.slice(0, 3).concat([c.counter]) : c.top.slice(0, 4)).map(moverRow).join('') || '<div class="sub">No race moved 2 points or more.</div>'}</div>${footer('link in bio')}</div>`;
   const mvC = (y, t) => { const Y = chamberFavor(y), T = chamberFavor(t); return Y.p === T.p ? `${Math.round(Y.v)}% → ${Math.round(T.v)}% ${partyWord(T.p)}` : `${partyWord(Y.p)} ${Math.round(Y.v)}% → ${partyWord(T.p)} ${Math.round(T.v)}%`; };
   const mvTxt = m => { const t = lead(m.t), y = lead(m.y); return `${raceLabel(m.t)}: ${last(t.name)} (${t.p}) ${Math.round(y.p === t.p ? y.v : 100 - y.v)}% → ${Math.round(t.v)}%`; };
   const flipTxt = m => { const t = lead(m.t); return `markets now favor ${t.name} (${t.p}) in the ${raceLabel(m.t)} race, ${Math.round(t.v)}%`; };
   const others = c.top.filter(m => !m.flip);
+  const otherList = (c.counter && !c.counter.flip && others.slice(0, 3).indexOf(c.counter) === -1)
+    ? others.filter(m => m !== c.counter).slice(0, 2).concat([c.counter])
+    : others.slice(0, 3);
+  const bal = balanceLine(c);
+  const stand = standingLine(T);
   const cap1 = x => x[0].toUpperCase() + x.slice(1);
   return { title: week ? 'Week in review' : `What changed ${per.long}`, post: posts, story,
     caption: {
-      linkedin: `${week ? 'The week in the 2026 midterm odds.' : `The midterm odds moved ${per.long}.`}\n\nSenate control: ${mvC(c.sY, c.sT)}. House control: ${mvC(c.hY, c.hT)}.\n${c.flips.length ? `The headline: ${c.flips.map(flipTxt).join('; ')}.\n` : ''}${others.length ? `Other big market moves: ${others.slice(0, 3).map(mvTxt).join('; ')}.\n` : ''}\nThe Convergence Index blends prediction-market prices with the major polling averages, with every figure linked to its source.\nconvergence-index.com`,
+      linkedin: `${week ? 'The week in the 2026 midterm odds.' : `The midterm odds moved ${per.long}.`}\n\nSenate control: ${mvC(c.sY, c.sT)}. House control: ${mvC(c.hY, c.hT)}.\n${c.flips.length ? `The headline: ${c.flips.map(flipTxt).join('; ')}.\n` : ''}${otherList.length ? `Other big market moves: ${otherList.map(mvTxt).join('; ')}.\n` : ''}${bal ? bal + '\n' : ''}${stand ? stand + '\n' : ''}\nThe Convergence Index blends prediction-market prices with the major polling averages, with every figure linked to its source.\nconvergence-index.com`,
       instagram: `${week ? 'The week in the odds 🗓️' : 'The odds moved 📈'}\nSenate: ${mvC(c.sY, c.sT)} · House: ${mvC(c.hY, c.hT)}\n${c.flips.length ? c.flips.map(m => `${raceLabel(m.t)}: ${lead(m.t).name} (${lead(m.t).p}) now favored`).join(' · ') + '\n' : ''}Swipe for the biggest movers. Link in bio.`,
       x: `${per.short}: Senate ${mvC(c.sY, c.sT)}, House ${mvC(c.hY, c.hT)}.\n${c.flips.length ? c.flips.map(flipTxt).map(cap1).join('; ') + '.\n' : ''}convergence-index.com`,
-      alt: `${per.short}, the Convergence Index moved: Senate control ${mvC(c.sY, c.sT)}; House ${mvC(c.hY, c.hT)}. ${c.flips.length ? c.flips.map(flipTxt).map(cap1).join('; ') + '. ' : ''}Other market moves: ${others.map(mvTxt).join('; ') || 'none over 2 points'}.`
+      alt: `${per.short}, the Convergence Index moved: Senate control ${mvC(c.sY, c.sT)}; House ${mvC(c.hY, c.hT)}. ${c.flips.length ? c.flips.map(flipTxt).map(cap1).join('; ') + '. ' : ''}Other market moves: ${others.map(mvTxt).join('; ') || 'none over 2 points'}. ${bal} ${stand}`
     } };
 }
 
