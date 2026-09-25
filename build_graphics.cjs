@@ -75,7 +75,23 @@ function favor(dem) {
       gap: parseFloat((r.querySelector('.g-gap')?.textContent || '0').replace(/[^\d.]/g, '')) || 0,
       chamber: r.closest('#houseGaps') ? 'House' : r.closest('#senateGaps') ? 'Senate' : 'Governor'
     })).sort((a, b) => b.gap - a.gap);
-    return { asOf, house: num(t('houseBlendValue')), senate: num(t('senateBlendValue')), govHeadline: t('govHeadline'), top: gaps[0] || null };
+    // Per-race standings, so the board can state who leads where — not only the chamber totals.
+    let standing = null;
+    try {
+      const rows = [];
+      for (const [ch, key] of [['house', 'house'], ['senate', 'senate'], ['governors', 'gov']])
+        for (const r of DATA[ch].races) {
+          if (!r.mkt) continue;
+          const c = raceChance(r);
+          const side = c.d != null ? c.d * 100 : (c.i != null ? c.i * 100 : null);
+          if (side == null) continue;
+          const label = key === 'house' ? r.id : key === 'senate' ? r.id + ' Sen' : r.id + ' Gov';
+          rows.push({ label, dem: side, rep: c.r * 100 });
+        }
+      const rLed = rows.filter(x => x.rep > x.dem).sort((a, b) => b.rep - a.rep);
+      standing = { total: rows.length, r: rLed.length, d: rows.length - rLed.length, rNames: rLed.map(x => x.label) };
+    } catch (e) { standing = null; }
+    return { asOf, house: num(t('houseBlendValue')), senate: num(t('senateBlendValue')), govHeadline: t('govHeadline'), top: gaps[0] || null, standing };
   });
 
   const d = data.asOf ? new Date(data.asOf) : new Date();
@@ -87,6 +103,16 @@ function favor(dem) {
   const house = favor(H), senate = favor(S);
 
   // governors: parse "<Party> ... N of M" from the site's own headline (neutral either way)
+  // Who leads right now, with each party's count in its own colour.
+  const st = data.standing;
+  const standingHTML = !st || !st.total ? ''
+    : !st.r ? `<span style="color:${DEM}">Democrats favored in all ${st.total} tracked races.</span>`
+    : !st.d ? `<span style="color:${REP}">Republicans favored in all ${st.total} tracked races.</span>`
+    : `Favored now: <span style="color:${DEM}">Democrats in ${st.d} of ${st.total}</span>, <span style="color:${REP}">Republicans in ${st.r} — ${esc(st.rNames.slice(0, 4).join(', '))}${st.rNames.length > 4 ? ` +${st.rNames.length - 4} more` : ''}</span>.`;
+  const standingText = !st || !st.total ? ''
+    : !st.r ? `Democrats are favored in all ${st.total} tracked races.`
+    : !st.d ? `Republicans are favored in all ${st.total} tracked races.`
+    : `Favored now: Democrats in ${st.d} of ${st.total} tracked races, Republicans in ${st.r} (${st.rNames.slice(0, 4).join(', ')}${st.rNames.length > 4 ? ` +${st.rNames.length - 4} more` : ''}).`;
   const gm = (data.govHeadline || '').match(/(Democrats|Republicans)\s+in\s+(\d+)\s+of\s+(\d+)/i);
   const govParty = gm ? (gm[1] === 'Democrats' ? 'Democratic' : 'Republican') : '';
   const govColor = gm ? (gm[1] === 'Democrats' ? DEM : REP) : DEM;
@@ -172,6 +198,7 @@ function favor(dem) {
         <span class="rate"><span class="dot" style="background:${govColor}"></span>${esc(govRate)}</span>
         <div class="val small ${govCls}">${esc(govNum)}<span class="u">${esc(govParty)}</span></div></div>
     </div>
+    ${standingHTML ? `<div style="font-family:var(--mono,'IBM Plex Mono',monospace);font-size:21px;line-height:1.45;margin-top:24px;color:#5d5b56">${standingHTML}</div>` : ''}
     <div class="foot"><span class="tag">markets × polls, blended</span><span><b>convergence-index.com</b></span></div></div>`;
 
   // intro carousel — 3 distinct slides (no numbers, just framing). Slide 1 also serves as the
@@ -248,6 +275,7 @@ function favor(dem) {
         <span class="r"><span class="dot" style="background:${govColor}"></span>${esc(govRate)}</span></div>
         <div class="sval small ${govCls}">${esc(govNum)}<span class="u">${esc(govParty)}</span></div></div>
     </div>
+    ${standingHTML ? `<div style="font-family:var(--mono,'IBM Plex Mono',monospace);font-size:26px;line-height:1.5;margin-top:36px;color:#5d5b56">${standingHTML}</div>` : ''}
     <div class="foot" style="font-size:28px"><span class="tag">markets × polls</span><span><b>convergence-index.com</b></span></div></div>`;
 
   const shell = body => `<!doctype html><html><head><meta charset="utf-8"><style>${FONTS}${CSS}</style></head><body>${body}</body></html>`;
@@ -268,6 +296,7 @@ function favor(dem) {
 
   // captions — neutral, favored-party framing that flips automatically
   const govCap = gm ? `${gm[1]} lead ${gm[2]} of ${gm[3]} competitive governor races` : 'governor races in play';
+  const standCap = standingText ? standingText + '\n' : '';
   const splitLine = top ? `Today's widest poll–market split: ${top.name} (${top.chamber}), ${top.gap} points apart.` : '';
   const captions = `# Convergence Index — captions for ${dateLabel}
 
@@ -280,7 +309,7 @@ U.S. House — ${house.party} ${house.chance}% (${house.rate})
 U.S. Senate — ${senate.party} ${senate.chance}% (${senate.rate})
 Governors — ${govCap}
 
-Full board, every figure sourced 👇
+${standCap}Full board, every figure sourced 👇
 convergence-index.com
 
 ## LinkedIn
