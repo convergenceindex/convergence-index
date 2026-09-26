@@ -1,10 +1,10 @@
-Run 2026-09-25 22:29 UTC (schedule)
+Run 2026-09-26 04:30 UTC (schedule)
 
 == Markets ==
 Chamber control
   house Kalshi control: 91.8¢ / 91.9¢
   house Polymarket control: 92.0¢ / 93.0¢
-  senate Kalshi control: 60.0¢ / 61.0¢
+  senate Kalshi control: 61.0¢ / 62.0¢
   senate Polymarket control: 62.0¢ / 63.0¢
 Seat brackets
   house seat brackets: 12 updated (KXDHOUSESEATS-27)
@@ -12,34 +12,34 @@ Seat brackets
 Race markets
   ! governors Kansas: kept previous prices (expected one '-26' event, found ['GOVPARTYKS-27'])
   80 of 81 race markets updated
-Updated index.html: asOf 2026-09-25T22:29:12Z
+Updated index.html: asOf 2026-09-26T04:30:15Z
 
 == Polls ==
 Fetching polls from VoteHub
   us-senator: 124 polls in the last 75 days
-  governor: 116 polls in the last 75 days
-  us-representative: 47 polls in the last 75 days
+  governor: 115 polls in the last 75 days
+  us-representative: 46 polls in the last 75 days
   Cook ratings: not configured (COOK_EMAIL / COOK_PASSWORD secrets not set)
 Senate
 Governors
 House
 
 Race                             old     new  basis
-Texas                          D+3.1   D+2.8  Our average of 7 polls, Sep 1–22: Texas Southern Public D+1, Slingshot Strategies D+4, Emerson D+1, InsiderAdv
-Ohio (special)                 D+4.2   D+2.6  Our average of 3 polls, Sep 9–23: Quantus D+0.5, Trafalgar D+3, InsiderAdvantage D+5.4
+Texas                          D+2.8   D+2.8  Our average of 7 polls, Sep 1–22: Texas Southern Public D+1, Slingshot Strategies D+4, Emerson D+1, InsiderAdv
+Ohio (special)                 D+2.6   D+2.6  Our average of 3 polls, Sep 9–23: Quantus D+0.5, Trafalgar D+3, InsiderAdvantage D+5.4
 Iowa                           D+2.4   D+2.4  Our average of 4 polls, Sep 1–20: Marist D+8, YouGov D+4, co/efficient R+4, Emerson R+5
 Alaska                         D+3.9   D+3.9  kept — current number uses newer polls (to 2026-09-22) than VoteHub has (to 2026-09-17)
 Michigan                       D+3.1   D+3.1  Our average of 7 polls, Aug 28–Sep 23: co/efficient tie, NYT/Siena D+5, Emerson D+2.5, Suffolk D+7 …
-Maine                          D+0.9   D+1.9  Our average of 5 polls, Sep 8–22: University of New D+4, NYT/Siena R+3, YouGov D+4, Quantus R+0.7 …
-New Hampshire                  D+6.6   D+7.2  Our average of 3 polls, Sep 17–22: University of New D+8, InsiderAdvantage D+8, NYT/Siena D+5
+Maine                          D+1.9   D+1.9  Our average of 5 polls, Sep 8–22: University of New D+4, NYT/Siena R+3, YouGov D+4, Quantus R+0.7 …
+New Hampshire                  D+7.2   D+7.2  Our average of 3 polls, Sep 17–22: University of New D+8, InsiderAdvantage D+8, NYT/Siena D+5
 Nebraska                       D+0.5   D+0.5  kept — current number uses newer polls (to 2026-09-17) than VoteHub has (to 2026-09-08)
 Georgia (model)                    —   D+9.2  2 polls: InsiderAdvantage D+8, Big Data Poll D+10.8
 Minnesota (model)                  —   D+1.8  2 polls: SurveyUSA tie, Quantus D+3.8
 North Carolina (model)             —   D+9.1  5 polls: InsiderAdvantage D+5.9, High Point D+8, Harper D+15, East Carolina D+8 …
-Georgia                        D+0.1   R+1.6  Our average of 2 polls, Sep 23: InsiderAdvantage R+2, Big Data Poll R+1
+Georgia                        R+1.6   R+1.6  Our average of 2 polls, Sep 23: InsiderAdvantage R+2, Big Data Poll R+1
 Nevada                         D+0.5       —  no recent polls — kept
 Ohio                           D+2.2   D+2.2  kept — current number uses newer polls (to 2026-09-22) than VoteHub has (to 2026-08-13)
-Kansas                           R+7   R+5.4  Our average of 2 polls, Sep 16–24: Wedgewood Polls R+4, Emerson R+7
+Kansas                         R+5.4   R+5.4  Our average of 2 polls, Sep 16–24: Wedgewood Polls R+4, Emerson R+7
 Wisconsin                      D+4.1   D+4.1  kept — current number uses newer polls (to 2026-09-17) than VoteHub has (to 2026-08-20)
 Iowa                           D+8.1   D+8.1  Our average of 5 polls, Aug 29–Sep 20: Marist D+12, YouGov D+10, co/efficient D+4, Emerson D+3 …
 Alaska                          D+10    D+10  kept — current number uses newer polls (to 2026-09-17) than VoteHub has (to 2026-09-11)
@@ -65,5 +65,4 @@ VA-07                              —       —  no recent polls — kept
 WA-03                            R+1       —  no recent polls — kept
 WI-03                            D+4       —  no recent polls — kept
 
-11 race polling values changed.
-Updated index.html
+0 race polling values changed.
