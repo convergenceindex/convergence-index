@@ -1,4 +1,4 @@
-Run 2026-09-28 16:34 UTC (schedule)
+Run 2026-09-28 22:30 UTC (schedule)
 
 == Markets ==
 Chamber control
@@ -12,12 +12,9 @@ Seat brackets
 Race markets
   ! governors Kansas: kept previous prices (expected one '-26' event, found ['GOVPARTYKS-27'])
   80 of 81 race markets updated
-Updated index.html: asOf 2026-09-28T16:34:10Z
+Updated index.html: asOf 2026-09-28T22:29:38Z
 
 == Polls ==
-Generic ballot
-  Silver Bulletin: D+8.1 (Sep 28)
-  FiftyPlusOne: D+7.6 (Sep 28)
 Fetching polls from VoteHub
   us-senator: 124 polls in the last 75 days
   governor: 115 polls in the last 75 days
@@ -68,5 +65,4 @@ VA-07                              —       —  no recent polls — kept
 WA-03                            R+1       —  no recent polls — kept
 WI-03                            D+4       —  no recent polls — kept
 
-0 race polling values changed; 2 generic-ballot averages changed.
-Updated index.html
+0 race polling values changed.
