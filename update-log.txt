@@ -1,8 +1,8 @@
-Run 2026-09-28 22:30 UTC (schedule)
+Run 2026-09-29 04:32 UTC (schedule)
 
 == Markets ==
 Chamber control
-  house Kalshi control: 91.5¢ / 91.6¢
+  house Kalshi control: 91.4¢ / 91.5¢
   house Polymarket control: 92.0¢ / 93.0¢
   senate Kalshi control: 61.0¢ / 62.0¢
   senate Polymarket control: 62.0¢ / 63.0¢
@@ -12,7 +12,7 @@ Seat brackets
 Race markets
   ! governors Kansas: kept previous prices (expected one '-26' event, found ['GOVPARTYKS-27'])
   80 of 81 race markets updated
-Updated index.html: asOf 2026-09-28T22:29:38Z
+Updated index.html: asOf 2026-09-29T04:32:27Z
 
 == Polls ==
 Fetching polls from VoteHub
@@ -41,7 +41,7 @@ Nevada                         D+0.5       —  no recent polls — kept
 Ohio                           D+2.2   D+2.2  kept — current number uses newer polls (to 2026-09-22) than VoteHub has (to 2026-08-13)
 Kansas                         R+5.4   R+5.4  Our average of 2 polls, Sep 16–24: Wedgewood Polls R+4, Emerson R+7
 Wisconsin                      D+4.1   D+4.1  kept — current number uses newer polls (to 2026-09-17) than VoteHub has (to 2026-08-20)
-Iowa                           D+8.1   D+8.1  Our average of 5 polls, Aug 29–Sep 20: Marist D+12, YouGov D+10, co/efficient D+4, Emerson D+3 …
+Iowa                           D+8.1   D+8.4  Our average of 4 polls, Sep 1–20: Marist D+12, YouGov D+10, co/efficient D+4, Emerson D+3
 Alaska                          D+10    D+10  kept — current number uses newer polls (to 2026-09-17) than VoteHub has (to 2026-09-11)
 AZ-01                          R+5.5       —  no recent polls — kept
 AZ-06                            D+2       —  no recent polls — kept
@@ -59,10 +59,11 @@ OH-13                              —       —  no recent polls — kept
 PA-07                            D+5     D+5  Our average of 1 poll, Sep 20: Franklin & Marshall D+5
 PA-08                            D+2       —  no recent polls — kept
 PA-10                            D+3     D+3  Our average of 1 poll, Sep 20: Franklin & Marshall D+3
-TX-34                            tie     tie  kept — current number uses newer polls (to 2026-08-22) than VoteHub has (to 2026-07-30)
+TX-34                            tie       —  no recent polls — kept
 VA-02                            tie       —  no recent polls — kept
 VA-07                              —       —  no recent polls — kept
 WA-03                            R+1       —  no recent polls — kept
 WI-03                            D+4       —  no recent polls — kept
 
-0 race polling values changed.
+1 race polling values changed.
+Updated index.html
