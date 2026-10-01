@@ -1,4 +1,4 @@
-Run 2026-09-30 22:33 UTC (schedule)
+Run 2026-10-01 04:34 UTC (schedule)
 
 == Markets ==
 Chamber control
@@ -12,12 +12,12 @@ Seat brackets
 Race markets
   ! governors Kansas: kept previous prices (expected one '-26' event, found ['GOVPARTYKS-27'])
   80 of 81 race markets updated
-Updated index.html: asOf 2026-09-30T22:32:40Z
+Updated index.html: asOf 2026-10-01T04:34:14Z
 
 == Polls ==
 Fetching polls from VoteHub
-  us-senator: 128 polls in the last 75 days
-  governor: 117 polls in the last 75 days
+  us-senator: 125 polls in the last 75 days
+  governor: 114 polls in the last 75 days
   us-representative: 46 polls in the last 75 days
   Cook ratings: not configured (COOK_EMAIL / COOK_PASSWORD secrets not set)
 Senate
@@ -35,7 +35,7 @@ New Hampshire                  D+7.2   D+7.2  Our average of 3 polls, Sep 17–2
 Nebraska                       D+0.5   D+0.5  kept — current number uses newer polls (to 2026-09-17) than VoteHub has (to 2026-09-08)
 Georgia (model)                    —   D+9.2  2 polls: InsiderAdvantage D+8, Big Data Poll D+10.8
 Minnesota (model)                  —   D+1.8  2 polls: SurveyUSA tie, Quantus D+3.8
-North Carolina (model)             —   D+9.1  5 polls: InsiderAdvantage D+5.9, High Point D+8, Harper D+15, East Carolina D+8 …
+North Carolina (model)             —   D+8.9  4 polls: InsiderAdvantage D+5.9, High Point D+8, Harper D+15, East Carolina D+8
 Georgia                        R+1.6   R+1.6  Our average of 2 polls, Sep 23: InsiderAdvantage R+2, Big Data Poll R+1
 Nevada                         D+0.5       —  no recent polls — kept
 Ohio                           D+4.5   D+4.5  Our average of 3 polls, Sep 27: Marist D+6, Big Data Poll R+1.1, Suffolk D+9
@@ -65,4 +65,5 @@ VA-07                              —       —  no recent polls — kept
 WA-03                            R+1       —  no recent polls — kept
 WI-03                            D+4       —  no recent polls — kept
 
-0 race polling values changed.
+1 race polling values changed.
+Updated index.html
