@@ -260,22 +260,29 @@ function standing(T) {
   const dLed = rows.filter(r => lead(r).p !== 'R');
   return { rLed, dLed, total: rows.length };
 }
+// Lead with whichever party is favored in more races; name the trailing side's races.
+function standingSides(st) {
+  const D = { p: 'D', label: 'Democrats', list: st.dLed }, R = { p: 'R', label: 'Republicans', list: st.rLed };
+  return st.rLed.length > st.dLed.length ? { major: R, minor: D } : { major: D, minor: R };
+}
 function standingLine(T) {
   const st = standing(T); if (!st.total) return '';
   if (!st.rLed.length) return `Democrats are favored in all ${st.total} tracked races.`;
   if (!st.dLed.length) return `Republicans are favored in all ${st.total} tracked races.`;
-  const shown = st.rLed.slice(0, 4).map(raceLabelShort).join(', ');
-  const more = st.rLed.length > 4 ? ` +${st.rLed.length - 4} more` : '';
-  return `Favored now: Democrats in ${st.dLed.length} of ${st.total} tracked races, Republicans in ${st.rLed.length} (${shown}${more}).`;
+  const { major, minor } = standingSides(st);
+  const shown = minor.list.slice(0, 4).map(raceLabelShort).join(', ');
+  const more = minor.list.length > 4 ? ` +${minor.list.length - 4} more` : '';
+  return `Favored now: ${major.label} in ${major.list.length} of ${st.total} tracked races, ${minor.label} in ${minor.list.length} (${shown}${more}).`;
 }
 function standingHTML(T, compact = false) {
   const st = standing(T); if (!st.total) return '';
   if (!st.rLed.length) return `<span style="color:${pColor('D')}">Democrats favored in all ${st.total} tracked races.</span>`;
   if (!st.dLed.length) return `<span style="color:${pColor('R')}">Republicans favored in all ${st.total} tracked races.</span>`;
-  const shown = st.rLed.slice(0, 4).map(raceLabelShort).join(', ');
-  const more = st.rLed.length > 4 ? ` +${st.rLed.length - 4} more` : '';
+  const { major, minor } = standingSides(st);
+  const shown = minor.list.slice(0, 4).map(raceLabelShort).join(', ');
+  const more = minor.list.length > 4 ? ` +${minor.list.length - 4} more` : '';
   const tail = compact ? '' : ` — ${esc(shown + more)}`;
-  return `Favored now: <span style="color:${pColor('D')}">Democrats in ${st.dLed.length} of ${st.total}</span>, <span style="color:${pColor('R')}">Republicans in ${st.rLed.length}${tail}</span>.`;
+  return `Favored now: <span style="color:${pColor(major.p)}">${major.label} in ${major.list.length} of ${st.total}</span>, <span style="color:${pColor(minor.p)}">${minor.label} in ${minor.list.length}${tail}</span>.`;
 }
 function chamberBlock(label, y, t, big = false) {
   const Y = chamberFavor(y), T = chamberFavor(t), d = t - y;
@@ -371,23 +378,32 @@ function pickSpotlight(T, W7, Y1) {
 }
 function themeSpotlight(T, sp, dateT) {
   const r = sp.row, L = lead(r), side = r.dem != null ? 'D' : 'I', sideName = side === 'D' ? 'Dem' : 'Ind';
+  // Name whoever the markets currently favor first, so the card is not anchored on one party.
+  const nonRep = r.d || r.i, repFirst = L.p === 'R';
+  const pairTxt = repFirst ? `${r.r} (R) vs. ${nonRep} (${side})` : `${nonRep} (${side}) vs. ${r.r} (R)`;
+  const pairHTML = repFirst ? `${esc(r.r)} (R) vs. ${esc(nonRep)} (${side})` : `${esc(nonRep)} (${side}) vs. ${esc(r.r)} (R)`;
+  const blendL = Math.round(repFirst ? 100 - r.blend : r.blend);
+  const pollL = r.pollP != null ? Math.round(repFirst ? 100 - r.pollP : r.pollP) : null;
+  // The dumbbell axis stays anchored on the non-Republican side so cards stay comparable;
+  // label it with that candidate's name rather than a generic party frame.
+  const axisName = last(nonRep);
   const pollLine = r.poll ? `${r.poll.m >= 0 ? (side === 'D' ? 'D' : 'I') : 'R'}+${Math.abs(r.poll.m).toFixed(1)}${r.poll.partisan ? ' (includes partisan polls)' : ''}` : 'no recent public polling';
-  const deltaLine = sp.delta != null ? `${sp.per.short}: ${signed(sp.delta)} pts for ${side === 'D' ? 'the Democrat' : 'the independent'}` : '';
+  const deltaLine = sp.delta != null ? `${sp.per.short}: ${signed(repFirst ? -sp.delta : sp.delta)} pts for ${last(L.name)}` : '';
   const body = big => `
     <div class="head" style="margin-top:${big ? 70 : 40}px;font-size:${big ? 104 : 80}px">${esc(raceLabel(r))}</div>
-    <div class="sub" style="font-size:${big ? 34 : 30}px">${esc(r.d || r.i)} (${side}) vs. ${esc(r.r)} (R)</div>
+    <div class="sub" style="font-size:${big ? 34 : 30}px">${pairHTML}</div>
     <div style="display:flex;align-items:baseline;gap:22px;margin-top:${big ? 60 : 30}px"><span class="big" style="color:${pColor(L.p)}">${Math.round(L.v)}%</span><span class="tag" style="font-size:34px">${esc(last(L.name))} (${L.p}) · market chance</span></div>
     ${raceBar(r)}
-    ${r.pollP != null ? `<div class="mono" style="margin-top:${big ? 60 : 34}px;color:var(--ink2)">Markets vs. polls — chance the ${sideName === 'Dem' ? 'Democrat' : 'independent'} wins</div>${dumbbell(sideV(r), r.pollP, false, sideName)}` : ''}
-    <div class="kv"><span>Polling average</span><b>${esc(pollLine)}</b><span>Blended chance (${sideName})</span><b>${Math.round(r.blend)}%</b>${deltaLine ? `<span>Movement</span><b>${esc(deltaLine)}</b>` : ''}</div>`;
+    ${r.pollP != null ? `<div class="mono" style="margin-top:${big ? 60 : 34}px;color:var(--ink2)">Markets vs. polls — chance ${esc(axisName)} (${side}) wins</div>${dumbbell(sideV(r), r.pollP, false, esc(axisName))}` : ''}
+    <div class="kv"><span>Polling average</span><b>${esc(pollLine)}</b><span>Blended chance (${esc(last(L.name))}, ${L.p})</span><b>${blendL}%</b>${deltaLine ? `<span>Movement</span><b>${esc(deltaLine)}</b>` : ''}</div>`;
   return { title: `Race spotlight: ${raceLabel(r)}`,
     post: [`<div class="card sq">${header('Race spotlight', dateT)}${body(false)}${footer(esc(sp.why))}</div>`],
     story: `<div class="card st">${header('Race spotlight', dateT)}${body(true)}<div class="sub" style="margin-top:50px">${oddsNote(L.v)}</div>${footer('link in bio')}</div>`,
     caption: {
-      linkedin: `Race spotlight: ${raceLabel(r)} — ${r.d || r.i} (${side}) vs. ${r.r} (R).\n\nPrediction markets give ${L.name} (${L.p}) a ${Math.round(L.v)}% chance. ${r.pollP != null ? `The polling average (${pollLine}) implies ${Math.round(r.pollP)}% for the ${sideName === 'Dem' ? 'Democrat' : 'independent'}; blended, ${Math.round(r.blend)}%.` : 'There is no recent public polling, so this one rests on the markets.'}${deltaLine ? `\n${deltaLine}.` : ''}\n\n${oddsNote(L.v)}\nconvergence-index.com`,
-      instagram: `Race spotlight 🔎 ${raceLabel(r)}\n${last(L.name)} (${L.p}) ${Math.round(L.v)}% in the markets${r.pollP != null ? ` · polls imply ${Math.round(r.pollP)}% for the ${sideName === 'Dem' ? 'Democrat' : 'independent'}` : ''}\nLink in bio.`,
-      x: `Race spotlight — ${raceLabel(r)}: markets give ${L.name} (${L.p}) ${Math.round(L.v)}%${r.pollP != null ? `; polls (${pollLine}) imply ${Math.round(r.pollP)}% for the ${sideName === 'Dem' ? 'Democrat' : 'independent'}` : ''}.\nconvergence-index.com`,
-      alt: `Race spotlight, ${raceLabel(r)}: ${r.d || r.i} versus ${r.r}. Prediction markets give ${L.name} a ${Math.round(L.v)}% chance. ${r.pollP != null ? `Polling average ${pollLine}, implying ${Math.round(r.pollP)}% for the ${sideName === 'Dem' ? 'Democrat' : 'independent'}.` : ''}`
+      linkedin: `Race spotlight: ${raceLabel(r)} — ${pairTxt}.\n\nPrediction markets give ${L.name} (${L.p}) a ${Math.round(L.v)}% chance. ${r.pollP != null ? `The polling average (${pollLine}) implies ${pollL}% for ${last(L.name)}; blended, ${blendL}%.` : 'There is no recent public polling, so this one rests on the markets.'}${deltaLine ? `\n${deltaLine}.` : ''}\n\n${oddsNote(L.v)}\nconvergence-index.com`,
+      instagram: `Race spotlight 🔎 ${raceLabel(r)}\n${last(L.name)} (${L.p}) ${Math.round(L.v)}% in the markets${r.pollP != null ? ` · polls imply ${pollL}% for ${last(L.name)}` : ''}\nLink in bio.`,
+      x: `Race spotlight — ${raceLabel(r)}: markets give ${L.name} (${L.p}) ${Math.round(L.v)}%${r.pollP != null ? `; polls (${pollLine}) imply ${pollL}% for ${last(L.name)}` : ''}.\nconvergence-index.com`,
+      alt: `Race spotlight, ${raceLabel(r)}: ${repFirst ? r.r : nonRep} versus ${repFirst ? nonRep : r.r}. Prediction markets give ${L.name} a ${Math.round(L.v)}% chance. ${r.pollP != null ? `Polling average ${pollLine}, implying ${pollL}% for ${last(L.name)}.` : ''}`
     } };
 }
 
