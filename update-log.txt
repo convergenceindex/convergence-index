@@ -1,23 +1,26 @@
-Run 2026-10-02 10:33 UTC (schedule)
+Run 2026-10-02 16:34 UTC (schedule)
 
 == Markets ==
 Chamber control
-  house Kalshi control: 91.5¢ / 91.6¢
+  house Kalshi control: 91.6¢ / 91.7¢
   house Polymarket control: 92.0¢ / 93.0¢
-  senate Kalshi control: 61.0¢ / 62.0¢
-  senate Polymarket control: 63.0¢ / 64.0¢
+  senate Kalshi control: 62.0¢ / 63.0¢
+  senate Polymarket control: 64.0¢ / 65.0¢
 Seat brackets
   house seat brackets: 12 updated (KXDHOUSESEATS-27)
   senate seat brackets: 10 updated (KXDSENATESEATS-27)
 Race markets
   ! governors Kansas: kept previous prices (expected one '-26' event, found ['GOVPARTYKS-27'])
   80 of 81 race markets updated
-Updated index.html: asOf 2026-10-02T10:32:45Z
+Updated index.html: asOf 2026-10-02T16:34:04Z
 
 == Polls ==
+Generic ballot
+  Silver Bulletin: D+9 (Oct 2)
+  FiftyPlusOne: D+7.7 (Oct 2)
 Fetching polls from VoteHub
-  us-senator: 129 polls in the last 75 days
-  governor: 118 polls in the last 75 days
+  us-senator: 131 polls in the last 75 days
+  governor: 121 polls in the last 75 days
   us-representative: 53 polls in the last 75 days
   Cook ratings: not configured (COOK_EMAIL / COOK_PASSWORD secrets not set)
 Senate
@@ -26,11 +29,11 @@ House
 
 Race                             old     new  basis
 Texas                          D+2.7   D+2.7  Our average of 6 polls, Sep 4–22: Texas Southern Public D+1, Slingshot Strategies D+4, Emerson D+1, InsiderAdv
-Ohio (special)                 D+4.4   D+4.4  Our average of 5 polls, Sep 9–27: Marist D+8, Big Data Poll D+3.7, Quantus D+0.5, Trafalgar D+3 …
+Ohio (special)                 D+4.4   D+3.3  Our average of 5 polls, Sep 16–29: InsiderAdvantage D+1, Marist D+8, Big Data Poll D+3.7, Quantus D+0.5 …
 Iowa                           D+3.5   D+3.5  Our average of 3 polls, Sep 8–20: Marist D+8, YouGov D+4, co/efficient R+4
 Alaska                         D+3.9   D+3.9  kept — current number uses newer polls (to 2026-09-22) than VoteHub has (to 2026-09-17)
 Michigan                       D+2.8   D+2.8  Our average of 8 polls, Sep 9–28: Beacon/Shaw & Co. D+1, co/efficient tie, NYT/Siena D+5, Cygnal/Beacon D+5 …
-Maine                          D+0.6   D+0.6  Our average of 6 polls, Sep 8–30: co/efficient R+2, University of New D+4, NYT/Siena R+3, YouGov D+4 …
+Maine                          D+0.6     D+1  Our average of 7 polls, Sep 8–30: co/efficient R+2, University of New D+4, Fabrizio/Impact D+3, NYT/Siena R+3 
 New Hampshire                  D+7.2   D+7.2  Our average of 3 polls, Sep 17–22: University of New D+8, InsiderAdvantage D+8, NYT/Siena D+5
 Nebraska                       D+0.5   D+0.5  kept — current number uses newer polls (to 2026-09-17) than VoteHub has (to 2026-09-08)
 Georgia (model)                    —   D+9.2  2 polls: InsiderAdvantage D+8, Big Data Poll D+10.8
@@ -42,7 +45,7 @@ Ohio                           D+4.5   D+4.5  Our average of 3 polls, Sep 27: Ma
 Kansas                         R+5.4   R+5.4  Our average of 2 polls, Sep 16–24: Wedgewood Polls R+4, Emerson R+7
 Wisconsin                      D+3.2   D+3.2  Our average of 4 polls, Aug 3–Sep 23: Marquette Law School D+3, Platform Communications D+4, TIPP D+4, GBAO St
 Iowa                           D+9.3   D+9.3  Our average of 3 polls, Sep 8–20: Marist D+12, YouGov D+10, co/efficient D+4
-Alaska                          D+10    D+10  kept — current number uses newer polls (to 2026-09-17) than VoteHub has (to 2026-09-11)
+Alaska                          D+10  D+15.7  Our average of 2 polls, Sep 11–27: Cygnal D+20, Fabrizio/Impact D+10
 AZ-01                          R+5.5       —  no recent polls — kept
 AZ-06                            D+2       —  no recent polls — kept
 CA-22                            D+4       —  no recent polls — kept
@@ -65,4 +68,5 @@ VA-07                              —       —  no recent polls — kept
 WA-03                            R+1       —  no recent polls — kept
 WI-03                            D+4       —  no recent polls — kept
 
-0 race polling values changed.
+5 race polling values changed; 2 generic-ballot averages changed.
+Updated index.html
