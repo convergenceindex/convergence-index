@@ -1,18 +1,18 @@
-Run 2026-10-02 04:34 UTC (schedule)
+Run 2026-10-02 10:33 UTC (schedule)
 
 == Markets ==
 Chamber control
   house Kalshi control: 91.5¢ / 91.6¢
   house Polymarket control: 92.0¢ / 93.0¢
-  senate Kalshi control: 62.0¢ / 63.0¢
-  senate Polymarket control: 62.0¢ / 63.0¢
+  senate Kalshi control: 61.0¢ / 62.0¢
+  senate Polymarket control: 63.0¢ / 64.0¢
 Seat brackets
   house seat brackets: 12 updated (KXDHOUSESEATS-27)
   senate seat brackets: 10 updated (KXDSENATESEATS-27)
 Race markets
   ! governors Kansas: kept previous prices (expected one '-26' event, found ['GOVPARTYKS-27'])
   80 of 81 race markets updated
-Updated index.html: asOf 2026-10-02T04:33:31Z
+Updated index.html: asOf 2026-10-02T10:32:45Z
 
 == Polls ==
 Fetching polls from VoteHub
@@ -25,9 +25,9 @@ Governors
 House
 
 Race                             old     new  basis
-Texas                          D+2.8   D+2.7  Our average of 6 polls, Sep 4–22: Texas Southern Public D+1, Slingshot Strategies D+4, Emerson D+1, InsiderAdv
+Texas                          D+2.7   D+2.7  Our average of 6 polls, Sep 4–22: Texas Southern Public D+1, Slingshot Strategies D+4, Emerson D+1, InsiderAdv
 Ohio (special)                 D+4.4   D+4.4  Our average of 5 polls, Sep 9–27: Marist D+8, Big Data Poll D+3.7, Quantus D+0.5, Trafalgar D+3 …
-Iowa                           D+2.4   D+3.5  Our average of 3 polls, Sep 8–20: Marist D+8, YouGov D+4, co/efficient R+4
+Iowa                           D+3.5   D+3.5  Our average of 3 polls, Sep 8–20: Marist D+8, YouGov D+4, co/efficient R+4
 Alaska                         D+3.9   D+3.9  kept — current number uses newer polls (to 2026-09-22) than VoteHub has (to 2026-09-17)
 Michigan                       D+2.8   D+2.8  Our average of 8 polls, Sep 9–28: Beacon/Shaw & Co. D+1, co/efficient tie, NYT/Siena D+5, Cygnal/Beacon D+5 …
 Maine                          D+0.6   D+0.6  Our average of 6 polls, Sep 8–30: co/efficient R+2, University of New D+4, NYT/Siena R+3, YouGov D+4 …
@@ -41,7 +41,7 @@ Nevada                         D+0.5       —  no recent polls — kept
 Ohio                           D+4.5   D+4.5  Our average of 3 polls, Sep 27: Marist D+6, Big Data Poll R+1.1, Suffolk D+9
 Kansas                         R+5.4   R+5.4  Our average of 2 polls, Sep 16–24: Wedgewood Polls R+4, Emerson R+7
 Wisconsin                      D+3.2   D+3.2  Our average of 4 polls, Aug 3–Sep 23: Marquette Law School D+3, Platform Communications D+4, TIPP D+4, GBAO St
-Iowa                           D+8.4   D+9.3  Our average of 3 polls, Sep 8–20: Marist D+12, YouGov D+10, co/efficient D+4
+Iowa                           D+9.3   D+9.3  Our average of 3 polls, Sep 8–20: Marist D+12, YouGov D+10, co/efficient D+4
 Alaska                          D+10    D+10  kept — current number uses newer polls (to 2026-09-17) than VoteHub has (to 2026-09-11)
 AZ-01                          R+5.5       —  no recent polls — kept
 AZ-06                            D+2       —  no recent polls — kept
@@ -65,5 +65,4 @@ VA-07                              —       —  no recent polls — kept
 WA-03                            R+1       —  no recent polls — kept
 WI-03                            D+4       —  no recent polls — kept
 
-5 race polling values changed.
-Updated index.html
+0 race polling values changed.
