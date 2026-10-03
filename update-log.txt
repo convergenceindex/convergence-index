@@ -1,9 +1,9 @@
-Run 2026-10-02 22:31 UTC (schedule)
+Run 2026-10-03 04:34 UTC (schedule)
 
 == Markets ==
 Chamber control
-  house Kalshi control: 91.6¢ / 91.7¢
-  house Polymarket control: 92.0¢ / 93.0¢
+  house Kalshi control: 91.8¢ / 91.9¢
+  house Polymarket control: 93.0¢ / 94.0¢
   senate Kalshi control: 62.0¢ / 63.0¢
   senate Polymarket control: 64.0¢ / 65.0¢
 Seat brackets
@@ -12,25 +12,25 @@ Seat brackets
 Race markets
   ! governors Kansas: kept previous prices (expected one '-26' event, found ['GOVPARTYKS-27'])
   80 of 81 race markets updated
-Updated index.html: asOf 2026-10-02T22:31:19Z
+Updated index.html: asOf 2026-10-03T04:33:50Z
 
 == Polls ==
 Fetching polls from VoteHub
   us-senator: 138 polls in the last 75 days
   governor: 123 polls in the last 75 days
-  us-representative: 56 polls in the last 75 days
+  us-representative: 55 polls in the last 75 days
   Cook ratings: not configured (COOK_EMAIL / COOK_PASSWORD secrets not set)
 Senate
 Governors
 House
 
 Race                             old     new  basis
-Texas                          D+2.7   D+2.5  Our average of 7 polls, Sep 4–28: Beacon/Shaw & Co. D+2, Texas Southern Public D+1, Slingshot Strategies D+4, 
+Texas                          D+2.5   D+2.5  Our average of 7 polls, Sep 4–28: Beacon/Shaw & Co. D+2, Texas Southern Public D+1, Slingshot Strategies D+4, 
 Ohio (special)                 D+3.3   D+3.3  Our average of 5 polls, Sep 16–29: InsiderAdvantage D+1, Marist D+8, Big Data Poll D+3.7, Quantus D+0.5 …
-Iowa                           D+3.5   D+2.9  Our average of 4 polls, Sep 8–28: Beacon/Shaw & Co. D+2, Marist D+8, YouGov D+4, co/efficient R+4
-Alaska                         D+3.9   D+0.1  Our average of 3 polls, Sep 11–30: Quantus R+0.6, co/efficient R+3, Fabrizio/Impact D+6
+Iowa                           D+2.9   D+2.9  Our average of 4 polls, Sep 8–28: Beacon/Shaw & Co. D+2, Marist D+8, YouGov D+4, co/efficient R+4
+Alaska                         D+0.1   D+0.1  Our average of 3 polls, Sep 11–30: Quantus R+0.6, co/efficient R+3, Fabrizio/Impact D+6
 Michigan                       D+2.8   D+2.8  Our average of 8 polls, Sep 14–30: Beacon/Shaw & Co. D+1, Trafalgar D+2, co/efficient tie, NYT/Siena D+5 …
-Maine                            D+1   D+1.4  Our average of 8 polls, Sep 8–Oct 1: co/efficient R+2, University of New D+4, Fabrizio/Impact D+3, Wedgewood P
+Maine                          D+1.4   D+1.4  Our average of 8 polls, Sep 8–Oct 1: co/efficient R+2, University of New D+4, Fabrizio/Impact D+3, Wedgewood P
 New Hampshire                  D+7.2   D+7.2  Our average of 3 polls, Sep 17–22: University of New D+8, InsiderAdvantage D+8, NYT/Siena D+5
 Nebraska                       D+0.5   D+0.5  kept — current number uses newer polls (to 2026-09-17) than VoteHub has (to 2026-09-08)
 Georgia (model)                    —   D+9.2  2 polls: InsiderAdvantage D+8, Big Data Poll D+10.8
@@ -40,8 +40,8 @@ Georgia                        R+1.6   R+1.6  Our average of 2 polls, Sep 23: In
 Nevada                         D+0.5       —  no recent polls — kept
 Ohio                           D+4.5   D+4.5  Our average of 3 polls, Sep 27: Marist D+6, Big Data Poll R+1.1, Suffolk D+9
 Kansas                         R+5.4   R+5.4  Our average of 2 polls, Sep 16–24: Wedgewood Polls R+4, Emerson R+7
-Wisconsin                      D+3.2   D+3.2  Our average of 4 polls, Aug 3–Sep 23: Marquette Law School D+3, Platform Communications D+4, TIPP D+4, GBAO St
-Iowa                           D+9.3   D+9.2  Our average of 4 polls, Sep 8–28: Beacon/Shaw & Co. D+9, Marist D+12, YouGov D+10, co/efficient D+4
+Wisconsin                      D+3.2   D+3.2  Our average of 3 polls, Aug 13–Sep 23: Marquette Law School D+3, Platform Communications D+4, TIPP D+4
+Iowa                           D+9.2   D+9.2  Our average of 4 polls, Sep 8–28: Beacon/Shaw & Co. D+9, Marist D+12, YouGov D+10, co/efficient D+4
 Alaska                        D+15.7  D+15.7  Our average of 2 polls, Sep 11–27: Cygnal D+20, Fabrizio/Impact D+10
 AZ-01                          R+5.5       —  no recent polls — kept
 AZ-06                            D+2       —  no recent polls — kept
@@ -65,5 +65,5 @@ VA-07                              —       —  no recent polls — kept
 WA-03                            R+1     R+1  Our average of 1 poll, Sep 27: DHM R+1
 WI-03                            D+4       —  no recent polls — kept
 
-12 race polling values changed.
+1 race polling values changed.
 Updated index.html
