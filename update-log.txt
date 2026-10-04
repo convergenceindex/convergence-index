@@ -1,10 +1,10 @@
-Run 2026-10-03 20:10 UTC (schedule)
+Run 2026-10-04 02:57 UTC (schedule)
 
 == Markets ==
 Chamber control
   house Kalshi control: 91.8¢ / 91.9¢
   house Polymarket control: 93.0¢ / 94.0¢
-  senate Kalshi control: 64.0¢ / 65.0¢
+  senate Kalshi control: 63.0¢ / 64.0¢
   senate Polymarket control: 64.0¢ / 65.0¢
 Seat brackets
   house seat brackets: 12 updated (KXDHOUSESEATS-27)
@@ -12,13 +12,13 @@ Seat brackets
 Race markets
   ! governors Kansas: kept previous prices (expected one '-26' event, found ['GOVPARTYKS-27'])
   80 of 81 race markets updated
-Updated index.html: asOf 2026-10-03T20:10:08Z
+Updated index.html: asOf 2026-10-04T02:56:09Z
 
 == Polls ==
 Fetching polls from VoteHub
-  us-senator: 138 polls in the last 75 days
-  governor: 123 polls in the last 75 days
-  us-representative: 55 polls in the last 75 days
+  us-senator: 137 polls in the last 75 days
+  governor: 120 polls in the last 75 days
+  us-representative: 54 polls in the last 75 days
   Cook ratings: not configured (COOK_EMAIL / COOK_PASSWORD secrets not set)
 Senate
 Governors
@@ -35,7 +35,7 @@ New Hampshire                  D+7.2   D+7.2  Our average of 3 polls, Sep 17–2
 Nebraska                       D+0.5   D+0.5  kept — current number uses newer polls (to 2026-09-17) than VoteHub has (to 2026-09-08)
 Georgia (model)                    —   D+9.2  2 polls: InsiderAdvantage D+8, Big Data Poll D+10.8
 Minnesota (model)                  —   D+1.9  3 polls: Big Data Poll D+2, SurveyUSA tie, Quantus D+3.8
-North Carolina (model)             —   D+9.9  5 polls: Big Data Poll D+12, InsiderAdvantage D+5.9, High Point D+8, Harper D+15 …
+North Carolina (model)             —  D+10.1  4 polls: Big Data Poll D+12, InsiderAdvantage D+5.9, High Point D+8, Harper D+15
 Georgia                        R+1.6   R+1.6  Our average of 2 polls, Sep 23: InsiderAdvantage R+2, Big Data Poll R+1
 Nevada                         D+0.5       —  no recent polls — kept
 Ohio                           D+4.5   D+4.5  Our average of 3 polls, Sep 27: Marist D+6, Big Data Poll R+1.1, Suffolk D+9
@@ -65,4 +65,5 @@ VA-07                              —       —  no recent polls — kept
 WA-03                            R+1     R+1  Our average of 1 poll, Sep 27: DHM R+1
 WI-03                            D+4       —  no recent polls — kept
 
-0 race polling values changed.
+1 race polling values changed.
+Updated index.html
