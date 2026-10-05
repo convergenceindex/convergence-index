@@ -1,20 +1,23 @@
-Run 2026-10-05 10:36 UTC (schedule)
+Run 2026-10-05 16:36 UTC (schedule)
 
 == Markets ==
 Chamber control
-  house Kalshi control: 91.4¢ / 91.5¢
+  house Kalshi control: 91.5¢ / 91.6¢
   house Polymarket control: 92.0¢ / 93.0¢
   senate Kalshi control: 64.0¢ / 65.0¢
-  senate Polymarket control: 66.0¢ / 67.0¢
+  senate Polymarket control: 65.0¢ / 66.0¢
 Seat brackets
   house seat brackets: 12 updated (KXDHOUSESEATS-27)
   senate seat brackets: 10 updated (KXDSENATESEATS-27)
 Race markets
   ! governors Kansas: kept previous prices (expected one '-26' event, found ['GOVPARTYKS-27'])
   80 of 81 race markets updated
-Updated index.html: asOf 2026-10-05T10:35:53Z
+Updated index.html: asOf 2026-10-05T16:36:09Z
 
 == Polls ==
+Generic ballot
+  Silver Bulletin: D+8.9 (Oct 5)
+  FiftyPlusOne: D+7.9 (Oct 5)
 Fetching polls from VoteHub
   us-senator: 138 polls in the last 75 days
   governor: 126 polls in the last 75 days
@@ -65,4 +68,5 @@ VA-07                              —       —  no recent polls — kept
 WA-03                            R+1     R+1  Our average of 1 poll, Sep 27: DHM R+1
 WI-03                            D+4       —  no recent polls — kept
 
-0 race polling values changed.
+0 race polling values changed; 2 generic-ballot averages changed.
+Updated index.html
