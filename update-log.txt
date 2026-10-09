@@ -1,18 +1,18 @@
-Run 2026-10-08 22:34 UTC (schedule)
+Run 2026-10-09 04:36 UTC (schedule)
 
 == Markets ==
 Chamber control
-  house Kalshi control: 90.1¢ / 90.2¢
+  house Kalshi control: 90.0¢ / 90.1¢
   house Polymarket control: 90.0¢ / 91.0¢
   senate Kalshi control: 61.0¢ / 62.0¢
-  senate Polymarket control: 63.0¢ / 64.0¢
+  senate Polymarket control: 62.0¢ / 63.0¢
 Seat brackets
   house seat brackets: 12 updated (KXDHOUSESEATS-27)
   senate seat brackets: 10 updated (KXDSENATESEATS-27)
 Race markets
   ! governors Kansas: kept previous prices (expected one '-26' event, found ['GOVPARTYKS-27'])
   80 of 81 race markets updated
-Updated index.html: asOf 2026-10-08T22:33:45Z
+Updated index.html: asOf 2026-10-09T04:35:56Z
 
 == Polls ==
 Fetching polls from VoteHub
@@ -27,10 +27,10 @@ House
 Race                             old     new  basis
 Texas                            D+2     D+2  Our average of 8 polls, Sep 9–28: Beacon/Shaw & Co. D+2, UMass Lowell/YouGov tie, Guidant and Strategy D+2.4, 
 Ohio (special)                   D+4     D+4  Our average of 6 polls, Sep 16–Oct 5: CNN/SSRS D+6, InsiderAdvantage D+1, Marist D+8, Big Data Poll D+3.7 …
-Iowa                           D+1.3   D+1.3  Our average of 5 polls, Sep 8–Oct 5: CNN/SSRS R+2, Beacon/Shaw & Co. D+2, Marist D+8, YouGov D+4 …
+Iowa                           D+1.3   D+0.8  Our average of 4 polls, Sep 16–Oct 5: CNN/SSRS R+2, Beacon/Shaw & Co. D+2, Marist D+8, co/efficient R+4
 Alaska                         D+0.1   D+0.1  Our average of 3 polls, Sep 11–30: Quantus R+0.6, co/efficient R+3, Fabrizio/Impact D+6
 Michigan                       D+3.4   D+3.4  Our average of 10 polls, Sep 14–Oct 1: Beacon/Shaw & Co. D+1, Mitchell & Communications D+5, Trafalgar D+2, Gu
-Maine                            D+2     D+2  Our average of 9 polls, Sep 8–Oct 4: Marist D+4, co/efficient R+2, University of New D+4, Fabrizio/Impact D+3 
+Maine                            D+2   D+1.8  Our average of 8 polls, Sep 14–Oct 4: Marist D+4, co/efficient R+2, University of New D+4, Fabrizio/Impact D+3
 New Hampshire                  D+7.2   D+7.2  Our average of 3 polls, Sep 17–22: University of New D+8, InsiderAdvantage D+8, NYT/Siena D+5
 Nebraska                       D+0.5   D+0.5  kept — current number uses newer polls (to 2026-09-17) than VoteHub has (to 2026-09-08)
 Georgia (model)                    —   D+9.5  3 polls: Wedgewood Polls D+10, InsiderAdvantage D+8, Big Data Poll D+10.8
@@ -41,7 +41,7 @@ Nevada                         D+0.5       —  no recent polls — kept
 Ohio                           D+5.4   D+5.4  Our average of 5 polls, Sep 27–Oct 5: CNN/SSRS D+8, Marist D+6, NYT/Siena D+4, Big Data Poll R+1.1 …
 Kansas                         R+5.2   R+5.2  Our average of 3 polls, Sep 16–30: NYT/Siena R+5, Wedgewood Polls R+4, Emerson R+7
 Wisconsin                      D+3.2   D+3.2  Our average of 3 polls, Aug 13–Sep 23: Marquette Law School D+3, Platform Communications D+4, TIPP D+4
-Iowa                           D+9.5   D+9.5  Our average of 6 polls, Sep 8–Oct 5: CNN/SSRS D+9, Beacon/Shaw & Co. D+9, NYT/Siena D+11, Marist D+12 …
+Iowa                           D+9.5   D+9.4  Our average of 5 polls, Sep 16–Oct 5: CNN/SSRS D+9, Beacon/Shaw & Co. D+9, NYT/Siena D+11, Marist D+12 …
 Alaska                        D+10.3  D+10.3  Our average of 3 polls, Sep 11–Oct 1: NYT/Siena D+4, Cygnal D+20, Fabrizio/Impact D+10
 AZ-01                          D+2.8   D+2.8  Our average of 1 poll, Oct 1: FirstStrategic D+2.8
 AZ-06                            D+2       —  no recent polls — kept
@@ -65,4 +65,5 @@ VA-07                              —       —  no recent polls — kept
 WA-03                            R+1     R+1  Our average of 1 poll, Sep 27: DHM R+1
 WI-03                            D+4       —  no recent polls — kept
 
-0 race polling values changed.
+5 race polling values changed.
+Updated index.html
