@@ -1,8 +1,8 @@
-Run 2026-10-10 22:31 UTC (schedule)
+Run 2026-10-11 04:35 UTC (schedule)
 
 == Markets ==
 Chamber control
-  house Kalshi control: 89.0¢ / 90.0¢
+  house Kalshi control: 90.0¢ / 90.2¢
   house Polymarket control: 90.0¢ / 91.0¢
   senate Kalshi control: 60.0¢ / 61.0¢
   senate Polymarket control: 62.0¢ / 63.0¢
@@ -12,12 +12,12 @@ Seat brackets
 Race markets
   ! governors Kansas: kept previous prices (expected one '-26' event, found ['GOVPARTYKS-27'])
   80 of 81 race markets updated
-Updated index.html: asOf 2026-10-10T22:31:08Z
+Updated index.html: asOf 2026-10-11T04:34:42Z
 
 == Polls ==
 Fetching polls from VoteHub
-  us-senator: 151 polls in the last 75 days
-  governor: 144 polls in the last 75 days
+  us-senator: 143 polls in the last 75 days
+  governor: 143 polls in the last 75 days
   us-representative: 62 polls in the last 75 days
   Cook ratings: not configured (COOK_EMAIL / COOK_PASSWORD secrets not set)
 Senate
@@ -34,7 +34,7 @@ Maine                          D+2.4   D+2.4  Our average of 9 polls, Sep 14–O
 New Hampshire                  D+7.2   D+7.2  Our average of 3 polls, Sep 17–22: University of New D+8, InsiderAdvantage D+8, NYT/Siena D+5
 Nebraska                       D+0.5   D+0.5  kept — current number uses newer polls (to 2026-09-17) than VoteHub has (to 2026-09-08)
 Georgia (model)                    —   D+9.5  3 polls: Wedgewood Polls D+10, InsiderAdvantage D+8, Big Data Poll D+10.8
-Minnesota (model)                  —   D+3.5  4 polls: Big Data Poll D+2, GQR D+8, SurveyUSA tie, Quantus D+3.8
+Minnesota (model)                  —   D+3.5  3 polls: Big Data Poll D+2, GQR D+8, SurveyUSA tie
 North Carolina (model)             —   D+9.1  5 polls: East Carolina D+7, Big Data Poll D+12, InsiderAdvantage D+5.9, High Point D+8 …
 Georgia                        R+1.7   R+1.7  Our average of 3 polls, Sep 23–Oct 3: Wedgewood Polls R+2, InsiderAdvantage R+2, Big Data Poll R+1
 Nevada                         D+0.5       —  no recent polls — kept
