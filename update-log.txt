@@ -1,10 +1,10 @@
-Run 2026-10-12 22:34 UTC (schedule)
+Run 2026-10-13 04:39 UTC (schedule)
 
 == Markets ==
 Chamber control
   house Kalshi control: 89.0¢ / 90.0¢
   house Polymarket control: 90.0¢ / 91.0¢
-  senate Kalshi control: 60.0¢ / 61.0¢
+  senate Kalshi control: 61.0¢ / 62.0¢
   senate Polymarket control: 63.0¢ / 64.0¢
 Seat brackets
   house seat brackets: 12 updated (KXDHOUSESEATS-27)
@@ -12,12 +12,12 @@ Seat brackets
 Race markets
   ! governors Kansas: kept previous prices (expected one '-26' event, found ['GOVPARTYKS-27'])
   80 of 81 race markets updated
-Updated index.html: asOf 2026-10-12T22:33:58Z
+Updated index.html: asOf 2026-10-13T04:38:56Z
 
 == Polls ==
 Fetching polls from VoteHub
-  us-senator: 143 polls in the last 75 days
-  governor: 142 polls in the last 75 days
+  us-senator: 141 polls in the last 75 days
+  governor: 140 polls in the last 75 days
   us-representative: 62 polls in the last 75 days
   Cook ratings: not configured (COOK_EMAIL / COOK_PASSWORD secrets not set)
 Senate
@@ -50,8 +50,8 @@ CO-08                            R+1       —  no recent polls — kept
 IA-01                            D+5       —  no recent polls — kept
 IA-03                              —       —  no recent polls — kept
 MI-03                              —       —  no recent polls — kept
-MI-07                            D+2     D+2  Our average of 1 poll, Aug 13: Global Strategy D+2
-MI-10                            tie     tie  Our average of 1 poll, Aug 13: Global Strategy tie
+MI-07                            D+2       —  no recent polls — kept
+MI-10                            tie       —  no recent polls — kept
 NJ-07                              —       —  no recent polls — kept
 NY-17                            D+2     D+2  Our average of 1 poll, Sep 29: Emerson D+2
 OH-09                            tie     tie  Our average of 1 poll, Sep 23: DCCC Targeting and tie
