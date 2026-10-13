@@ -1,4 +1,4 @@
-Run 2026-10-13 16:39 UTC (schedule)
+Run 2026-10-13 22:46 UTC (schedule)
 
 == Markets ==
 Chamber control
@@ -12,11 +12,11 @@ Seat brackets
 Race markets
   ! governors Kansas: kept previous prices (expected one '-26' event, found ['GOVPARTYKS-27'])
   80 of 81 race markets updated
-Updated index.html: asOf 2026-10-13T16:38:41Z
+Updated index.html: asOf 2026-10-13T22:46:19Z
 
 == Polls ==
 Fetching polls from VoteHub
-  us-senator: 145 polls in the last 75 days
+  us-senator: 146 polls in the last 75 days
   governor: 144 polls in the last 75 days
   us-representative: 64 polls in the last 75 days
   Cook ratings: not configured (COOK_EMAIL / COOK_PASSWORD secrets not set)
@@ -25,14 +25,14 @@ Governors
 House
 
 Race                             old     new  basis
-Texas                          D+1.7   D+2.2  Our average of 7 polls, Sep 14–Oct 8: ReconMR/Siena D+4, Beacon/Shaw & Co. D+2, UMass Lowell/YouGov tie, Guida
+Texas                          D+2.2   D+1.6  Our average of 8 polls, Sep 14–Oct 11: Quantus R+0.5, ReconMR/Siena D+4, Beacon/Shaw & Co. D+2, UMass Lowell/Y
 Ohio (special)                 D+3.1   D+3.1  Our average of 7 polls, Sep 16–Oct 6: CNN/SSRS D+6, InsiderAdvantage D+1, co/efficient R+1, Marist D+8 …
 Iowa                           D+0.2   D+0.2  Our average of 5 polls, Sep 16–Oct 6: CNN/SSRS R+2, Emerson R+1.6, Beacon/Shaw & Co. D+2, Marist D+8 …
 Alaska                         R+1.4   R+1.4  Our average of 2 polls, Sep 17–30: Quantus R+0.6, co/efficient R+3
 Michigan                       D+3.6   D+3.6  Our average of 11 polls, Sep 14–Oct 1: Beacon/Shaw & Co. D+1, Mitchell & Communications D+5, Trafalgar D+2, Gu
 Maine                          D+2.4   D+2.4  Our average of 9 polls, Sep 14–Oct 5: Marist D+4, The WaPo/George Mason D+5, co/efficient R+2, University of N
 New Hampshire                  D+7.2   D+7.2  Our average of 3 polls, Sep 17–22: University of New D+8, InsiderAdvantage D+8, NYT/Siena D+5
-Nebraska                       D+0.5   R+2.5  Our average of 2 polls, Sep 8–Oct 5: National Public Affairs R+3, GBAO Strategies Osborn+1
+Nebraska                       R+2.5   R+2.5  Our average of 2 polls, Sep 8–Oct 5: National Public Affairs R+3, GBAO Strategies Osborn+1
 Georgia (model)                    —   D+9.5  3 polls: Wedgewood Polls D+10, InsiderAdvantage D+8, Big Data Poll D+10.8
 Minnesota (model)                  —   D+3.5  3 polls: Big Data Poll D+2, GQR D+8, SurveyUSA tie
 North Carolina (model)             —  D+10.5  7 polls: SurveyUSA D+14, East Carolina D+7, Big Data Poll D+12, Change D+10 …
@@ -65,5 +65,5 @@ VA-07                              —       —  no recent polls — kept
 WA-03                            R+1     R+1  Our average of 1 poll, Sep 27: DHM R+1
 WI-03                            D+4       —  no recent polls — kept
 
-4 race polling values changed.
+2 race polling values changed.
 Updated index.html
