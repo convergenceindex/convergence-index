@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /* Daily social graphics for The Convergence Index — Monday–Friday rotation, news-weighted.
  *
- *   node build_daily.cjs <repoDir> <outDir> [--theme board|spotlight|pvm|path|week] [--yesterday page.html] [--week page.html]
+ *   node build_daily.cjs <repoDir> <outDir> [--theme board|spotlight|pvm|path|week] [--countdown 14|7] [--yesterday page.html] [--week page.html]
+ *   Countdown: when Election Day is exactly 14 or 7 days away (ET), a countdown carousel replaces the day's theme.
  *
  * <repoDir> is a git clone of the site repo (clone WITH history, e.g. `git clone --filter=blob:none ...`).
  * Today's numbers come from <repoDir>/index.html. "Yesterday" and "a week ago" are earlier versions of
@@ -105,6 +106,26 @@ body{background:#333}
 .legend .d{width:16px;height:16px;border-radius:50%}
 .seats{display:flex;gap:4px;margin-top:34px;flex-wrap:wrap}
 .seats i{display:block;width:16px;height:30px;border-radius:2px}
+.cd{display:flex;align-items:flex-end;gap:30px;margin-top:76px}
+.cd .num{font-family:var(--serif);font-weight:300;font-size:270px;line-height:.74;letter-spacing:-.05em}
+.cd .days{font-family:var(--serif);font-style:italic;font-size:46px;line-height:1.1;color:var(--ink2);padding-bottom:12px}
+.st .cd .num{font-size:330px}
+.cl{display:grid;grid-template-columns:1fr auto;column-gap:20px;padding:17px 0;border-bottom:1px solid var(--hair);align-items:center}
+.cl:last-child{border-bottom:none}
+.cl .nm{font-family:var(--serif);font-size:38px;line-height:1.1}
+.cl .who{font-family:var(--mono);font-size:21px;color:var(--ink2);margin-top:6px}
+.cl .pv{font-family:var(--serif);font-weight:300;font-size:64px;line-height:1;text-align:right;letter-spacing:-.02em}
+.cl .pv span{display:block;font-family:var(--mono);font-size:19px;letter-spacing:.02em;margin-top:4px}
+.sl{display:grid;grid-template-columns:150px 1fr;column-gap:22px;align-items:center;padding:13px 0;border-bottom:1px solid var(--hair)}
+.sl:last-child{border-bottom:none}
+.sl .tm{font-family:var(--mono);font-size:25px;font-weight:600}
+.sl .tm small{font-weight:400;color:var(--ink3);font-size:18px;margin-left:4px}
+.sl .bl{display:flex;flex-wrap:wrap;gap:4px}
+.sl .bl i{display:block;width:24px;height:40px}
+.sl .bl em{font-family:var(--serif);font-style:italic;font-size:22px;color:var(--ink3)}
+.sl .tg{display:flex;flex-wrap:wrap;gap:8px 16px;font-family:var(--mono);font-size:23px;font-weight:600}
+.sl.g{align-items:start;padding:16px 0}
+.sl.g .tm{padding-top:2px}
 .card>*{position:relative;z-index:1}
 `;
 const header = (kLeft, kRight) => `<div class="top"></div><div class="kick"><span>${kLeft}</span><span>${kRight}</span></div><div class="brand">${LOGO}<span class="nm">The Convergence Index</span></div>`;
@@ -115,7 +136,7 @@ const pct = s => { const m = String(s || '').match(/(\d+(?:\.\d+)?)%/); return m
 const govCount = s => { const m = String(s || '').match(/(Democrats|Republicans)\s+in\s+(\d+)\s+of\s+(\d+)/i); return m ? { party: m[1], n: +m[2], of: +m[3] } : null; };
 const partyWord = p => ({ D: 'Democratic', R: 'Republican', I: 'Independent' }[p]);
 const pColor = p => ({ D: DEM, R: REP, I: GOLD }[p]);
-const last = n => String(n || '').split(',')[0].trim().split(/\s+/).slice(-1)[0];
+const last = n => { const w = String(n || '').split(',')[0].trim().split(/\s+/); while (w.length > 1 && /^(Jr\.?|Sr\.?|II|III|IV)$/i.test(w[w.length - 1])) w.pop(); return w[w.length - 1]; };
 const raceLabel = x => x.chamber === 'house' ? x.id : x.chamber === 'senate' ? `${x.id} Senate` : `${x.id} Governor`;
 const raceLabelShort = x => x.chamber === 'house' ? x.id : x.chamber === 'senate' ? `${x.id} Sen` : `${x.id} Gov`;
 const chamberFavor = dem => dem >= 50 ? { p: 'D', v: dem } : { p: 'R', v: 100 - dem };
@@ -171,7 +192,10 @@ async function readPage(browser, file) {
       const tally = (q('pathTally').match(/Democrats\s+(\d+)\s*·\s*Republicans\s+(\d+)/) || []).slice(1).map(Number);
       return { asOf: DATA.asOf, house: q('houseBlendValue'), senate: q('senateBlendValue'), gov: q('govHeadline'),
         cur: (typeof CUR !== 'undefined') ? CUR : null, W: Wt, rows, seat, tally, pathTip: q('pathTip').trim(),
-        composition: DATA.senate.composition && DATA.senate.composition.text };
+        composition: DATA.senate.composition && DATA.senate.composition.text,
+        closing: typeof closingSlots === 'function' ? closingSlots().map(s => ({ t: s.t, label: s.label,
+          races: s.races.map(x => ({ type: x.type, label: x.label, names: x.names, fav: x.fav, p: x.p })) })) : null,
+        election: DATA.decisionNight && DATA.decisionNight.firstClose };
     });
   } catch (e) { errs.push(String(e)); }
   await pg.close();
@@ -467,6 +491,87 @@ function themePath(T, dateT) {
     } };
 }
 
+// ---------------------------------------------------------------- countdown: 2 weeks out, 1 week out
+// Runs instead of the weekday rotation when Election Day is exactly 14 or 7 days away (ET).
+const CD_WORD = { 14: 'Two weeks', 7: 'One week' };
+function closestRaces(T, n) {
+  return Object.values(T.rows).filter(r => sideV(r) != null).sort((a, b) => Math.abs(lead(a).v - 50) - Math.abs(lead(b).v - 50)).slice(0, n);
+}
+function pairNames(r) { const L = lead(r), side = r.dem != null ? 'D' : 'I', non = r.d || r.i;
+  return L.p === 'R' ? `${last(r.r)} (R) vs. ${last(non)} (${side})` : `${last(non)} (${side}) vs. ${last(r.r)} (R)`; }
+function closeRow(r) { const L = lead(r);
+  return `<div class="cl"><div><div class="nm">${esc(raceLabel(r))}</div><div class="who">${esc(pairNames(r))}</div></div><div class="pv" style="color:${pColor(L.p)}">${Math.round(L.v)}%<span>${esc(last(L.name))} (${L.p})</span></div></div>`; }
+function staticChamber(label, dem, big) { const F = chamberFavor(dem);
+  return `<div class="ch"><div class="lab"><span>${label} control</span><span class="dl" style="color:${pColor(F.p)}">${partyWord(F.p)} favored</span></div>
+    <div class="nums"><span class="to" style="color:${pColor(F.p)}${big ? ';font-size:140px' : ''}">${Math.round(F.v)}%<span class="u">chance ${F.p === 'D' ? 'Democrats' : 'Republicans'} win</span></span></div></div>`; }
+const slotTag = x => x.type === 'house' ? x.label : `${x.label} ${x.type === 'senate' ? 'Sen' : 'Gov'}`;
+const slotTime = l => `${l.replace(/ (AM|PM)$/, '')}<small>${l.slice(-2)}</small>`;
+const COMPETITIVE = 0.75;   // a favorite below 75% = Toss-up or Lean on the site's rating scale
+function themeCountdown(T, days, c7, dateT) {
+  const word = CD_WORD[days] || `${days} days`, sen = pct(T.senate), hou = pct(T.house);
+  const S = chamberFavor(sen), H = chamberFavor(hou);
+  const close = closestRaces(T, 5), slots = (T.closing || []).filter(s => s.races.length);
+  const nRaces = slots.reduce((a, s) => a + s.races.length, 0);
+  const nComp = slots.reduce((a, s) => a + s.races.filter(x => x.p != null && x.p < COMPETITIVE).length, 0);
+  const counts = { senate: 0, gov: 0, house: 0 }; slots.forEach(s => s.races.forEach(x => counts[x.type]++));
+  const week = days === 7 && c7;
+  const chambers = big => week ? chamberBlock('Senate', c7.sY, c7.sT, big) + chamberBlock('House', c7.hY, c7.hT)
+    : staticChamber('Senate', sen, big) + staticChamber('House', hou);
+  const slides = [];
+  const total = days === 7 ? (c7 && c7.top.length ? 5 : 4) : 4;
+  const k = (name) => `${name} · ${slides.length + 1} / ${total}`;
+  // 1. cover
+  slides.push(`<div class="card sq">${header(k(`${word} out`), dateT)}
+    <div class="cd"><span class="num">${days}</span><span class="days">days to<br>Election Day</span></div>
+    <div class="sub" style="margin-top:${week ? 26 : 34}px;font-size:30px">${week ? 'Control of Congress, and how it moved this week:' : 'Tuesday, November 3. Where control of Congress stands:'}</div>
+    <div style="margin-top:6px${week ? ';zoom:.84' : ''}">${chambers(false)}</div>${footer('prediction markets × polls · swipe →')}</div>`);
+  // 2. (one week out) what moved this week
+  if (days === 7 && c7 && c7.top.length) slides.push(`<div class="card sq">${header(k('The past week'), dateT)}
+    <div class="head" style="font-size:66px;margin-top:34px">What moved in the final stretch.</div>
+    <div class="sub" style="font-size:27px">Chance each race's favorite wins, from prediction markets — ${esc(c7.per.long)}.</div>
+    <div style="margin-top:10px">${c7.top.slice(0, 4).map(moverRow).join('')}</div>${footer('swipe →')}</div>`);
+  // 3. the closest races
+  slides.push(`<div class="card sq">${header(k('The closest races'), dateT)}
+    <div class="head" style="font-size:66px;margin-top:34px">The races on a knife's edge.</div>
+    <div class="sub" style="font-size:27px">Chance each race's favorite wins, from prediction markets.</div>
+    <div style="margin-top:8px">${close.map(closeRow).join('')}</div>${footer('swipe →')}</div>`);
+  // 4. the night, hour by hour
+  if (days === 7) {
+    const guide = slots.map(s => ({ s, comp: s.races.filter(x => x.p != null && x.p < COMPETITIVE).sort((a, b) => a.p - b.p) })).filter(g => g.comp.length);
+    slides.push(`<div class="card sq">${header(k('Viewing guide'), dateT)}
+      <div class="head" style="font-size:62px;margin-top:30px">What to watch, hour by hour.</div>
+      <div class="sub" style="font-size:25px">Competitive races (favorite under ${Math.round(COMPETITIVE * 100)}%) by when their state's polls close, Eastern Time. Color = market favorite.</div>
+      <div style="margin-top:14px">${guide.map(g => `<div class="sl g"><div class="tm">${slotTime(g.s.label)}</div><div class="tg">${g.comp.map(x => `<span style="color:${pColor(x.fav)}">${esc(slotTag(x))}</span>`).join('')}</div></div>`).join('')}</div>${footer('swipe →')}</div>`);
+  } else {
+    slides.push(`<div class="card sq">${header(k('How the night unfolds'), dateT)}
+      <div class="head" style="font-size:62px;margin-top:30px">Decision Night, hour by hour.</div>
+      <div class="sub" style="font-size:25px">Every race we track, by when its state's polls close (Eastern Time). Each block is a race in its market favorite's color; faded blocks have a favorite above ${Math.round(COMPETITIVE * 100)}%.</div>
+      <div style="margin-top:14px">${slots.map(s => `<div class="sl"><div class="tm">${slotTime(s.label)}</div><div class="bl">${s.races.map(x => `<i style="background:${x.fav ? pColor(x.fav) : 'var(--hair)'};opacity:${x.p != null && x.p < COMPETITIVE ? 1 : 0.3}"></i>`).join('')}</div></div>`).join('')}</div>${footer('swipe →')}</div>`);
+  }
+  // 5. follow it live
+  slides.push(`<div class="card sq">${header(k('Decision Night'), dateT)}
+    <div class="head" style="margin-top:50px">Follow every call, live.</div>
+    <div class="sub" style="font-size:32px;line-height:1.4">On election night, convergence-index.com tracks every race by when its polls close, with the AP's race calls as they come in.</div>
+    <div class="kv" style="font-size:26px;margin-top:44px"><span>Senate races</span><b>${counts.senate}</b><span>Key governor races</span><b>${counts.gov}</b><span>House battleground districts</span><b>${counts.house}</b><span>First polls close</span><b>6:00 PM ET</b><span>Decision Night opens</span><b>12:01 AM ET, Nov 3</b></div>${footer('convergence-index.com')}</div>`);
+  const story = `<div class="card st">${header(`${word} out`, dateT)}
+    <div class="cd"><span class="num">${days}</span><span class="days">days to<br>Election Day</span></div>
+    <div style="margin-top:30px">${chambers(true)}</div>
+    <div class="mono" style="margin-top:34px;color:var(--ink2)">Closest races</div>
+    <div>${close.slice(0, 3).map(closeRow).join('')}</div>
+    <div class="sub" style="margin-top:30px">Decision Night, Nov 3 — every call, live.</div>${footer('link in bio')}</div>`;
+  const chTxt = (lab, F, y, t) => week ? `${lab}: ${(() => { const Y = chamberFavor(y), Tt = chamberFavor(t); return Y.p === Tt.p ? `${partyWord(Tt.p)} ${Math.round(Y.v)}% → ${Math.round(Tt.v)}% over the past week` : `${partyWord(Y.p)} ${Math.round(Y.v)}% → ${partyWord(Tt.p)} ${Math.round(Tt.v)}% over the past week`; })()}` : `${lab}: ${partyWord(F.p)} ${Math.round(F.v)}%`;
+  const odds = `${chTxt('Senate control', S, week && c7.sY, week && c7.sT)}. ${chTxt('House control', H, week && c7.hY, week && c7.hT)}.`;
+  const clTxt = close.slice(0, 4).map(r => { const L = lead(r); return `${raceLabel(r)} (${last(L.name)}, ${L.p}, ${Math.round(L.v)}%)`; }).join('; ');
+  const moved = week && c7.top.length ? `\nBiggest moves this week: ${c7.top.slice(0, 4).map(m => { const t = lead(m.t), y = lead(m.y); return `${raceLabel(m.t)}: ${last(t.name)} (${t.p}) ${Math.round(y.p === t.p ? y.v : 100 - y.v)}% → ${Math.round(t.v)}%`; }).join('; ')}.` : '';
+  return { title: `${word} out`, post: slides, story,
+    caption: {
+      linkedin: `${word} until Election Day.\n\nWhere control of Congress stands on The Convergence Index, which blends prediction markets with the major polling averages:\n${odds}${moved}\n\nThe closest races in the markets: ${clTxt}.\n\nOn November 3, Decision Night goes live at convergence-index.com: ${counts.senate} Senate races, ${counts.gov} key governor races and ${counts.house} House battleground districts, laid out by when their polls close, with AP race calls as they come in. ${nComp} of the ${nRaces} are competitive, with a favorite under ${Math.round(COMPETITIVE * 100)}%.\nconvergence-index.com`,
+      instagram: `${days} days to go 🗳️\nSenate: ${partyWord(S.p)} ${Math.round(S.v)}% · House: ${partyWord(H.p)} ${Math.round(H.v)}%\nClosest: ${close.slice(0, 3).map(r => raceLabelShort(r)).join(' · ')}\nSwipe for the full picture. Decision Night is live Nov 3 — link in bio.`,
+      x: `${word} to Election Day. Senate: ${partyWord(S.p)} ${Math.round(S.v)}%. House: ${partyWord(H.p)} ${Math.round(H.v)}%.\nClosest races: ${close.slice(0, 3).map(r => { const L = lead(r); return `${raceLabelShort(r)} ${last(L.name)} ${Math.round(L.v)}%`; }).join(', ')}.\nconvergence-index.com`,
+      alt: `${word} to Election Day. ${odds} Closest races in prediction markets: ${clTxt}.`
+    } };
+}
+
 // ---------------------------------------------------------------- render
 async function render(browser, html, file) {
   const page = await browser.newPage({ viewport: { width: 1200, height: 2000 }, deviceScaleFactor: 1 });
@@ -508,7 +613,11 @@ ${sec('Story', [files.story])}
   const T = await readPage(browser, path.join(REPO, 'index.html'));
   const dow = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', weekday: 'short' }).format(new Date());
   const THEMES = { Mon: 'board', Tue: 'spotlight', Wed: 'pvm', Thu: 'path', Fri: 'week' };
-  const theme = opt('theme') || THEMES[dow];
+  // Countdown days (Election Day exactly 14 or 7 days away, ET) replace the weekday rotation.
+  const elecDay = T.election ? etDay(T.election) : '2026-11-03';
+  const daysOut = Math.round((Date.parse(elecDay + 'T12:00:00Z') - Date.parse(etDay(new Date()) + 'T12:00:00Z')) / 864e5);
+  const cdDays = opt('countdown') ? +opt('countdown') : ([14, 7].includes(daysOut) ? daysOut : null);
+  const theme = cdDays ? 'countdown' : (opt('theme') || THEMES[dow]);
   if (!theme) { console.log(JSON.stringify({ skipped: `weekend (${dow}) — no graphics` })); await browser.close(); return; }
 
   const hist = (opt('yesterday') && opt('week')) ? [] : gitPages(REPO);
@@ -533,11 +642,17 @@ ${sec('Story', [files.story])}
   else if (theme === 'pvm') themed = themePvm(T, dateT);
   else if (theme === 'path') themed = themePath(T, dateT);
   else if (theme === 'week') themed = W7 ? themeChanges(T, compare(T, W7), dateT, 'week') : themePath(T, dateT);
+  else if (theme === 'countdown') themed = themeCountdown(T, cdDays, W7 ? compare(T, W7) : null, dateT);
 
   // news weighting
   const changes = cDay ? themeChanges(T, cDay, dateT) : null;
   let main, story, caption, summary;
-  if (level === 'big' && changes && theme === 'week') {
+  if (theme === 'countdown') {
+    // The countdown carousel always leads; on a big-news day the story covers what changed.
+    main = { kind: 'countdown', html: themed.post };
+    story = level === 'big' && changes ? { kind: 'changes', html: changes.story } : { kind: 'countdown', html: themed.story };
+    caption = themed.caption; summary = `${themed.title} — countdown carousel (${themed.post.length} slides)${story.kind === 'changes' ? `; big news ${cDay.per.long}, so the story covers what changed` : ''}.`;
+  } else if (level === 'big' && changes && theme === 'week') {
     main = { kind: 'week', html: themed.post }; story = { kind: 'changes', html: changes.story };
     caption = themed.caption; summary = `Week in review leads (it includes today's big moves); a "what changed" story covers ${cDay.per.long}.`;
   } else if (level === 'big' && changes && theme !== 'board') {
