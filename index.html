@@ -992,12 +992,14 @@
     const i = row.i ? `<span class="i">I: ${esc(row.i)}</span>` : '';
     const r = `<span class="r">R: ${esc(row.r)}${row.inc === 'R' ? ' (inc.)' : ''}</span>`;
     const extra = [row.inc ? '' : `Open seat · ${row.held}-held`, row.note].filter(Boolean).join(' · ');
-    return `<div class="cand">${[d || i, r].join(' vs ')}${extra ? `<span class="held">${esc(extra)}</span>` : ''}</div>`;
+    const pair = leadP(raceChance(row)) >= 0.5 ? [d || i, r] : [r, d || i]; // market favorite first
+    return `<div class="cand">${pair.join(' vs ')}${extra ? `<span class="held">${esc(extra)}</span>` : ''}</div>`;
   }
   function racePanel(row, uid, chamber) {
     const ch = raceChance(row), isI = ch.d == null, who = isI ? row.i : 'the Democrat';
     const pM = leadP(ch) * 100, m = row.mkt;
-    const mk = `${esc(m.src)}: ${isI ? esc(row.i) : 'Democrat'} ${(mid(isI ? m.i : m.d) * 100).toFixed(1)}¢ · ${esc(row.r.split(',')[0])} ${(mid(m.r) * 100).toFixed(1)}¢ (bid/ask midpoints, normalized) — ${link('market data', m.url)}` +
+    const mkL = `${isI ? esc(row.i) : 'Democrat'} ${(mid(isI ? m.i : m.d) * 100).toFixed(1)}¢`, mkR = `${esc(row.r.split(',')[0])} ${(mid(m.r) * 100).toFixed(1)}¢`;
+    const mk = `${esc(m.src)}: ${pM >= 50 ? mkL + ' · ' + mkR : mkR + ' · ' + mkL} (bid/ask midpoints, normalized) — ${link('market data', m.url)}` +
       (thin(row) ? ` <span class="rd-warn">Thin market: the gap between bid and ask is 4¢ or more, so this price is less reliable.</span>` : '');
     const hash = `${chamber === 'gov' ? 'governors' : chamber}/race=${encodeURIComponent(row.id)}`;
     if (!row.poll) return `<div class="race-detail"><div class="blend-label">Chance ${esc(who)} wins ${esc(row.id)}</div><div class="rd-value ${pM >= 50 ? 'blend-dem' : 'blend-rep'}">${fmtPct(pM)}</div>` +
@@ -1199,7 +1201,7 @@
     const hRows = [...DATA.house.races, ...DN.houseMore].map(r => { const ch = raceChance(r), p = ch.d; return { r, p }; }).sort((a, b) => Math.abs(a.p - 0.5) - Math.abs(b.p - 0.5));
     const hcalls = R.house || {};
     $('dnHouse').innerHTML = hRows.map(({ r, p }) => { const call = hcalls[r.id], fav = p >= 0.5 ? 'D' : 'R';
-      return `<div class="dn-tile ${call ? 'called ' + call : 'fav-' + fav}"><span class="dt-st">${esc(r.id)}</span><span class="dt-nm">${esc((r.d || '').split(' ').pop())} v ${esc(r.r.split(' ').pop())}</span><span class="dt-fav">${call ? 'Called · ' + call : `${fav} ${fmtPct((fav === 'D' ? p : 1 - p) * 100)}`}</span>${r.held !== (call || fav) ? '<span class="dt-flip">' + (call ? 'flip' : 'possible flip') + '</span>' : ''}</div>`; }).join('');
+      return `<div class="dn-tile ${call ? 'called ' + call : 'fav-' + fav}"><span class="dt-st">${esc(r.id)}</span><span class="dt-nm">${(fav === 'D' ? [r.d || '', r.r] : [r.r, r.d || '']).map(n => esc(n.split(' ').pop())).join(' v ')}</span><span class="dt-fav">${call ? 'Called · ' + call : `${fav} ${fmtPct((fav === 'D' ? p : 1 - p) * 100)}`}</span>${r.held !== (call || fav) ? '<span class="dt-flip">' + (call ? 'flip' : 'possible flip') + '</span>' : ''}</div>`; }).join('');
     $('dnHouseNote').textContent = `${hRows.length} battleground districts, closest first. Market prices from Kalshi; nominees verified against Wikipedia, Ballotpedia and local news.`;
   }
 
