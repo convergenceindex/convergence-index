@@ -579,11 +579,17 @@
     .dn-board { display: grid; grid-template-columns: repeat(auto-fill, minmax(178px, 1fr)); gap: 6px; }
     .dn-tile { position: relative; display: grid; gap: 2px; padding: 8px 10px; background: #161b23; border-left: 4px solid #555; }
     .dt-last { font-family: var(--mono); font-size: 9.5px; color: #8f887a; }
+    .dn-latest { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin-top: 16px; font-family: var(--mono); font-size: 12px; color: #f1ede4; }
+    .dn-latest .lc { border-left: 3px solid #555; padding-left: 7px; } .dn-latest .lc.D { border-color: #6f9be0; } .dn-latest .lc.R { border-color: #e0735f; } .dn-latest .lc.I { border-color: #e0b453; }
+    .dn-latest small { color: #8f887a; }
+    .dn-checked { font-family: var(--mono); font-size: 10.5px; color: #8f887a; margin: 8px 0 0; min-height: 1em; }
+    .dn-tile.just { outline: 2px solid #e0b453; outline-offset: -2px; animation: dnjust 1.2s ease-out 3; }
+    @keyframes dnjust { 0% { box-shadow: 0 0 0 0 rgba(224,180,83,.7); } 100% { box-shadow: 0 0 0 10px rgba(224,180,83,0); } }
     .dn-tile.fav-D { border-left-color: #6f9be0; } .dn-tile.fav-R { border-left-color: #e0735f; } .dn-tile.fav-I { border-left-color: #e0b453; }
     .dn-tile.called.D { background: #2c4a7a; border-left-color: #8fb0e3; } .dn-tile.called.R { background: #7a2e24; border-left-color: #e8907f; } .dn-tile.called.I { background: #6b5214; }
     .dt-st { font-family: var(--mono); font-size: 11px; color: #8f887a; } .dt-nm { font-family: var(--serif); font-size: 16px; color: #f7f2e6; line-height: 1.2; } .dt-fav { font-family: var(--mono); font-size: 10.5px; color: #b9b3a6; }
     .dt-flip { margin-left: 8px; font-family: var(--mono); font-size: 9px; letter-spacing: .04em; text-transform: uppercase; color: #e0b453; }
-    @media (prefers-reduced-motion: reduce) { .dn-dot { animation: none; } }
+    @media (prefers-reduced-motion: reduce) { .dn-dot, .dn-tile.just { animation: none; } }
     @media (max-width: 760px) { .dn-slot { grid-template-columns: 1fr; gap: 10px; } .sl-time { font-size: 32px; } .sl-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; } .sl-chip, .sl-tally { margin-top: 0; } .dn-board { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); } }
     @media (max-width: 760px) { .chamber-view.dn.active { margin: 8px -16px 0; padding: 28px 16px 32px; } .gap-row { grid-template-columns: 1fr 60px; } .g-bar { grid-column: 1 / -1; order: 3; } .g-txt { grid-column: 1 / -1; order: 4; } }
     /* phone: race tables become stacked cards */
@@ -796,6 +802,8 @@
         <h2 class="dn-title">Decision Night</h2>
         <p class="dn-sub">Tuesday, November 3, 2026 — every Senate seat, the key governor races and the House battleground, slotted hour by hour as the polls close.</p>
         <div class="dn-countdown" id="dnCountdown"></div>
+        <div class="dn-latest" id="dnLatest" aria-live="polite" hidden></div>
+        <p class="dn-checked" id="dnChecked"></p>
       </div>
       <div class="dn-roads"><div id="dnRoad51"></div><div id="dnRoad218"></div></div>
       <p class="dn-note" id="dnRoadNote"></p>
@@ -1218,13 +1226,24 @@
     return DN.pollClosings.map(([t, label, sts]) => { const rs = races.filter(x => x.t === t).sort((a, b) => rank[a.type] - rank[b.type] || a.label.localeCompare(b.label, undefined, { numeric: true }));
       return { t, label, states: sts, races: rs, codes: new Set(rs.map(x => x.code)) }; });
   }
+  let dnPreview = false, dnStarted = false, dnNextIdx = null, dnFresh = {};
   function renderDecisionNight(preview) {
-    const DN = DATA.decisionNight, R = DN.results, now = Date.now();
-    $('dnStatus').textContent = preview && now < Date.parse(DN.launch) ? 'Preview — goes live 12:01 AM ET, Nov 3' : (R.updated ? 'Results updated ' + fmtDate(R.updated, true) + ' ET' : 'Live');
-    const first = Date.parse(DN.firstClose), cd = $('dnCountdown');
+    dnPreview = preview; if (dnStarted) { drawDecisionNight(); return; } dnStarted = true;
+    const DN = DATA.decisionNight, first = Date.parse(DN.firstClose), cd = $('dnCountdown');
     const tick = () => { const s = Math.round((first - Date.now()) / 1000);
       cd.innerHTML = s > 0 ? `<span class="dn-k">First polls close in</span><span class="dn-clock">${Math.floor(s / 86400) ? Math.floor(s / 86400) + 'd ' : ''}${String(Math.floor(s % 86400 / 3600)).padStart(2, '0')}:${String(Math.floor(s % 3600 / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}</span><span class="dn-k">6:00 PM ET · Indiana and Kentucky</span>` : `<span class="dn-k">Polls are closing</span><span class="dn-clock">The count is on</span>`; };
     tick(); setInterval(tick, 1000);
+    drawDecisionNight();
+    const chipTick = () => { const t = Date.now(); document.querySelectorAll('.dn-slot.next .sl-chip').forEach(ch => { const s = Math.round((Date.parse(ch.dataset.t) - t) / 1000);
+      if (s > 0) ch.textContent = 'Next · closes in ' + (s >= 86400 ? Math.floor(s / 86400) + 'd ' + Math.floor(s % 86400 / 3600) + 'h' : s >= 3600 ? Math.floor(s / 3600) + 'h ' + Math.floor(s % 3600 / 60) + 'm' : Math.max(1, Math.floor(s / 60)) + 'm'); });
+      // when an hour's polls close, move the "next" marker without waiting for new data
+      const ni = DATA.decisionNight.pollClosings.findIndex(p => Date.parse(p[0]) > t); if (ni !== dnNextIdx) drawDecisionNight(); };
+    chipTick(); setInterval(chipTick, 30000);
+    dnLiveFeed();
+  }
+  function drawDecisionNight() {
+    const DN = DATA.decisionNight, R = DN.results, now = Date.now(), preview = dnPreview;
+    $('dnStatus').textContent = preview && now < Date.parse(DN.launch) ? 'Preview — goes live 12:01 AM ET, Nov 3' : (R.updated ? 'Live · results updated ' + fmtDate(R.updated, true) + ' ET' : 'Live');
     // Road to 51
     const A = DATA.senate.all, calls = R.senate || {}; const c = { D: A.notInPlay.D, R: A.notInPlay.R, I: 0, U: 0 };
     A.races.forEach(r => { const k = calls[r.st]; if (k) c[k]++; else c.U++; });
@@ -1236,11 +1255,11 @@
     road('dnRoad218', hc.D, hc.R, 435 - hc.D - hc.R, 218, 435, 'House — the road to 218');
     $('dnRoadNote').innerHTML = R.updated ? esc(R.note) : `No races are called yet. Senate bars start from the ${A.notInPlay.D} Democratic-caucus and ${A.notInPlay.R} Republican seats not on the ballot. ${esc(R.note)}`;
     // Races, slotted by poll-closing time
-    const slots = closingSlots(), nextIdx = slots.findIndex(s => Date.parse(s.t) > now);
+    const slots = closingSlots(), nextIdx = slots.findIndex(s => Date.parse(s.t) > now); dnNextIdx = nextIdx;
     const tile = x => { const c = x.call, side = c || x.fav, flip = side && side !== 'I' && x.held && side !== x.held;
       const kind = { senate: x.special ? 'Senate (special)' : 'Senate', gov: 'Governor', house: 'House' }[x.type];
       const lastNote = x.lastT && x.lastT !== x.t ? `<span class="dt-last">Last polls close ${esc(x.lastLabel)}</span>` : '';
-      return `<div class="dn-tile ${c ? 'called ' + c : 'fav-' + (x.fav || 'none')}"><span class="dt-st">${esc(x.label)} · ${kind}</span><span class="dt-nm">${x.names.map(esc).join(' v ')}</span>` +
+      return `<div class="dn-tile ${c ? 'called ' + c : 'fav-' + (x.fav || 'none')}${dnFresh[x.type + ':' + (x.type === 'house' ? x.label : x.code)] ? ' just' : ''}"><span class="dt-st">${esc(x.label)} · ${kind}</span><span class="dt-nm">${x.names.map(esc).join(' v ')}</span>` +
         `<span class="dt-fav">${c ? 'Called · ' + c : (x.p != null ? `${x.fav} ${fmtPct(x.p * 100)}` : `No market · ${esc(x.held || '')}-held`)}${flip ? '<span class="dt-flip">' + (c ? 'flip' : 'possible flip') + '</span>' : ''}</span>${lastNote}</div>`; };
     const counts = s => { const n = { senate: 0, gov: 0, house: 0 }; s.races.forEach(x => n[x.type]++);
       return [n.senate && `${n.senate} Senate`, n.gov && `${n.gov} governor`, n.house && `${n.house} House`].filter(Boolean).join(' · '); };
@@ -1253,10 +1272,43 @@
         `<div><div class="sl-states">${statesHtml}</div>${s.races.length ? `<div class="dn-board">${s.races.map(tile).join('')}</div>` : '<p class="sl-empty">No tracked races close at this hour.</p>'}</div></li>`; }).join('');
     const nAll = slots.reduce((a, s) => a + s.races.length, 0);
     $('dnSlotsLede').textContent = `All ${nAll} races we track — every Senate seat, the key governor races and the House battleground — placed at the hour most of their state's polls close. Before results, each shows the market favorite and its chance; after, the AP race call. The AP does not call a race until every poll in the state has closed, so races in split-time states note when their last polls close.`;
-    $('dnSlotsNote').innerHTML = esc(DN.closingsNote) + note('Poll closing times', DN.closingsSource) + ' Market prices from Kalshi; nominees verified against Wikipedia, Ballotpedia and local news.';
-    const chipTick = () => { const t = Date.now(); document.querySelectorAll('.dn-slot.next .sl-chip').forEach(ch => { const s = Math.round((Date.parse(ch.dataset.t) - t) / 1000);
-      if (s > 0) ch.textContent = 'Next · closes in ' + (s >= 86400 ? Math.floor(s / 86400) + 'd ' + Math.floor(s % 86400 / 3600) + 'h' : s >= 3600 ? Math.floor(s / 3600) + 'h ' + Math.floor(s % 3600 / 60) + 'm' : Math.max(1, Math.floor(s / 60)) + 'm'); }); };
-    chipTick(); setInterval(chipTick, 30000);
+    $('dnSlotsNote').innerHTML = esc(DN.closingsNote) + note('Poll closing times', DN.closingsSource) + ' Market prices from Kalshi, refreshed through the night; nominees verified against Wikipedia, Ballotpedia and local news.';
+    const log = (R.log || []).slice(-6).reverse(), raceName = k => { const [t, id] = k.split(':'); return t === 'house' ? id : `${id} ${t === 'gov' ? 'Governor' : 'Senate'}`; };
+    $('dnLatest').hidden = !log.length;
+    $('dnLatest').innerHTML = log.length ? `<span class="dn-k">Latest calls</span>` + log.map(e => `<span class="lc ${e.call === '-' ? '' : e.call}">${esc(raceName(e.race))} <b>${e.call === '-' ? 'call withdrawn' : e.call}</b> <small>${new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: 'numeric', minute: '2-digit' }).format(new Date(e.t))}</small></span>`).join('') : '';
+    const ct = $('dnChecked'); if (ct) ct.textContent = dnLastCheck ? 'Checked for new calls ' + new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: 'numeric', minute: '2-digit', second: '2-digit' }).format(new Date(dnLastCheck)) + ' ET' : '';
+  }
+  /* Live feed (Decision Night only): race calls from results.json every 30 s, market prices from the page every 5 min.
+     Updates happen in place — no reload — and only while the tab is visible. */
+  let dnLastCheck = 0;
+  function dnWindow() { const L = Date.parse(DATA.decisionNight.launch), t = Date.now(); return t >= L - 36e5 && t < L + 2 * 864e5; }
+  function applyResults(nr) {
+    const R = DATA.decisionNight.results; if (!nr || !nr.updated || (R.updated && Date.parse(nr.updated) <= Date.parse(R.updated))) return false;
+    const fresh = {}; ['senate', 'gov', 'house'].forEach(k => Object.entries(nr[k] || {}).forEach(([id, v]) => { if ((R[k] || {})[id] !== v) fresh[k + ':' + id] = 1; }));
+    DATA.decisionNight.results = Object.assign({ senate: {}, gov: {}, house: {}, houseCalled: { D: 0, R: 0 } }, nr);
+    dnFresh = fresh; setTimeout(() => { dnFresh = {}; document.querySelectorAll('.dn-tile.just').forEach(t => t.classList.remove('just')); }, 90000);
+    return true;
+  }
+  async function dnPollResults() {
+    try { const r = await fetch('results.json?t=' + Date.now(), { cache: 'no-store' }); dnLastCheck = Date.now();
+      if (r.ok && applyResults(await r.json())) drawDecisionNight();
+      else if ($('dnChecked')) $('dnChecked').textContent = 'Checked for new calls ' + new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: 'numeric', minute: '2-digit', second: '2-digit' }).format(new Date(dnLastCheck)) + ' ET'; } catch (e) {}
+  }
+  async function dnPollPage() {
+    try { const r = await fetch(location.href.split('#')[0].split('?')[0] + '?t=' + Date.now(), { cache: 'no-store' }); if (!r.ok) return;
+      const t = await r.text(), k = t.indexOf('const DATA = '); if (k < 0) return; const st = t.indexOf('{', k), en = t.indexOf('\n', st);
+      const N = JSON.parse(t.slice(st, en).replace(/;\s*$/, '')); if (!N.asOf || Date.parse(N.asOf) <= Date.parse(DATA.asOf)) return;
+      DATA.asOf = N.asOf; DATA.house.races = N.house.races; DATA.senate.all = N.senate.all; DATA.senate.races = N.senate.races; DATA.governors.races = N.governors.races;
+      DATA.decisionNight.houseMore = N.decisionNight.houseMore; applyResults(N.decisionNight.results); drawDecisionNight();
+      if ($('rfChecked')) $('rfChecked').textContent = fmtDate(DATA.asOf, true) + ' ET';
+    } catch (e) {}
+  }
+  function dnLiveFeed() {
+    if (!dnWindow()) return;
+    const go = () => { if (document.hidden || !dnWindow()) return; dnPollResults(); };
+    const goPage = () => { if (document.hidden || !dnWindow()) return; dnPollPage(); };
+    go(); setInterval(go, 30000); setInterval(goPage, 5 * 60000);
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) { go(); goPage(); } });
   }
 
   /* ===== boot ===== */
@@ -1331,7 +1383,7 @@
     const btn = $('rfBtn'), auto = $('rfAuto'), msg = $('rfMsg'), dot = $('rfDot');
     if (!btn) { if ($('rfChecked')) $('rfChecked').textContent = fmtDate(DATA.asOf, true) + ' ET'; if ($('rfDot')) $('rfDot').classList.add('on');
       // Decision Night (12:01 AM ET Nov 3 through Nov 4): no auto-refresh on the site, so tell viewers to reload for new calls
-      const dnNote = () => { const L = Date.parse(DATA.decisionNight.launch), t = Date.now(); if (t >= L && t < L + 2 * 864e5 && $('rfNext')) $('rfNext').textContent = 'Race calls update through the night — reload the page for the latest'; };
+      const dnNote = () => { const L = Date.parse(DATA.decisionNight.launch), t = Date.now(); if (t >= L && t < L + 2 * 864e5 && $('rfNext')) $('rfNext').textContent = 'Race calls appear on this page automatically'; };
       dnNote(); setInterval(dnNote, 60000); return; }
     if (SITE && SIGNUP_URL && $('rfSub')) { $('rfSub').href = SIGNUP_URL; $('rfSub').hidden = false; }
     const asOf = new Date(DATA.asOf).getTime(), resAt = (DATA.decisionNight && DATA.decisionNight.results && DATA.decisionNight.results.updated) ? Date.parse(DATA.decisionNight.results.updated) : 0;

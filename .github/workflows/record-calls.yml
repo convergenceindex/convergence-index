@@ -1,0 +1,68 @@
+name: Record race calls
+
+# Election night: enter AP race calls from your phone (GitHub app → Actions → Record race calls → Run workflow).
+# The website checks results.json every 30 seconds, so calls appear about 1–2 minutes after this finishes.
+#
+# Examples (separate with commas or new lines):
+#   GA Sen D, NE Sen I, NV Gov R, PA-07 D, House D 212 R 190
+#   PA-07 -        ← withdraws a call entered by mistake
+on:
+  workflow_dispatch:
+    inputs:
+      calls:
+        description: 'Calls, e.g. "GA Sen D, NV Gov R, PA-07 D, House D 212 R 190"'
+        required: true
+        type: string
+      dry_run:
+        description: 'Check only — show what would be recorded, publish nothing'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: record-calls
+  cancel-in-progress: false
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Record the calls
+        id: rec
+        env:
+          CALLS: ${{ inputs.calls }}
+        run: |
+          set +e
+          python3 record_calls.py "$CALLS" ${{ inputs.dry_run && '--dry-run' || '' }} 2>&1 | tee /tmp/rec.txt
+          code=${PIPESTATUS[0]}
+          set -e
+          { echo '```'; cat /tmp/rec.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          if [ "$code" = "2" ]; then exit 1; fi
+
+      - name: Publish
+        if: steps.rec.outputs.code == '0' && !inputs.dry_run
+        run: |
+          git config user.name "Convergence Index bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add results.json
+          git commit -m "Race calls $(TZ=America/New_York date +'%-I:%M %p ET'): $(head -c 200 <<< "$(sed -n '2,6p' /tmp/rec.txt | tr '\n' ';')")"
+          for i in 1 2 3 4; do
+            if git pull --rebase origin main && git push; then exit 0; fi
+            sleep 5
+          done
+          exit 1
+
+      - name: Ask GitHub Pages to rebuild
+        if: steps.rec.outputs.code == '0' && !inputs.dry_run
+        run: |
+          curl -s -X POST \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/pages/builds" || true

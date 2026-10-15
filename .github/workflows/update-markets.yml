@@ -4,9 +4,15 @@ name: Update market data
 # The generic-ballot averages are refreshed on the midday run (16:20 UTC = 12:20 PM ET) on Mondays, Wednesdays and Fridays.
 # Each run refreshes Kalshi/Polymarket prices (update_markets.py) and race polling from VoteHub
 # (update_polls.py), then publishes only if check_page.py prints PASS.
+#
+# Election Day extras (UTC): market prices every 30 min on Nov 3 (7:07 AM–5:37 PM ET) and every 10 min
+# from 6 PM ET Nov 3 to 6 AM ET Nov 4. These extra runs skip the polling step (prices only, so they finish fast).
 on:
   schedule:
     - cron: '20 4,10,16,22 * * *'
+    - cron: '7,37 12-22 3 11 *'
+    - cron: '7,17,27,37,47,57 23 3 11 *'
+    - cron: '7,17,27,37,47,57 0-10 4 11 *'
   workflow_dispatch:
     inputs:
       polls_dry_run:
@@ -89,6 +95,7 @@ jobs:
           COOK_EMAIL: ${{ secrets.COOK_EMAIL }}
           COOK_PASSWORD: ${{ secrets.COOK_PASSWORD }}
         run: |
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "${{ github.event.schedule }}" != "20 4,10,16,22 * * *" ]; then echo "Election Day extra run — prices only, skipping polls"; echo "code=3" >> "$GITHUB_OUTPUT"; exit 0; fi
           POLLS=$(find . -name '*update_polls.py' -not -path './.git/*' | head -1)
           if [ -z "$POLLS" ]; then echo "update_polls.py not found — skipping polls"; echo "code=3" >> "$GITHUB_OUTPUT"; exit 0; fi
           ARGS=""
@@ -108,6 +115,23 @@ jobs:
             code=3
           fi
           echo "code=$code" >> "$GITHUB_OUTPUT"
+
+      - name: Copy the latest race calls (results.json) into the page
+        if: steps.update.outputs.code == '0' || steps.polls.outputs.code == '0'
+        run: |
+          # newest calls on main (the race-call form may have pushed while this ran); don't touch the working tree
+          git fetch -q origin main && git show origin/main:results.json > /tmp/results.json 2>/dev/null || cp results.json /tmp/results.json 2>/dev/null || true
+          python3 - <<'PYX'
+          import json, os
+          if os.path.exists("/tmp/results.json"):
+              R = json.load(open("/tmp/results.json", encoding="utf-8"))
+              s = open("index.html", encoding="utf-8").read(); k = s.index("const DATA = "); st = s.index("{", k)
+              D, end = json.JSONDecoder().raw_decode(s, st); cur = D["decisionNight"].get("results") or {}
+              if R.get("updated") and (not cur.get("updated") or R["updated"] > cur["updated"]):
+                  D["decisionNight"]["results"] = R
+                  open("index.html", "w", encoding="utf-8").write(s[:st] + json.dumps(D, ensure_ascii=False, separators=(",", ":")) + s[end:])
+                  print("Copied race calls updated", R["updated"])
+          PYX
 
       - name: Safety check (must print PASS)
         if: steps.update.outputs.code == '0' || steps.polls.outputs.code == '0'

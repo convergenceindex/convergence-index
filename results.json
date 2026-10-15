@@ -1,0 +1,12 @@
+{
+ "updated": null,
+ "senate": {},
+ "gov": {},
+ "house": {},
+ "houseCalled": {
+  "D": 0,
+  "R": 0
+ },
+ "note": "Race calls will be filled in on election night from AP race calls as reported by major outlets.",
+ "log": []
+}
