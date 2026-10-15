@@ -3,6 +3,7 @@
  *
  *   node build_daily.cjs <repoDir> <outDir> [--theme board|spotlight|pvm|path|week] [--countdown 14|7] [--yesterday page.html] [--week page.html]
  *   Countdown: when Election Day is exactly 14 or 7 days away (ET), a countdown carousel replaces the day's theme.
+ *   On those days it first waits (up to --max-wait minutes, default 75) for that morning's data update to land.
  *
  * <repoDir> is a git clone of the site repo (clone WITH history, e.g. `git clone --filter=blob:none ...`).
  * Today's numbers come from <repoDir>/index.html. "Yesterday" and "a week ago" are earlier versions of
@@ -608,15 +609,36 @@ ${sec('Story', [files.story])}
 }
 
 // ---------------------------------------------------------------- main
+// On countdown days the graphics must use THIS morning's data: the site's own update runs around
+// 6:20 AM ET, but GitHub sometimes starts it late. Wait for it (pulling the repo every few minutes)
+// before building; if it never lands, build anyway and say so loudly in the plan and the kit.
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const pageAsOf = () => { const m = fs.readFileSync(path.join(REPO, 'index.html'), 'utf8').match(/"asOf":\s*"([^"]+)"/); return m ? m[1] : null; };
+const etHour = t => +new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: 'numeric', hourCycle: 'h23' }).format(new Date(t));
+const freshToday = a => !!a && etDay(a) === etDay(new Date()) && etHour(a) >= 6;
+async function waitForMorningData(maxMin) {
+  const t0 = Date.now();
+  while (!freshToday(pageAsOf()) && Date.now() - t0 < maxMin * 6e4) {
+    console.error(`waiting for this morning's data update (page data from ${pageAsOf()}) …`);
+    await sleep(3 * 6e4);
+    try { cp.execSync(`git -C "${REPO}" pull -q --ff-only`, { stdio: 'ignore', timeout: 120000 }); } catch (e) { console.error('  git pull failed:', String(e.message).split('\n')[0]); }
+  }
+  return freshToday(pageAsOf());
+}
+
 (async () => {
+  // countdown day? (Election Day exactly 14 or 7 days away, ET)
+  const fc = (fs.readFileSync(path.join(REPO, 'index.html'), 'utf8').match(/"firstClose":\s*"([^"]+)"/) || [])[1];
+  const elecDay = fc ? etDay(fc) : '2026-11-03';
+  const daysOut = Math.round((Date.parse(elecDay + 'T12:00:00Z') - Date.parse(etDay(new Date()) + 'T12:00:00Z')) / 864e5);
+  const cdDays = opt('countdown') ? +opt('countdown') : ([14, 7].includes(daysOut) ? daysOut : null);
+  let fresh = true;
+  if (cdDays) fresh = await waitForMorningData(opt('max-wait') != null ? +opt('max-wait') : 75);
   const browser = await chromium.launch();
   const T = await readPage(browser, path.join(REPO, 'index.html'));
   const dow = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', weekday: 'short' }).format(new Date());
   const THEMES = { Mon: 'board', Tue: 'spotlight', Wed: 'pvm', Thu: 'path', Fri: 'week' };
   // Countdown days (Election Day exactly 14 or 7 days away, ET) replace the weekday rotation.
-  const elecDay = T.election ? etDay(T.election) : '2026-11-03';
-  const daysOut = Math.round((Date.parse(elecDay + 'T12:00:00Z') - Date.parse(etDay(new Date()) + 'T12:00:00Z')) / 864e5);
-  const cdDays = opt('countdown') ? +opt('countdown') : ([14, 7].includes(daysOut) ? daysOut : null);
   const theme = cdDays ? 'countdown' : (opt('theme') || THEMES[dow]);
   if (!theme) { console.log(JSON.stringify({ skipped: `weekend (${dow}) — no graphics` })); await browser.close(); return; }
 
@@ -652,6 +674,9 @@ ${sec('Story', [files.story])}
     main = { kind: 'countdown', html: themed.post };
     story = level === 'big' && changes ? { kind: 'changes', html: changes.story } : { kind: 'countdown', html: themed.story };
     caption = themed.caption; summary = `${themed.title} — countdown carousel (${themed.post.length} slides)${story.kind === 'changes' ? `; big news ${cDay.per.long}, so the story covers what changed` : ''}.`;
+    const asOfET = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }).format(new Date(T.asOf));
+    summary = fresh ? `${summary} Built from this morning's data (updated ${asOfET} ET).`
+      : `⚠️ STALE DATA — this morning's site update never arrived, so these countdown graphics use data from ${asOfET} ET. Check the numbers (or rerun the graphics after the GitHub "Update market data" workflow runs) before posting. ${summary}`;
   } else if (level === 'big' && changes && theme === 'week') {
     main = { kind: 'week', html: themed.post }; story = { kind: 'changes', html: changes.story };
     caption = themed.caption; summary = `Week in review leads (it includes today's big moves); a "what changed" story covers ${cDay.per.long}.`;
@@ -677,7 +702,7 @@ ${sec('Story', [files.story])}
   else fs.copyFileSync(path.join(themed.bdir, themed.boardStory), path.join(OUT, 'story.png'));
   await browser.close();
 
-  const plan = { date: etDay(T.asOf), dateLabel: dateT, weekday: dow, theme, news: level, main: main.kind, story: story.kind, summary,
+  const plan = { date: etDay(T.asOf), dateLabel: dateT, weekday: dow, theme, news: level, main: main.kind, story: story.kind, summary, dataAsOf: T.asOf, dataFresh: fresh,
     compared: cDay ? { since: Y1.asOf, per: cDay.per.short, senate: [cDay.sY, cDay.sT], house: [cDay.hY, cDay.hT], flips: cDay.flips.map(m => raceLabel(m.t)), maxRace: +cDay.maxRace.toFixed(1) } : null,
     files };
   const md = `# ${dateT} — ${summary}\n\nMain post: ${files.post.length > 1 ? `carousel, post in order: ${files.post.join(', ')}` : files.post[0]}. Story: story.png.\n\n## LinkedIn\n${caption.linkedin}\n\n## Instagram\n${caption.instagram}\n.\n.\n#2026midterms #elections #politics #predictionmarkets #polling #data\n\n## X\n${caption.x}\n\n## Alt text\n${caption.alt}\n`;
