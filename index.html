@@ -1313,6 +1313,9 @@
     // Decision Night: hidden until launch (or #decision-night preview)
     const hash = decodeURIComponent((location.hash || '').slice(1)), live = Date.now() >= Date.parse(DATA.decisionNight.launch), preview = /decision-night/.test(hash);
     if (live || preview) { $('dnTab').hidden = false; renderDecisionNight(preview); if (live && !/^(house|senate|governors)/.test(hash)) $('dnTab').click(); }
+    else { // page left open before launch: open the tab at 12:01 AM ET without needing a reload
+      const launchAt = Date.parse(DATA.decisionNight.launch), w = setInterval(() => { if (Date.now() < launchAt) return; clearInterval(w);
+        $('dnTab').hidden = false; renderDecisionNight(false); $('dnTab').click(); }, 20000); }
     // deep links: #senate/race=Maine/w=70
     const parts2 = hash.split('/'), tab = parts2[0], kv = Object.fromEntries(parts2.slice(1).map(p => p.split('=')));
     if (/^(house|senate|governors)$/.test(tab)) { const w = kv.w != null ? Math.max(0, Math.min(100, +kv.w)) : null;
@@ -1326,7 +1329,10 @@
   const BUILD = '2026-09-23r';
   (function refresh() {
     const btn = $('rfBtn'), auto = $('rfAuto'), msg = $('rfMsg'), dot = $('rfDot');
-    if (!btn) { if ($('rfChecked')) $('rfChecked').textContent = fmtDate(DATA.asOf, true) + ' ET'; if ($('rfDot')) $('rfDot').classList.add('on'); return; }
+    if (!btn) { if ($('rfChecked')) $('rfChecked').textContent = fmtDate(DATA.asOf, true) + ' ET'; if ($('rfDot')) $('rfDot').classList.add('on');
+      // Decision Night (12:01 AM ET Nov 3 through Nov 4): no auto-refresh on the site, so tell viewers to reload for new calls
+      const dnNote = () => { const L = Date.parse(DATA.decisionNight.launch), t = Date.now(); if (t >= L && t < L + 2 * 864e5 && $('rfNext')) $('rfNext').textContent = 'Race calls update through the night — reload the page for the latest'; };
+      dnNote(); setInterval(dnNote, 60000); return; }
     if (SITE && SIGNUP_URL && $('rfSub')) { $('rfSub').href = SIGNUP_URL; $('rfSub').hidden = false; }
     const asOf = new Date(DATA.asOf).getTime(), resAt = (DATA.decisionNight && DATA.decisionNight.results && DATA.decisionNight.results.updated) ? Date.parse(DATA.decisionNight.results.updated) : 0;
     let autoOn = LS.get('autoRefresh', true), timer = null, busy = false, pending = null;
@@ -1349,7 +1355,7 @@
     function ago() {
       const m = Math.max(0, Math.floor((Date.now() - lastRefreshed) / 60000));
       $('rfChecked').textContent = friendly(lastRefreshed) + (m < 1 ? ' (just now)' : '');
-      const h = etHour(new Date()); $('rfNext').textContent = 'Updates every 6 hours';
+      const h = etHour(new Date()); $('rfNext').textContent = Date.now() >= Date.parse(DATA.decisionNight.launch) && Date.now() < Date.parse(DATA.decisionNight.launch) + 2 * 864e5 ? 'Race calls update through the night' : 'Updates every 6 hours';
     }
     const checked = () => {};
     function reload(a, b, r) { if (pending === 'stuck') return; ss.set('scrollY', String(window.scrollY)); ss.set('want', (a || asOf) + '|' + (b || '') + '|' + (r || 0)); location.reload(); }
@@ -1358,9 +1364,9 @@
     async function fetchLatest() {
       const r = await fetch(location.href.split('#')[0], { cache: 'no-store', credentials: 'same-origin' });
       if (!r.ok) throw new Error('status ' + r.status);
-      const t = await r.text(), m = t.match(/"asOf":\s*"([^"]+)"/), b = t.match(/const BUILD = '([^']+)'/);
+      const t = await r.text(), m = t.match(/"asOf":\s*"([^"]+)"/), b = t.match(/const BUILD = '([^']+)'/), u = t.match(/"results":\s*\{\s*"updated":\s*"([^"]+)"/);
       if (!m) throw new Error('no asOf');
-      return [new Date(m[1]).getTime(), b ? b[1] : null];
+      return [new Date(m[1]).getTime(), b ? b[1] : null, u ? Date.parse(u[1]) : 0];
     }
     async function check(manual) {
       if (busy) return; busy = true;
@@ -1368,9 +1374,9 @@
       try {
         if (pending && pending !== 'stuck') { reload(pending[0], pending[1], pending[2]); return; }
         if (dbLatest && isNewer(...dbLatest)) { found(...dbLatest, manual); return; }
-        let a = null, b = null;
-        try { [a, b] = await fetchLatest(); checked(); } catch (e) { if (dbLatest) checked(); else if (manual) { reload(); return; } }
-        if (isNewer(a, b)) { found(a, b, 0, manual); return; }
+        let a = null, b = null, rr = 0;
+        try { [a, b, rr] = await fetchLatest(); checked(); } catch (e) { if (dbLatest) checked(); else if (manual) { reload(); return; } }
+        if (isNewer(a, b, rr)) { found(a, b, rr, manual); return; }
         if (manual) { say(pending === 'stuck' ? 'Still an older copy in this view — reload the page in your browser.' : 'Up to date — these are the newest figures ✓', pending === 'stuck' ? 'new' : 'ok'); if (pending !== 'stuck') setTimeout(() => say(''), 5000); }
       } finally { busy = false; btn.classList.remove('spin'); }
     }
@@ -1378,7 +1384,7 @@
       autoOn = on; LS.set('autoRefresh', on);
       auto.setAttribute('aria-pressed', String(on)); auto.textContent = 'Auto-refresh: ' + (on ? 'On' : 'Off');
       dot.classList.toggle('on', on);
-      clearInterval(timer); timer = on ? setInterval(() => { if (!document.hidden) check(false); }, 10 * 60 * 1000) : null;
+      clearInterval(timer); timer = on ? setInterval(() => { if (!document.hidden) check(false); }, (Date.now() >= Date.parse(DATA.decisionNight.launch) - 36e5 && Date.now() < Date.parse(DATA.decisionNight.launch) + 2 * 864e5 ? 3 : 10) * 60 * 1000) : null;
     }
     btn.addEventListener('click', () => { lastRefreshed = Date.now(); ss.set('refreshedAt', String(lastRefreshed)); ago(); check(true); });
     auto.addEventListener('click', () => setAuto(!autoOn));
