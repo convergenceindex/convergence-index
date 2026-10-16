@@ -1,4 +1,4 @@
-Run 2026-10-16 04:50 UTC (schedule)
+Run 2026-10-16 10:50 UTC (schedule)
 
 == Markets ==
 Chamber control
@@ -12,7 +12,7 @@ Seat brackets
 Race markets
   ! governors Kansas: kept previous prices (expected one '-26' event, found ['GOVPARTYKS-27'])
   80 of 81 race markets updated
-Updated index.html: asOf 2026-10-16T04:50:19Z
+Updated index.html: asOf 2026-10-16T10:50:17Z
 
 == Polls ==
 Fetching polls from VoteHub
@@ -30,7 +30,7 @@ Ohio (special)                 D+3.1   D+3.1  Our average of 7 polls, Sep 16–O
 Iowa                           D+0.6   D+0.6  Our average of 6 polls, Sep 16–Oct 12: YouGov D+1, Marist D+3, CNN/SSRS R+2, Emerson R+1.6 …
 Alaska                         R+1.4   R+1.4  Our average of 2 polls, Sep 17–30: Quantus R+0.6, co/efficient R+3
 Michigan                       D+3.7   D+3.7  Our average of 9 polls, Sep 20–Oct 1: Beacon/Shaw & Co. D+1, Mitchell & Communications D+5, Trafalgar D+2, Gui
-Maine                          D+2.2   D+2.4  Our average of 7 polls, Sep 21–Oct 5: Marist D+4, The WaPo/George Mason D+5, co/efficient R+2, University of N
+Maine                          D+2.4   D+2.4  Our average of 7 polls, Sep 21–Oct 5: Marist D+4, The WaPo/George Mason D+5, co/efficient R+2, University of N
 New Hampshire                  D+7.2   D+7.2  Our average of 3 polls, Sep 17–22: University of New D+8, InsiderAdvantage D+8, NYT/Siena D+5
 Nebraska                       R+2.5   R+2.5  Our average of 2 polls, Sep 8–Oct 5: National Public Affairs R+3, GBAO Strategies Osborn+1
 Georgia (model)                    —   D+9.5  3 polls: Wedgewood Polls D+10, InsiderAdvantage D+8, Big Data Poll D+10.8
@@ -65,5 +65,4 @@ VA-07                              —       —  no recent polls — kept
 WA-03                            R+1     R+1  Our average of 1 poll, Sep 27: DHM R+1
 WI-03                            D+4       —  no recent polls — kept
 
-3 race polling values changed.
-Updated index.html
+0 race polling values changed.
