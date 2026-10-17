@@ -1,4 +1,4 @@
-Run 2026-10-17 10:44 UTC (schedule)
+Run 2026-10-17 16:46 UTC (schedule)
 
 == Markets ==
 Chamber control
@@ -12,7 +12,7 @@ Seat brackets
 Race markets
   ! governors Kansas: kept previous prices (expected one '-26' event, found ['GOVPARTYKS-27'])
   80 of 81 race markets updated
-Updated index.html: asOf 2026-10-17T10:44:17Z
+Updated index.html: asOf 2026-10-17T16:45:32Z
 
 == Polls ==
 Fetching polls from VoteHub
