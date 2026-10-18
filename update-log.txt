@@ -1,4 +1,4 @@
-Run 2026-10-18 04:48 UTC (schedule)
+Run 2026-10-18 10:45 UTC (schedule)
 
 == Markets ==
 Chamber control
@@ -12,7 +12,7 @@ Seat brackets
 Race markets
   ! governors Kansas: kept previous prices (expected one '-26' event, found ['GOVPARTYKS-27'])
   80 of 81 race markets updated
-Updated index.html: asOf 2026-10-18T04:47:36Z
+Updated index.html: asOf 2026-10-18T10:44:47Z
 
 == Polls ==
 Fetching polls from VoteHub
@@ -28,10 +28,10 @@ Race                             old     new  basis
 Texas                          D+1.3   D+1.3  Our average of 9 polls, Sep 19–Oct 14: InsiderAdvantage R+1, Quantus R+0.5, ActiVote D+3.8, ReconMR/Siena D+4 
 Ohio (special)                 D+3.8   D+3.8  Our average of 7 polls, Sep 23–Oct 9: Bowling Green State/YouGov D+6, CNN/SSRS D+6, InsiderAdvantage D+1, co/e
 Iowa                           D+0.8   D+0.8  Our average of 5 polls, Sep 28–Oct 12: YouGov D+1, Marist D+3, CNN/SSRS R+2, Emerson R+1.6 …
-Alaska                         R+0.4   D+0.3  Our average of 2 polls, Sep 30–Oct 15: Public Policy D+1, Quantus R+0.6
+Alaska                         D+0.3   D+0.3  Our average of 2 polls, Sep 30–Oct 15: Public Policy D+1, Quantus R+0.6
 Michigan                       D+3.2   D+3.2  Our average of 10 polls, Sep 20–Oct 8: Beacon/Shaw & Co. D+1, Mitchell & Communications D+5, Trafalgar D+2, Gu
 Maine                          D+2.3   D+2.3  Our average of 8 polls, Sep 21–Oct 14: InsiderAdvantage D+2, Marist D+4, The WaPo/George Mason D+5, co/efficie
-New Hampshire                  D+7.2   D+6.8  Our average of 2 polls, Sep 21–22: University of New D+8, NYT/Siena D+5
+New Hampshire                  D+6.8   D+6.8  Our average of 2 polls, Sep 21–22: University of New D+8, NYT/Siena D+5
 Nebraska                       R+2.5   R+2.5  Our average of 2 polls, Sep 8–Oct 5: National Public Affairs R+3, GBAO Strategies Osborn+1
 Georgia (model)                    —   D+9.5  3 polls: Wedgewood Polls D+10, InsiderAdvantage D+8, Big Data Poll D+10.8
 Minnesota (model)                  —   D+3.7  3 polls: SurveyUSA D+3, Big Data Poll D+2, GQR D+8
@@ -65,5 +65,4 @@ VA-07                              —       —  no recent polls — kept
 WA-03                            R+1     R+1  Our average of 1 poll, Sep 27: DHM R+1
 WI-03                            D+4       —  no recent polls — kept
 
-5 race polling values changed.
-Updated index.html
+0 race polling values changed.
