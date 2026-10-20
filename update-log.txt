@@ -1,4 +1,4 @@
-Run 2026-10-20 04:49 UTC (schedule)
+Run 2026-10-20 10:49 UTC (schedule)
 
 == Markets ==
 Chamber control
@@ -12,7 +12,7 @@ Seat brackets
 Race markets
   ! governors Kansas: kept previous prices (expected one '-26' event, found ['GOVPARTYKS-27'])
   80 of 81 race markets updated
-Updated index.html: asOf 2026-10-20T04:48:47Z
+Updated index.html: asOf 2026-10-20T10:49:02Z
 
 == Polls ==
 Fetching polls from VoteHub
@@ -25,7 +25,7 @@ Governors
 House
 
 Race                             old     new  basis
-Texas                          D+1.3   D+1.4  Our average of 8 polls, Sep 22–Oct 14: InsiderAdvantage R+1, Quantus R+0.5, ActiVote D+3.8, ReconMR/Siena D+4 
+Texas                          D+1.4   D+1.4  Our average of 8 polls, Sep 22–Oct 14: InsiderAdvantage R+1, Quantus R+0.5, ActiVote D+3.8, ReconMR/Siena D+4 
 Ohio (special)                 D+3.8   D+3.8  Our average of 7 polls, Sep 23–Oct 9: Bowling Green State/YouGov D+6, CNN/SSRS D+6, InsiderAdvantage D+1, co/e
 Iowa                           D+0.8   D+0.8  Our average of 5 polls, Sep 28–Oct 12: YouGov D+1, Marist D+3, CNN/SSRS R+2, Emerson R+1.6 …
 Alaska                         D+0.3   D+0.3  Our average of 2 polls, Sep 30–Oct 15: Public Policy D+1, Quantus R+0.6
@@ -65,5 +65,4 @@ VA-07                              —       —  no recent polls — kept
 WA-03                            R+1     R+1  Our average of 1 poll, Sep 27: DHM R+1
 WI-03                            D+4       —  no recent polls — kept
 
-2 race polling values changed.
-Updated index.html
+0 race polling values changed.
