@@ -1,10 +1,10 @@
-Run 2026-10-21 04:49 UTC (schedule)
+Run 2026-10-21 10:50 UTC (schedule)
 
 == Markets ==
 Chamber control
   house Kalshi control: 90.7¢ / 90.8¢
   house Polymarket control: 91.0¢ / 92.0¢
-  senate Kalshi control: 64.0¢ / 65.0¢
+  senate Kalshi control: 65.0¢ / 66.0¢
   senate Polymarket control: 64.0¢ / 65.0¢
 Seat brackets
   house seat brackets: 12 updated (KXDHOUSESEATS-27)
@@ -12,7 +12,7 @@ Seat brackets
 Race markets
   ! governors Kansas: kept previous prices (expected one '-26' event, found ['GOVPARTYKS-27'])
   80 of 81 race markets updated
-Updated index.html: asOf 2026-10-21T04:49:13Z
+Updated index.html: asOf 2026-10-21T10:50:03Z
 
 == Polls ==
 Fetching polls from VoteHub
@@ -29,7 +29,7 @@ Texas                          D+1.4   D+1.4  Our average of 8 polls, Sep 22–O
 Ohio (special)                 D+3.4   D+3.4  Our average of 7 polls, Sep 23–Oct 18: Marist D+4, Bowling Green State/YouGov D+6, CNN/SSRS D+6, InsiderAdvant
 Iowa                           R+0.4   R+0.4  Our average of 7 polls, Sep 28–Oct 19: YouGov D+1, Marist D+3, co/efficient R+3, National Public Affairs R+3 …
 Alaska                         D+0.3   D+0.3  Our average of 2 polls, Sep 30–Oct 15: Public Policy D+1, Quantus R+0.6
-Michigan                       D+3.2   D+2.9  Our average of 9 polls, Sep 21–Oct 8: Beacon/Shaw & Co. D+1, Mitchell & Communications D+5, Trafalgar D+2, Gui
+Michigan                       D+2.9   D+2.9  Our average of 9 polls, Sep 21–Oct 8: Beacon/Shaw & Co. D+1, Mitchell & Communications D+5, Trafalgar D+2, Gui
 Maine                          D+2.3   D+2.3  Our average of 8 polls, Sep 21–Oct 14: InsiderAdvantage D+2, Marist D+4, The WaPo/George Mason D+5, co/efficie
 New Hampshire                  D+6.8   D+6.8  Our average of 2 polls, Sep 21–22: University of New D+8, NYT/Siena D+5
 Nebraska                       R+2.5   R+2.5  Our average of 2 polls, Sep 8–Oct 5: National Public Affairs R+3, GBAO Strategies Osborn+1
@@ -65,5 +65,4 @@ VA-07                              —       —  no recent polls — kept
 WA-03                            R+1     R+1  Our average of 1 poll, Sep 27: DHM R+1
 WI-03                            D+4       —  no recent polls — kept
 
-2 race polling values changed.
-Updated index.html
+0 race polling values changed.
