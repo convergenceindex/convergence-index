@@ -1,10 +1,10 @@
-Run 2026-10-23 09:24 UTC (schedule)
+Run 2026-10-23 15:10 UTC (schedule)
 
 == Markets ==
 Chamber control
-  house Kalshi control: 91.5¢ / 91.6¢
+  house Kalshi control: 91.4¢ / 91.5¢
   house Polymarket control: 92.0¢ / 93.0¢
-  senate Kalshi control: 68.0¢ / 69.0¢
+  senate Kalshi control: 67.0¢ / 68.0¢
   senate Polymarket control: 67.0¢ / 68.0¢
 Seat brackets
   house seat brackets: 12 updated (KXDHOUSESEATS-27)
@@ -12,13 +12,16 @@ Seat brackets
 Race markets
   ! governors Kansas: kept previous prices (expected one '-26' event, found ['GOVPARTYKS-27'])
   80 of 81 race markets updated
-Updated index.html: asOf 2026-10-23T09:23:51Z
+Updated index.html: asOf 2026-10-23T15:09:32Z
 
 == Polls ==
+Generic ballot
+  ! Silver Bulletin: kept D+8.6 (Oct 14) — headline margin ('up to D +x') not found
+  FiftyPlusOne: D+9.1 (Oct 23)
 Fetching polls from VoteHub
-  us-senator: 177 polls in the last 75 days
-  governor: 176 polls in the last 75 days
-  us-representative: 89 polls in the last 75 days
+  us-senator: 179 polls in the last 75 days
+  governor: 180 polls in the last 75 days
+  us-representative: 93 polls in the last 75 days
   Cook ratings: not configured (COOK_EMAIL / COOK_PASSWORD secrets not set)
 Senate
 Governors
@@ -31,8 +34,8 @@ Iowa                           R+0.1   R+0.1  Our average of 8 polls, Sep 28–O
 Alaska                         D+1.1   D+1.1  Our average of 3 polls, Sep 30–Oct 16: Data for Progress D+2, Public Policy D+1, Quantus R+0.6
 Michigan                       D+2.3   D+2.3  Our average of 8 polls, Sep 23–Oct 18: Marist D+2, Beacon/Shaw & Co. D+1, Mitchell & Communications D+5, Trafa
 Maine                          D+2.4   D+2.4  Our average of 5 polls, Sep 30–Oct 14: InsiderAdvantage D+2, Marist D+4, The WaPo/George Mason D+5, co/efficie
-New Hampshire                  D+7.2   D+7.2  Our average of 3 polls, Sep 17–22: University of New D+8, InsiderAdvantage D+8, NYT/Siena D+5
-Nebraska                       R+2.5   R+2.5  Our average of 2 polls, Sep 8–Oct 5: National Public Affairs R+3, GBAO Strategies Osborn+1
+New Hampshire                  D+7.2   D+7.1  Our average of 4 polls, Sep 17–Oct 20: Saint Anselm D+7, University of New D+8, InsiderAdvantage D+8, NYT/Sien
+Nebraska                       R+2.5   R+2.7  Our average of 2 polls, Sep 8–Oct 18: National Public Affairs R+3, GBAO Strategies Osborn+1
 Georgia (model)                    —   D+8.1  6 polls: University of Georgia D+8, Quantus D+6.9, ActiVote D+8, Wedgewood Polls D+10 …
 Minnesota (model)                  —   D+3.7  3 polls: SurveyUSA D+3, Big Data Poll D+2, GQR D+8
 North Carolina (model)             —  D+11.6  7 polls: Harper D+10, ActiVote D+13.8, SurveyUSA D+14, Elon/YouGov D+13 …
@@ -65,4 +68,5 @@ VA-07                              —       —  no recent polls — kept
 WA-03                          D+0.2   D+0.2  Our average of 2 polls, Sep 27–Oct 21: Change D+1, DHM R+1
 WI-03                            D+4       —  no recent polls — kept
 
-0 race polling values changed.
+3 race polling values changed; 1 generic-ballot averages changed.
+Updated index.html
