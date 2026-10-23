@@ -1,9 +1,9 @@
-Run 2026-10-23 15:10 UTC (schedule)
+Run 2026-10-23 20:09 UTC (schedule)
 
 == Markets ==
 Chamber control
-  house Kalshi control: 91.4¢ / 91.5¢
-  house Polymarket control: 92.0¢ / 93.0¢
+  house Kalshi control: 91.3¢ / 91.4¢
+  house Polymarket control: 91.0¢ / 92.0¢
   senate Kalshi control: 67.0¢ / 68.0¢
   senate Polymarket control: 67.0¢ / 68.0¢
 Seat brackets
@@ -12,30 +12,27 @@ Seat brackets
 Race markets
   ! governors Kansas: kept previous prices (expected one '-26' event, found ['GOVPARTYKS-27'])
   80 of 81 race markets updated
-Updated index.html: asOf 2026-10-23T15:09:32Z
+Updated index.html: asOf 2026-10-23T20:09:07Z
 
 == Polls ==
-Generic ballot
-  ! Silver Bulletin: kept D+8.6 (Oct 14) — headline margin ('up to D +x') not found
-  FiftyPlusOne: D+9.1 (Oct 23)
 Fetching polls from VoteHub
-  us-senator: 179 polls in the last 75 days
-  governor: 180 polls in the last 75 days
-  us-representative: 93 polls in the last 75 days
+  us-senator: 185 polls in the last 75 days
+  governor: 185 polls in the last 75 days
+  us-representative: 97 polls in the last 75 days
   Cook ratings: not configured (COOK_EMAIL / COOK_PASSWORD secrets not set)
 Senate
 Governors
 House
 
 Race                             old     new  basis
-Texas                          D+1.6   D+1.6  Our average of 10 polls, Sep 28–Oct 21: Beacon/Shaw & Co. tie, Emerson D+2, InsiderAdvantage R+1, New River St
-Ohio (special)                 D+4.1   D+4.1  Our average of 10 polls, Sep 23–Oct 20: Beacon/Shaw & Co. D+5, Marist D+4, VoteHub/Verasight D+3.9, New River 
-Iowa                           R+0.1   R+0.1  Our average of 8 polls, Sep 28–Oct 19: YouGov D+1, Marist D+3, co/efficient R+3, National Public Affairs R+3 …
+Texas                          D+1.6     D+2  Our average of 12 polls, Sep 28–Oct 21: Beacon/Shaw & Co. tie, Emerson D+2, Slingshot Strategies D+4, InsiderA
+Ohio (special)                 D+4.1   D+4.1  Our average of 10 polls, Sep 23–Oct 22: InsiderAdvantage D+3, Beacon/Shaw & Co. D+5, Marist D+4, VoteHub/Veras
+Iowa                           R+0.1   R+0.5  Our average of 9 polls, Sep 28–Oct 22: InsiderAdvantage R+2, YouGov D+1, Marist D+3, co/efficient R+3 …
 Alaska                         D+1.1   D+1.1  Our average of 3 polls, Sep 30–Oct 16: Data for Progress D+2, Public Policy D+1, Quantus R+0.6
-Michigan                       D+2.3   D+2.3  Our average of 8 polls, Sep 23–Oct 18: Marist D+2, Beacon/Shaw & Co. D+1, Mitchell & Communications D+5, Trafa
-Maine                          D+2.4   D+2.4  Our average of 5 polls, Sep 30–Oct 14: InsiderAdvantage D+2, Marist D+4, The WaPo/George Mason D+5, co/efficie
-New Hampshire                  D+7.2   D+7.1  Our average of 4 polls, Sep 17–Oct 20: Saint Anselm D+7, University of New D+8, InsiderAdvantage D+8, NYT/Sien
-Nebraska                       R+2.5   R+2.7  Our average of 2 polls, Sep 8–Oct 18: National Public Affairs R+3, GBAO Strategies Osborn+1
+Michigan                       D+2.3   D+1.9  Our average of 9 polls, Sep 23–Oct 22: InsiderAdvantage D+1, Marist D+2, Beacon/Shaw & Co. D+1, Mitchell & Com
+Maine                          D+2.4   D+1.6  Our average of 6 polls, Sep 30–Oct 20: Beacon/Shaw & Co. tie, InsiderAdvantage D+2, Marist D+4, The WaPo/Georg
+New Hampshire                  D+7.1   D+7.1  Our average of 4 polls, Sep 17–Oct 20: Saint Anselm D+7, University of New D+8, InsiderAdvantage D+8, NYT/Sien
+Nebraska                       R+2.7   R+2.7  Our average of 2 polls, Sep 8–Oct 18: National Public Affairs R+3, GBAO Strategies Osborn+1
 Georgia (model)                    —   D+8.1  6 polls: University of Georgia D+8, Quantus D+6.9, ActiVote D+8, Wedgewood Polls D+10 …
 Minnesota (model)                  —   D+3.7  3 polls: SurveyUSA D+3, Big Data Poll D+2, GQR D+8
 North Carolina (model)             —  D+11.6  7 polls: Harper D+10, ActiVote D+13.8, SurveyUSA D+14, Elon/YouGov D+13 …
@@ -62,11 +59,11 @@ OH-13                              —       —  no recent polls — kept
 PA-07                            D+5     D+5  Our average of 1 poll, Sep 20: Franklin & Marshall D+5
 PA-08                            D+4     D+4  Our average of 1 poll, Oct 14: Emerson D+4
 PA-10                            D+3     D+3  Our average of 1 poll, Sep 20: Franklin & Marshall D+3
-TX-34                            tie       —  no recent polls — kept
+TX-34                            tie     D+7  Our average of 1 poll, Oct 19: The WaPo/George Mason D+7
 VA-02                            tie       —  no recent polls — kept
 VA-07                              —       —  no recent polls — kept
 WA-03                          D+0.2   D+0.2  Our average of 2 polls, Sep 27–Oct 21: Change D+1, DHM R+1
 WI-03                            D+4       —  no recent polls — kept
 
-3 race polling values changed; 1 generic-ballot averages changed.
+10 race polling values changed.
 Updated index.html
