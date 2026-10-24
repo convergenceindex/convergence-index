@@ -1,8 +1,8 @@
-Run 2026-10-24 00:46 UTC (schedule)
+Run 2026-10-24 08:56 UTC (schedule)
 
 == Markets ==
 Chamber control
-  house Kalshi control: 91.3¢ / 91.4¢
+  house Kalshi control: 91.0¢ / 91.1¢
   house Polymarket control: 91.0¢ / 92.0¢
   senate Kalshi control: 66.0¢ / 67.0¢
   senate Polymarket control: 67.0¢ / 68.0¢
@@ -12,7 +12,7 @@ Seat brackets
 Race markets
   ! governors Kansas: kept previous prices (expected one '-26' event, found ['GOVPARTYKS-27'])
   80 of 81 race markets updated
-Updated index.html: asOf 2026-10-24T00:46:00Z
+Updated index.html: asOf 2026-10-24T08:55:35Z
 
 == Polls ==
 Fetching polls from VoteHub
@@ -26,10 +26,10 @@ House
 
 Race                             old     new  basis
 Texas                            D+2     D+2  Our average of 12 polls, Sep 28–Oct 21: Beacon/Shaw & Co. tie, Emerson D+2, Slingshot Strategies D+4, InsiderA
-Ohio (special)                 D+4.1   D+4.2  Our average of 9 polls, Sep 27–Oct 22: InsiderAdvantage D+3, Beacon/Shaw & Co. D+5, Marist D+4, VoteHub/Verasi
+Ohio (special)                 D+4.2   D+4.2  Our average of 9 polls, Sep 27–Oct 22: InsiderAdvantage D+3, Beacon/Shaw & Co. D+5, Marist D+4, VoteHub/Verasi
 Iowa                           R+0.5   R+0.5  Our average of 9 polls, Sep 28–Oct 22: InsiderAdvantage R+2, YouGov D+1, Marist D+3, co/efficient R+3 …
 Alaska                         D+1.1   D+1.1  Our average of 3 polls, Sep 30–Oct 16: Data for Progress D+2, Public Policy D+1, Quantus R+0.6
-Michigan                       D+1.9     D+2  Our average of 8 polls, Sep 27–Oct 22: InsiderAdvantage D+1, Marist D+2, Beacon/Shaw & Co. D+1, Mitchell & Com
+Michigan                         D+2     D+2  Our average of 8 polls, Sep 27–Oct 22: InsiderAdvantage D+1, Marist D+2, Beacon/Shaw & Co. D+1, Mitchell & Com
 Maine                          D+1.6   D+1.6  Our average of 6 polls, Sep 30–Oct 20: Beacon/Shaw & Co. tie, InsiderAdvantage D+2, Marist D+4, The WaPo/Georg
 New Hampshire                  D+7.1   D+7.1  Our average of 4 polls, Sep 17–Oct 20: Saint Anselm D+7, University of New D+8, InsiderAdvantage D+8, NYT/Sien
 Nebraska                       R+2.7   R+2.7  Our average of 2 polls, Sep 8–Oct 18: National Public Affairs R+3, GBAO Strategies Osborn+1
@@ -65,5 +65,4 @@ VA-07                              —       —  no recent polls — kept
 WA-03                          D+0.2   D+0.2  Our average of 2 polls, Sep 27–Oct 21: Change D+1, DHM R+1
 WI-03                            D+4       —  no recent polls — kept
 
-6 race polling values changed.
-Updated index.html
+0 race polling values changed.
