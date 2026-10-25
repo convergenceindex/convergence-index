@@ -1,8 +1,8 @@
-Run 2026-10-25 09:12 UTC (schedule)
+Run 2026-10-25 14:25 UTC (schedule)
 
 == Markets ==
 Chamber control
-  house Kalshi control: 90.5¢ / 90.6¢
+  house Kalshi control: 90.6¢ / 90.7¢
   house Polymarket control: 91.0¢ / 92.0¢
   senate Kalshi control: 62.0¢ / 63.0¢
   senate Polymarket control: 66.0¢ / 67.0¢
@@ -12,7 +12,7 @@ Seat brackets
 Race markets
   ! governors Kansas: kept previous prices (expected one '-26' event, found ['GOVPARTYKS-27'])
   80 of 81 race markets updated
-Updated index.html: asOf 2026-10-25T09:12:14Z
+Updated index.html: asOf 2026-10-25T14:25:20Z
 
 == Polls ==
 Fetching polls from VoteHub
