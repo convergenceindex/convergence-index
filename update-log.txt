@@ -1,8 +1,8 @@
-Run 2026-10-24 18:50 UTC (schedule)
+Run 2026-10-25 00:22 UTC (schedule)
 
 == Markets ==
 Chamber control
-  house Kalshi control: 90.6¢ / 90.7¢
+  house Kalshi control: 90.3¢ / 90.5¢
   house Polymarket control: 91.0¢ / 92.0¢
   senate Kalshi control: 64.0¢ / 65.0¢
   senate Polymarket control: 66.0¢ / 67.0¢
@@ -12,13 +12,13 @@ Seat brackets
 Race markets
   ! governors Kansas: kept previous prices (expected one '-26' event, found ['GOVPARTYKS-27'])
   80 of 81 race markets updated
-Updated index.html: asOf 2026-10-24T18:49:41Z
+Updated index.html: asOf 2026-10-25T00:22:10Z
 
 == Polls ==
 Fetching polls from VoteHub
-  us-senator: 185 polls in the last 75 days
-  governor: 184 polls in the last 75 days
-  us-representative: 97 polls in the last 75 days
+  us-senator: 178 polls in the last 75 days
+  governor: 180 polls in the last 75 days
+  us-representative: 96 polls in the last 75 days
   Cook ratings: not configured (COOK_EMAIL / COOK_PASSWORD secrets not set)
 Senate
 Governors
@@ -36,10 +36,10 @@ Nebraska                       R+2.7   R+2.7  Our average of 2 polls, Sep 8–Oc
 Georgia (model)                    —   D+7.9  4 polls: University of Georgia D+8, Quantus D+6.9, ActiVote D+8, Wedgewood Polls D+10
 Minnesota (model)                  —   D+3.7  3 polls: SurveyUSA D+3, Big Data Poll D+2, GQR D+8
 North Carolina (model)             —  D+11.6  7 polls: Harper D+10, ActiVote D+13.8, SurveyUSA D+14, Elon/YouGov D+13 …
-Georgia                        R+1.8   R+1.8  Our average of 5 polls, Oct 3–20: GBAO Strategies R+1, Quantus R+1.6, ActiVote R+3, InsiderAdvantage R+2 …
+Georgia                        R+1.8   R+1.8  Our average of 5 polls, Oct 3–20: GBAO Strategies R+1, Quantus R+1.6, InsiderAdvantage R+2, ActiVote R+3 …
 Nevada                         D+0.5       —  no recent polls — kept
 Ohio                           D+3.3   D+3.3  Our average of 11 polls, Sep 27–Oct 20: Beacon/Shaw & Co. D+2, Marist D+7, VoteHub/Verasight D+0.8, New River 
-Kansas                         R+4.6   R+4.6  Our average of 2 polls, Sep 24–30: NYT/Siena R+5, Wedgewood Polls R+4
+Kansas                         R+4.6   R+5.2  Our average of 3 polls, Sep 16–30: NYT/Siena R+5, Wedgewood Polls R+4, Emerson R+7
 Wisconsin                      D+3.8   D+3.8  Our average of 2 polls, Sep 23–Oct 1: Marquette Law School D+3, Z to A D+5
 Iowa                           D+6.9   D+6.9  Our average of 9 polls, Sep 28–Oct 19: YouGov D+6, Marist D+7, co/efficient D+4, National Public Affairs D+5 …
 Alaska                         D+8.9   D+8.9  Our average of 4 polls, Sep 27–Oct 18: Alaska Survey D+10, Data for Progress D+6, NYT/Siena D+4, Cygnal D+20
@@ -65,4 +65,5 @@ VA-07                              —       —  no recent polls — kept
 WA-03                          D+0.2   D+0.2  Our average of 2 polls, Sep 27–Oct 21: Change D+1, DHM R+1
 WI-03                            D+4       —  no recent polls — kept
 
-0 race polling values changed.
+2 race polling values changed.
+Updated index.html
