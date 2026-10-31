@@ -1,9 +1,9 @@
-Run 2026-10-31 01:38 UTC (schedule)
+Run 2026-10-31 10:26 UTC (schedule)
 
 == Markets ==
 Chamber control
-  house Kalshi control: 93.5¢ / 93.6¢
-  house Polymarket control: 93.0¢ / 94.0¢
+  house Kalshi control: 93.7¢ / 93.8¢
+  house Polymarket control: 94.0¢ / 95.0¢
   senate Kalshi control: 70.0¢ / 71.0¢
   senate Polymarket control: 70.0¢ / 71.0¢
 Seat brackets
@@ -12,7 +12,7 @@ Seat brackets
 Race markets
   ! governors Kansas: kept previous prices (expected one '-26' event, found ['GOVPARTYKS-27'])
   80 of 81 race markets updated
-Updated index.html: asOf 2026-10-31T01:38:08Z
+Updated index.html: asOf 2026-10-31T10:26:06Z
 
 == Polls ==
 Fetching polls from VoteHub
@@ -28,9 +28,9 @@ Race                             old     new  basis
 Texas                          D+2.6   D+2.6  Our average of 14 polls, Oct 8–28: Texas Southern Public D+2, Quantus R+1, CNN/SSRS D+6, Beacon/Shaw & Co. tie
 Ohio (special)                 D+3.7   D+3.7  Our average of 9 polls, Oct 5–23: InsiderAdvantage D+3, Beacon/Shaw & Co. D+5, Marist D+4, Echelon tie …
 Iowa                           R+0.3   R+0.3  Our average of 9 polls, Oct 5–28: InsiderAdvantage R+2, co/efficient R+2, YouGov D+1, Echelon D+2 …
-Alaska                         D+1.1   D+1.6  Our average of 2 polls, Oct 15–16: Data for Progress D+2, Public Policy D+1
-Michigan                       D+4.8   D+4.9  Our average of 10 polls, Oct 1–28: Michigan State Department D+7.4, CNN/SSRS D+7, InsiderAdvantage D+1, Mitche
-Maine                          D+2.6   D+2.9  Our average of 7 polls, Oct 1–26: Marist D+2, Beacon/Shaw & Co. tie, CNN/SSRS D+4, InsiderAdvantage D+2 …
+Alaska                         D+1.6   D+1.6  Our average of 2 polls, Oct 15–16: Data for Progress D+2, Public Policy D+1
+Michigan                       D+4.9   D+4.9  Our average of 10 polls, Oct 1–28: Michigan State Department D+7.4, CNN/SSRS D+7, InsiderAdvantage D+1, Mitche
+Maine                          D+2.9   D+2.9  Our average of 7 polls, Oct 1–26: Marist D+2, Beacon/Shaw & Co. tie, CNN/SSRS D+4, InsiderAdvantage D+2 …
 New Hampshire                    D+7     D+7  Our average of 2 polls, Oct 19–20: Saint Anselm D+7, UMass Lowell/YouGov D+7
 Nebraska                         R+2     R+2  Our average of 2 polls, Oct 18–23: Echelon R+1, National Public Affairs R+3
 Georgia (model)                    —   D+9.7  5 polls: Echelon D+15, University of Georgia D+8, Quantus D+6.9, ActiVote D+8 …
@@ -39,7 +39,7 @@ North Carolina (model)             —  D+11.3  8 polls: Quantus D+8.6, High Poi
 Georgia                        R+1.3   R+1.3  Our average of 6 polls, Oct 3–23: GBAO Strategies R+1, Echelon D+1, Quantus R+1.6, ActiVote R+3 …
 Nevada                           D+4     D+4  Our average of 1 poll, Oct 25: Hart D+4
 Ohio                           D+2.6   D+2.6  Our average of 10 polls, Oct 1–23: Beacon/Shaw & Co. D+2, Marist D+7, Echelon R+2, VoteHub/Verasight D+0.8 …
-Kansas                         R+1.7   R+1.5  Our average of 3 polls, Oct 26–28: Emerson R+5, CNN/SSRS R+5, The WaPo/George Mason D+6
+Kansas                         R+1.5   R+1.5  Our average of 3 polls, Oct 26–28: Emerson R+5, CNN/SSRS R+5, The WaPo/George Mason D+6
 Wisconsin                      D+3.4   D+3.4  Our average of 2 polls, Oct 1–23: Wick D+3, Z to A D+5
 Iowa                           D+6.4   D+6.4  Our average of 9 polls, Oct 1–28: co/efficient D+5, YouGov D+6, Echelon D+4, Marist D+7 …
 Alaska                         D+6.2   D+6.2  Our average of 3 polls, Oct 1–25: Alaska Survey D+6.8, Data for Progress D+6, NYT/Siena D+4
@@ -65,5 +65,4 @@ VA-07                              —       —  no recent polls — kept
 WA-03                          D+0.2   D+0.2  Our average of 2 polls, Sep 27–Oct 21: Change D+1, DHM R+1
 WI-03                            D+4       —  no recent polls — kept
 
-9 race polling values changed.
-Updated index.html
+0 race polling values changed.
