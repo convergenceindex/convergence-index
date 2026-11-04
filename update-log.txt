@@ -1,23 +1,41 @@
-Run 2026-11-03 21:49 UTC (schedule)
+Run 2026-11-04 02:23 UTC (schedule)
 
 == Markets ==
 Chamber control
-  house Kalshi control: 93.4¢ / 93.5¢
-  house Polymarket control: 94.0¢ / 95.0¢
-  senate Kalshi control: 73.0¢ / 74.0¢
-  senate Polymarket control: 74.0¢ / 75.0¢
+  house Kalshi control: 99.7¢ / 99.8¢
+  house Polymarket control: 99.6¢ / 99.7¢
+  senate Kalshi control: 99.7¢ / 99.8¢
+  senate Polymarket control: 99.1¢ / 99.2¢
 Seat brackets
   house seat brackets: 12 updated (KXDHOUSESEATS-27)
   senate seat brackets: 10 updated (KXDSENATESEATS-27)
 Race markets
+  ! house OH-13: kept previous prices (no market for side(s) ['d', 'r'] in HOUSEOH13-26)
+  ! house VA-07: kept previous prices (no market for side(s) ['d', 'r'] in HOUSEVA7-26)
+  ! senate New Hampshire: kept previous prices (no market for side(s) ['d', 'r'] in SENATENH-26)
   ! governors Kansas: kept previous prices (expected one '-26' event, found ['GOVPARTYKS-27'])
-  80 of 81 race markets updated
-Updated index.html: asOf 2026-11-03T21:49:17Z
+  ! senate.all Colorado: kept previous prices (no market for side(s) ['d', 'r'] in SENATECO-26)
+  ! senate.all Delaware: kept previous prices (no market for side(s) ['d', 'r'] in SENATEDE-26)
+  ! senate.all Florida (special): kept previous prices (no market for side(s) ['d', 'r'] in SENATEFLS-26)
+  ! senate.all Georgia: kept previous prices (no market for side(s) ['d', 'r'] in SENATEGA-26)
+  ! senate.all Illinois: kept previous prices (no market for side(s) ['d', 'r'] in SENATEIL-26)
+  ! senate.all Kentucky: kept previous prices (no market for side(s) ['d', 'r'] in SENATELA-26)
+  ! senate.all Massachusetts: kept previous prices (no market for side(s) ['d', 'r'] in SENATEMA-26)
+  ! senate.all New Hampshire: kept previous prices (no market for side(s) ['d', 'r'] in SENATENH-26)
+  ! senate.all New Jersey: kept previous prices (no market for side(s) ['d', 'r'] in SENATENJ-26)
+  ! senate.all New Mexico: kept previous prices (no market for side(s) ['d', 'r'] in SENATENM-26)
+  ! senate.all North Carolina: kept previous prices (no market for side(s) ['d', 'r'] in SENATENC-26)
+  ! senate.all Rhode Island: kept previous prices (no market for side(s) ['d', 'r'] in SENATERI-26)
+  ! senate.all Virginia: kept previous prices (no market for side(s) ['d', 'r'] in SENATEVA-26)
+  ! senate.all West Virginia: kept previous prices (no market for side(s) ['d', 'r'] in SENATEWV-26)
+  ! senate.all Wyoming: kept previous prices (no market for side(s) ['d', 'r'] in SENATEWY-26)
+  63 of 82 race markets updated
+Updated index.html: asOf 2026-11-04T02:23:24Z
 
 == Polls ==
 Fetching polls from VoteHub
-  us-senator: 228 polls in the last 75 days
-  governor: 233 polls in the last 75 days
+  us-senator: 226 polls in the last 75 days
+  governor: 229 polls in the last 75 days
   us-representative: 107 polls in the last 75 days
   Cook ratings: not configured (COOK_EMAIL / COOK_PASSWORD secrets not set)
 Senate
@@ -34,7 +52,7 @@ Maine                          D+4.6   D+4.6  Our average of 9 polls, Oct 5–No
 New Hampshire                  D+9.2   D+9.2  Our average of 4 polls, Oct 19–31: University of New D+12, Saint Anselm D+7, UMass Lowell/YouGov D+7, National
 Nebraska                         R+2     R+2  Our average of 2 polls, Oct 18–23: Echelon R+1, National Public Affairs R+3
 Georgia (model)                    —   D+8.4  5 polls: InsiderAdvantage D+7, Echelon D+15, University of Georgia D+8, Quantus D+6.9 …
-Minnesota (model)                  —   D+2.7  4 polls: AtlasIntel D+2, InsiderAdvantage D+3, SurveyUSA D+3, GQR D+8
+Minnesota (model)                  —   D+2.5  3 polls: AtlasIntel D+2, InsiderAdvantage D+3, SurveyUSA D+3
 North Carolina (model)             —    D+12  9 polls: AtlasIntel D+14.9, East Carolina D+9, Quantus D+8.6, High Point D+14 …
 Georgia                        R+0.5   R+0.5  Our average of 5 polls, Oct 15–Nov 2: InsiderAdvantage tie, GBAO Strategies R+1, Echelon D+1, Quantus R+1.6 …
 Nevada                           D+4     D+4  Our average of 1 poll, Oct 25: Hart D+4
@@ -65,4 +83,5 @@ VA-07                              —       —  no recent polls — kept
 WA-03                          D+0.2   D+0.2  Our average of 2 polls, Sep 27–Oct 21: Change D+1, DHM R+1
 WI-03                            D+4       —  no recent polls — kept
 
-0 race polling values changed.
+1 race polling values changed.
+Updated index.html
