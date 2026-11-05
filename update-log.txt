@@ -1,41 +1,92 @@
-Run 2026-11-04 02:23 UTC (schedule)
+Run 2026-11-05 02:31 UTC (schedule)
 
 == Markets ==
 Chamber control
-  house Kalshi control: 99.7¢ / 99.8¢
-  house Polymarket control: 99.6¢ / 99.7¢
-  senate Kalshi control: 99.7¢ / 99.8¢
-  senate Polymarket control: 99.1¢ / 99.2¢
+  ! house Kalshi control kept at 99.7/99.8: ticker CONTROLH-2026-D not in response
+  house Polymarket control: 99.9¢ / 100.0¢
+  ! senate Kalshi control kept at 99.7/99.8: ticker CONTROLS-2026-D not in response
+  senate Polymarket control: 99.9¢ / 100.0¢
 Seat brackets
   house seat brackets: 12 updated (KXDHOUSESEATS-27)
   senate seat brackets: 10 updated (KXDSENATESEATS-27)
 Race markets
+  ! house CA-22: kept previous prices (no market for side(s) ['d', 'r'] in HOUSECA22-26)
+  ! house CO-08: kept previous prices (no market for side(s) ['d', 'r'] in HOUSECO8-26)
+  ! house IA-01: kept previous prices (no market for side(s) ['d', 'r'] in HOUSEIA1-26)
+  ! house IA-03: kept previous prices (no market for side(s) ['d', 'r'] in HOUSEIA3-26)
+  ! house MI-03: kept previous prices (no market for side(s) ['d', 'r'] in HOUSEMI3-26)
+  ! house MI-07: kept previous prices (no market for side(s) ['d', 'r'] in HOUSEMI7-26)
+  ! house MI-10: kept previous prices (no market for side(s) ['d', 'r'] in HOUSEMI10-26)
+  ! house NJ-07: kept previous prices (no market for side(s) ['d', 'r'] in HOUSENJ7-26)
+  ! house OH-09: kept previous prices (no market for side(s) ['d', 'r'] in HOUSEOH9-26)
   ! house OH-13: kept previous prices (no market for side(s) ['d', 'r'] in HOUSEOH13-26)
+  ! house PA-07: kept previous prices (no market for side(s) ['d', 'r'] in HOUSEPA7-26)
+  ! house PA-08: kept previous prices (no market for side(s) ['d', 'r'] in HOUSEPA8-26)
+  ! house PA-10: kept previous prices (no market for side(s) ['d', 'r'] in HOUSEPA10-26)
+  ! house TX-34: kept previous prices (no market for side(s) ['d', 'r'] in HOUSETX34-26)
+  ! house VA-02: kept previous prices (no market for side(s) ['d', 'r'] in HOUSEVA2-26)
   ! house VA-07: kept previous prices (no market for side(s) ['d', 'r'] in HOUSEVA7-26)
+  ! house WA-03: kept previous prices (no market for side(s) ['d', 'r'] in HOUSEWA3-26)
+  ! house WI-03: kept previous prices (no market for side(s) ['d', 'r'] in HOUSEWI3-26)
+  ! senate Texas: kept previous prices (no market for side(s) ['d', 'r'] in SENATETX-26)
+  ! senate Ohio (special): kept previous prices (no market for side(s) ['d', 'r'] in SENATEOHS-26)
+  ! senate Iowa: kept previous prices (no market for side(s) ['d', 'r'] in SENATEIA-26)
+  ! senate Michigan: kept previous prices (no market for side(s) ['d', 'r'] in SENATEMI-26)
+  ! senate Maine: kept previous prices (no market for side(s) ['d', 'r'] in SENATEME-26)
   ! senate New Hampshire: kept previous prices (no market for side(s) ['d', 'r'] in SENATENH-26)
+  ! senate Nebraska: kept previous prices (no market for side(s) ['r', 'i'] in SENATENE-26)
+  ! governors Georgia: kept previous prices (no market for side(s) ['d', 'r'] in GOVPARTYGA-26)
+  ! governors Nevada: kept previous prices (no market for side(s) ['d', 'r'] in GOVPARTYNV-26)
+  ! governors Ohio: kept previous prices (no market for side(s) ['d', 'r'] in GOVPARTYOH-26)
   ! governors Kansas: kept previous prices (expected one '-26' event, found ['GOVPARTYKS-27'])
+  ! governors Wisconsin: kept previous prices (no market for side(s) ['d', 'r'] in GOVPARTYWI-26)
+  ! governors Iowa: kept previous prices (no market for side(s) ['d', 'r'] in GOVPARTYIA-26)
+  ! senate.all Alabama: kept previous prices (no market for side(s) ['d', 'r'] in SENATEAL-26)
+  ! senate.all Arkansas: kept previous prices (no market for side(s) ['d', 'r'] in SENATEAR-26)
   ! senate.all Colorado: kept previous prices (no market for side(s) ['d', 'r'] in SENATECO-26)
   ! senate.all Delaware: kept previous prices (no market for side(s) ['d', 'r'] in SENATEDE-26)
   ! senate.all Florida (special): kept previous prices (no market for side(s) ['d', 'r'] in SENATEFLS-26)
   ! senate.all Georgia: kept previous prices (no market for side(s) ['d', 'r'] in SENATEGA-26)
+  ! senate.all Idaho: kept previous prices (no market for side(s) ['r', 'i'] in SENATEID-26)
   ! senate.all Illinois: kept previous prices (no market for side(s) ['d', 'r'] in SENATEIL-26)
+  ! senate.all Iowa: kept previous prices (no market for side(s) ['d', 'r'] in SENATEIA-26)
+  ! senate.all Kansas: kept previous prices (no market for side(s) ['d', 'r'] in SENATEKS-26)
   ! senate.all Kentucky: kept previous prices (no market for side(s) ['d', 'r'] in SENATELA-26)
+  ! senate.all Maine: kept previous prices (no market for side(s) ['d', 'r'] in SENATEME-26)
   ! senate.all Massachusetts: kept previous prices (no market for side(s) ['d', 'r'] in SENATEMA-26)
+  ! senate.all Michigan: kept previous prices (no market for side(s) ['d', 'r'] in SENATEMI-26)
+  ! senate.all Minnesota: kept previous prices (no market for side(s) ['d', 'r'] in SENATEMN-26)
+  ! senate.all Montana: kept previous prices (no market for side(s) ['d', 'r', 'i'] in SENATEMT-26)
+  ! senate.all Nebraska: kept previous prices (no market for side(s) ['r', 'i'] in SENATENE-26)
   ! senate.all New Hampshire: kept previous prices (no market for side(s) ['d', 'r'] in SENATENH-26)
   ! senate.all New Jersey: kept previous prices (no market for side(s) ['d', 'r'] in SENATENJ-26)
   ! senate.all New Mexico: kept previous prices (no market for side(s) ['d', 'r'] in SENATENM-26)
   ! senate.all North Carolina: kept previous prices (no market for side(s) ['d', 'r'] in SENATENC-26)
+  ! senate.all Ohio (special): kept previous prices (no market for side(s) ['d', 'r'] in SENATEOHS-26)
+  ! senate.all Oklahoma: kept previous prices (no market for side(s) ['d', 'r'] in SENATEOK-26)
+  ! senate.all Oregon: kept previous prices (no market for side(s) ['d', 'r'] in SENATEOR-26)
   ! senate.all Rhode Island: kept previous prices (no market for side(s) ['d', 'r'] in SENATERI-26)
+  ! senate.all South Carolina: kept previous prices (no market for side(s) ['d', 'r'] in SENATESC-26)
+  ! senate.all South Dakota: kept previous prices (no market for side(s) ['r', 'i'] in SENATESD-26)
+  ! senate.all Tennessee: kept previous prices (no market for side(s) ['d', 'r'] in SENATETN-26)
+  ! senate.all Texas: kept previous prices (no market for side(s) ['d', 'r'] in SENATETX-26)
   ! senate.all Virginia: kept previous prices (no market for side(s) ['d', 'r'] in SENATEVA-26)
   ! senate.all West Virginia: kept previous prices (no market for side(s) ['d', 'r'] in SENATEWV-26)
   ! senate.all Wyoming: kept previous prices (no market for side(s) ['d', 'r'] in SENATEWY-26)
-  63 of 82 race markets updated
-Updated index.html: asOf 2026-11-04T02:23:24Z
+  ! houseMore PA-01: kept previous prices (no market for side(s) ['d', 'r'] in HOUSEPA1-26)
+  ! houseMore MI-04: kept previous prices (no market for side(s) ['d', 'r'] in HOUSEMI4-26)
+  ! houseMore WI-01: kept previous prices (no market for side(s) ['d', 'r'] in HOUSEWI1-26)
+  ! houseMore TX-15: kept previous prices (no market for side(s) ['d', 'r'] in HOUSETX15-26)
+  ! houseMore IA-02: kept previous prices (no market for side(s) ['d', 'r'] in KXHOUSERACE-IA02-26)
+  ! houseMore KY-06: kept previous prices (no market for side(s) ['d', 'r'] in KXHOUSERACE-KY06-26)
+  ! houseMore OH-07: kept previous prices (no market for side(s) ['d', 'r'] in KXHOUSERACE-OH07-26)
+  18 of 88 race markets updated
+Fewer than half of the markets updated — treating this run as failed; page left unchanged.
 
 == Polls ==
 Fetching polls from VoteHub
   us-senator: 226 polls in the last 75 days
-  governor: 229 polls in the last 75 days
+  governor: 226 polls in the last 75 days
   us-representative: 107 polls in the last 75 days
   Cook ratings: not configured (COOK_EMAIL / COOK_PASSWORD secrets not set)
 Senate
@@ -44,11 +95,11 @@ House
 
 Race                             old     new  basis
 Texas                          D+3.1   D+3.1  Our average of 15 polls, Oct 8–Nov 1: NYT/Siena D+7, Texas Southern Public D+2, Quantus R+1, CNN/SSRS D+6 …
-Ohio (special)                   D+4     D+4  Our average of 12 polls, Oct 5–Nov 1: Survey 160 D+4, NYT/Siena D+5, InsiderAdvantage D+3, Beacon/Shaw & Co. D
-Iowa                           R+0.4   R+0.4  Our average of 11 polls, Oct 5–Nov 1: NYT/Siena D+1, GrayHouse R+2, InsiderAdvantage R+2, co/efficient R+2 …
+Ohio (special)                   D+4   D+3.9  Our average of 11 polls, Oct 6–Nov 1: Survey 160 D+4, NYT/Siena D+5, InsiderAdvantage D+3, Beacon/Shaw & Co. D
+Iowa                           R+0.4   R+0.3  Our average of 10 polls, Oct 6–Nov 1: NYT/Siena D+1, GrayHouse R+2, InsiderAdvantage R+2, co/efficient R+2 …
 Alaska                         D+1.8   D+1.8  Our average of 3 polls, Oct 15–30: NYT/Siena D+2, Data for Progress D+2, Public Policy D+1
 Michigan                       D+5.6   D+5.6  Our average of 11 polls, Oct 8–Nov 1: YouGov D+4, NYT/Siena D+11, Michigan State Department D+7.4, CNN/SSRS D+
-Maine                          D+4.6   D+4.6  Our average of 9 polls, Oct 5–Nov 1: University of New D+9, Survey 160 D+4, Marist D+2, NYT/Siena D+6 …
+Maine                          D+4.6   D+4.6  Our average of 8 polls, Oct 14–Nov 1: University of New D+9, Survey 160 D+4, Marist D+2, NYT/Siena D+6 …
 New Hampshire                  D+9.2   D+9.2  Our average of 4 polls, Oct 19–31: University of New D+12, Saint Anselm D+7, UMass Lowell/YouGov D+7, National
 Nebraska                         R+2     R+2  Our average of 2 polls, Oct 18–23: Echelon R+1, National Public Affairs R+3
 Georgia (model)                    —   D+8.4  5 polls: InsiderAdvantage D+7, Echelon D+15, University of Georgia D+8, Quantus D+6.9 …
@@ -56,10 +107,10 @@ Minnesota (model)                  —   D+2.5  3 polls: AtlasIntel D+2, Insider
 North Carolina (model)             —    D+12  9 polls: AtlasIntel D+14.9, East Carolina D+9, Quantus D+8.6, High Point D+14 …
 Georgia                        R+0.5   R+0.5  Our average of 5 polls, Oct 15–Nov 2: InsiderAdvantage tie, GBAO Strategies R+1, Echelon D+1, Quantus R+1.6 …
 Nevada                           D+4     D+4  Our average of 1 poll, Oct 25: Hart D+4
-Ohio                           D+4.3   D+4.3  Our average of 13 polls, Oct 5–Nov 1: YouGov D+6, Survey 160 D+6, NYT/Siena D+6, Beacon/Shaw & Co. D+2 …
+Ohio                           D+4.3   D+4.2  Our average of 12 polls, Oct 6–Nov 1: YouGov D+6, Survey 160 D+6, NYT/Siena D+6, Beacon/Shaw & Co. D+2 …
 Kansas                         R+0.2   R+0.2  Our average of 6 polls, Oct 26–Nov 1: YouGov R+1, Survey 160 D+2, NYT/Siena D+1, Emerson R+5 …
 Wisconsin                      D+3.3   D+3.3  Our average of 3 polls, Sep 23–Oct 23: Wick D+3, Marquette Law School D+3, Z to A D+5
-Iowa                           D+6.7   D+6.7  Our average of 9 polls, Oct 5–Nov 1: YouGov D+7, NYT/Siena D+8, co/efficient D+5, Echelon D+4 …
+Iowa                           D+6.7   D+6.6  Our average of 8 polls, Oct 6–Nov 1: YouGov D+7, NYT/Siena D+8, co/efficient D+5, Echelon D+4 …
 Alaska                         D+7.1   D+7.1  Our average of 3 polls, Oct 16–30: Alaska Survey D+6.8, NYT/Siena D+8, Data for Progress D+6
 AZ-01                          D+3.8   D+3.8  Our average of 2 polls, Oct 1–28: Keating D+4, FirstStrategic D+2.8
 AZ-06                            D+2       —  no recent polls — kept
@@ -83,5 +134,5 @@ VA-07                              —       —  no recent polls — kept
 WA-03                          D+0.2   D+0.2  Our average of 2 polls, Sep 27–Oct 21: Change D+1, DHM R+1
 WI-03                            D+4       —  no recent polls — kept
 
-1 race polling values changed.
+7 race polling values changed.
 Updated index.html
