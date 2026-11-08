@@ -1,4 +1,4 @@
-Run 2026-11-07 01:59 UTC (schedule)
+Run 2026-11-08 01:29 UTC (schedule)
 
 == Markets ==
 Chamber control
@@ -96,26 +96,26 @@ Fewer than half of the markets updated — treating this run as failed; page lef
 
 == Polls ==
 Fetching polls from VoteHub
-  us-senator: 224 polls in the last 75 days
-  governor: 223 polls in the last 75 days
-  us-representative: 105 polls in the last 75 days
+  us-senator: 218 polls in the last 75 days
+  governor: 218 polls in the last 75 days
+  us-representative: 104 polls in the last 75 days
   Cook ratings: not configured (COOK_EMAIL / COOK_PASSWORD secrets not set)
 Senate
 Governors
 House
 
 Race                             old     new  basis
-Texas                          D+3.1   D+3.1  Our average of 15 polls, Oct 8–Nov 1: NYT/Siena D+7, Texas Southern Public D+2, Quantus R+1, CNN/SSRS D+6 …
+Texas                          D+3.1   D+3.1  Our average of 14 polls, Oct 13–Nov 1: NYT/Siena D+7, Texas Southern Public D+2, Quantus R+1, CNN/SSRS D+6 …
 Ohio (special)                 D+4.1   D+4.1  Our average of 10 polls, Oct 9–Nov 1: Survey 160 D+4, NYT/Siena D+5, InsiderAdvantage D+3, Beacon/Shaw & Co. D
 Iowa                           R+0.2   R+0.2  Our average of 9 polls, Oct 11–Nov 1: NYT/Siena D+1, GrayHouse R+2, InsiderAdvantage R+2, co/efficient R+2 …
 Alaska                         D+1.8   D+1.8  Our average of 3 polls, Oct 15–30: NYT/Siena D+2, Data for Progress D+2, Public Policy D+1
-Michigan                       D+5.6   D+5.6  Our average of 11 polls, Oct 8–Nov 1: YouGov D+4, NYT/Siena D+11, Michigan State Department D+7.4, CNN/SSRS D+
+Michigan                       D+5.6   D+5.7  Our average of 10 polls, Oct 18–Nov 1: YouGov D+4, NYT/Siena D+11, Michigan State Department D+7.4, CNN/SSRS D
 Maine                          D+4.6   D+4.6  Our average of 8 polls, Oct 14–Nov 1: University of New D+9, Survey 160 D+4, Marist D+2, NYT/Siena D+6 …
 New Hampshire                  D+9.2   D+9.2  Our average of 4 polls, Oct 19–31: University of New D+12, Saint Anselm D+7, UMass Lowell/YouGov D+7, National
 Nebraska                         R+2     R+2  Our average of 2 polls, Oct 18–23: Echelon R+1, National Public Affairs R+3
 Georgia (model)                    —   D+8.4  5 polls: InsiderAdvantage D+7, Echelon D+15, University of Georgia D+8, Quantus D+6.9 …
 Minnesota (model)                  —   D+2.5  3 polls: AtlasIntel D+2, InsiderAdvantage D+3, SurveyUSA D+3
-North Carolina (model)             —  D+12.1  8 polls: AtlasIntel D+14.9, East Carolina D+9, Quantus D+8.6, High Point D+14 …
+North Carolina (model)             —    D+12  7 polls: AtlasIntel D+14.9, East Carolina D+9, Quantus D+8.6, High Point D+14 …
 Georgia                        R+0.5   R+0.5  Our average of 5 polls, Oct 15–Nov 2: InsiderAdvantage tie, GBAO Strategies R+1, Echelon D+1, Quantus R+1.6 …
 Nevada                           D+4     D+4  Our average of 1 poll, Oct 25: Hart D+4
 Ohio                           D+4.4   D+4.4  Our average of 11 polls, Oct 9–Nov 1: YouGov D+6, Survey 160 D+6, NYT/Siena D+6, Beacon/Shaw & Co. D+2 …
@@ -145,5 +145,5 @@ VA-07                              —       —  no recent polls — kept
 WA-03                          D+0.2   D+0.2  Our average of 2 polls, Sep 27–Oct 21: Change D+1, DHM R+1
 WI-03                            D+4       —  no recent polls — kept
 
-1 race polling values changed.
+4 race polling values changed.
 Updated index.html
