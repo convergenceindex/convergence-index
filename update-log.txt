@@ -1,4 +1,4 @@
-Run 2026-11-17 00:18 UTC (schedule)
+Run 2026-11-18 13:08 UTC (schedule)
 
 == Markets ==
 Chamber control
@@ -34,6 +34,7 @@ Race markets
   ! senate Texas: kept previous prices (no market for side(s) ['d', 'r'] in SENATETX-26)
   ! senate Ohio (special): kept previous prices (no market for side(s) ['d', 'r'] in SENATEOHS-26)
   ! senate Iowa: kept previous prices (no market for side(s) ['d', 'r'] in SENATEIA-26)
+  ! senate Alaska: kept previous prices (no market for side(s) ['d', 'r'] in SENATEAK-26)
   ! senate Michigan: kept previous prices (no market for side(s) ['d', 'r'] in SENATEMI-26)
   ! senate Maine: kept previous prices (no market for side(s) ['d', 'r'] in SENATEME-26)
   ! senate New Hampshire: kept previous prices (no market for side(s) ['d', 'r'] in SENATENH-26)
@@ -45,6 +46,7 @@ Race markets
   ! governors Wisconsin: kept previous prices (no market for side(s) ['d', 'r'] in GOVPARTYWI-26)
   ! governors Iowa: kept previous prices (no market for side(s) ['d', 'r'] in GOVPARTYIA-26)
   ! senate.all Alabama: kept previous prices (no market for side(s) ['d', 'r'] in SENATEAL-26)
+  ! senate.all Alaska: kept previous prices (no market for side(s) ['d', 'r'] in SENATEAK-26)
   ! senate.all Arkansas: kept previous prices (no market for side(s) ['d', 'r'] in SENATEAR-26)
   ! senate.all Colorado: kept previous prices (no market for side(s) ['d', 'r'] in SENATECO-26)
   ! senate.all Delaware: kept previous prices (no market for side(s) ['d', 'r'] in SENATEDE-26)
@@ -97,34 +99,34 @@ Race markets
   ! houseMore KY-06: kept previous prices (no market for side(s) ['d', 'r'] in KXHOUSERACE-KY06-26)
   ! houseMore SC-01: kept previous prices (no market for side(s) ['d', 'r'] in KXHOUSERACE-SC01-26)
   ! houseMore OH-07: kept previous prices (no market for side(s) ['d', 'r'] in KXHOUSERACE-OH07-26)
-  1 of 88 race markets updated
+  0 of 89 race markets updated
 Fewer than half of the markets updated — treating this run as failed; page left unchanged.
 
 == Polls ==
 Fetching polls from VoteHub
-  us-senator: 211 polls in the last 75 days
+  us-senator: 210 polls in the last 75 days
   governor: 212 polls in the last 75 days
-  us-representative: 100 polls in the last 75 days
+  us-representative: 98 polls in the last 75 days
   Cook ratings: not configured (COOK_EMAIL / COOK_PASSWORD secrets not set)
 Senate
 Governors
 House
 
 Race                             old     new  basis
-Texas                          D+3.3   D+3.3  Our average of 12 polls, Oct 18–Nov 1: NYT/Siena D+7, Texas Southern Public D+2, Quantus R+1, CNN/SSRS D+6 …
-Ohio (special)                 D+3.8   D+3.8  Our average of 8 polls, Oct 18–Nov 1: Survey 160 D+4, NYT/Siena D+5, InsiderAdvantage D+3, Beacon/Shaw & Co. D
+Texas                          D+3.3   D+3.1  Our average of 10 polls, Oct 19–Nov 1: NYT/Siena D+7, Texas Southern Public D+2, Quantus R+1, CNN/SSRS D+6 …
+Ohio (special)                 D+3.8   D+3.8  Our average of 7 polls, Oct 19–Nov 1: Survey 160 D+4, NYT/Siena D+5, InsiderAdvantage D+3, Beacon/Shaw & Co. D
 Iowa                           R+0.7   R+0.7  Our average of 5 polls, Oct 22–Nov 1: NYT/Siena D+1, GrayHouse R+2, InsiderAdvantage R+2, co/efficient R+2 …
-Alaska                         D+1.3   D+1.5  Our average of 4 polls, Sep 30–Oct 30: NYT/Siena D+2, Data for Progress D+2, Public Policy D+1, Quantus R+0.6
-Michigan                       D+5.7   D+5.7  Our average of 10 polls, Oct 18–Nov 1: YouGov D+4, NYT/Siena D+11, Michigan State Department D+7.4, CNN/SSRS D
+Alaska                         D+1.5   D+1.5  Our average of 4 polls, Sep 30–Oct 30: NYT/Siena D+2, Data for Progress D+2, Public Policy D+1, Quantus R+0.6
+Michigan                       D+5.7     D+6  Our average of 9 polls, Oct 19–Nov 1: YouGov D+4, NYT/Siena D+11, Michigan State Department D+7.4, CNN/SSRS D+
 Maine                          D+4.8   D+4.8  Our average of 7 polls, Oct 20–Nov 1: University of New D+9, Survey 160 D+4, Marist D+2, NYT/Siena D+6 …
 New Hampshire                  D+9.2   D+9.2  Our average of 4 polls, Oct 19–31: University of New D+12, Saint Anselm D+7, UMass Lowell/YouGov D+7, National
 Nebraska                         R+2     R+2  Our average of 2 polls, Oct 18–23: Echelon R+1, National Public Affairs R+3
 Georgia (model)                    —   D+8.8  3 polls: InsiderAdvantage D+7, Echelon D+15, ActiVote D+8
 Minnesota (model)                  —   D+2.4  2 polls: AtlasIntel D+2, InsiderAdvantage D+3
 North Carolina (model)             —  D+11.9  6 polls: AtlasIntel D+14.9, East Carolina D+9, Quantus D+8.6, High Point D+14 …
-Georgia                        R+0.5   R+0.2  Our average of 3 polls, Oct 20–Nov 2: InsiderAdvantage tie, Echelon D+1, ActiVote R+3
+Georgia                        R+0.2   R+0.2  Our average of 3 polls, Oct 20–Nov 2: InsiderAdvantage tie, Echelon D+1, ActiVote R+3
 Nevada                           D+4     D+4  Our average of 1 poll, Oct 25: Hart D+4
-Ohio                           D+4.3   D+4.3  Our average of 9 polls, Oct 18–Nov 1: YouGov D+6, Survey 160 D+6, NYT/Siena D+6, Beacon/Shaw & Co. D+2 …
+Ohio                           D+4.3     D+4  Our average of 8 polls, Oct 19–Nov 1: YouGov D+6, Survey 160 D+6, NYT/Siena D+6, Beacon/Shaw & Co. D+2 …
 Kansas                         R+0.2   R+0.2  Our average of 6 polls, Oct 26–Nov 1: YouGov R+1, Survey 160 D+2, NYT/Siena D+1, Emerson R+5 …
 Wisconsin                      D+3.3   D+3.3  Our average of 3 polls, Sep 23–Oct 23: Wick D+3, Marquette Law School D+3, Z to A D+5
 Iowa                           D+6.5   D+6.5  Our average of 4 polls, Oct 23–Nov 1: YouGov D+7, NYT/Siena D+8, co/efficient D+5, Echelon D+4
@@ -151,5 +153,5 @@ VA-07                              —       —  no recent polls — kept
 WA-03                          D+0.2   D+0.2  Our average of 2 polls, Sep 27–Oct 21: Change D+1, DHM R+1
 WI-03                            D+4       —  no recent polls — kept
 
-4 race polling values changed.
+6 race polling values changed.
 Updated index.html
