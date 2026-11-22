@@ -1,4 +1,4 @@
-Run 2026-11-21 12:44 UTC (schedule)
+Run 2026-11-22 02:18 UTC (schedule)
 
 == Markets ==
 Chamber control
@@ -113,11 +113,11 @@ Governors
 House
 
 Race                             old     new  basis
-Texas                          D+3.7   D+3.5  Our average of 6 polls, Oct 25–Nov 1: NYT/Siena D+7, Texas Southern Public D+2, Quantus R+1, CNN/SSRS D+6 …
-Ohio (special)                 D+3.5   D+3.5  Our average of 5 polls, Oct 22–Nov 1: Survey 160 D+4, NYT/Siena D+5, InsiderAdvantage D+3, Echelon tie …
-Iowa                           R+0.7   R+0.7  Our average of 5 polls, Oct 22–Nov 1: NYT/Siena D+1, GrayHouse R+2, InsiderAdvantage R+2, co/efficient R+2 …
+Texas                          D+3.5   D+3.5  Our average of 6 polls, Oct 25–Nov 1: NYT/Siena D+7, Texas Southern Public D+2, Quantus R+1, CNN/SSRS D+6 …
+Ohio (special)                 D+3.5   D+3.6  Our average of 4 polls, Oct 23–Nov 1: Survey 160 D+4, NYT/Siena D+5, Echelon tie, Concord Public Opinion D+4
+Iowa                           R+0.7   R+0.4  Our average of 4 polls, Oct 23–Nov 1: NYT/Siena D+1, GrayHouse R+2, co/efficient R+2, Echelon D+2
 Alaska                         D+1.5   D+1.5  Our average of 4 polls, Sep 30–Oct 30: NYT/Siena D+2, Data for Progress D+2, Public Policy D+1, Quantus R+0.6
-Michigan                       D+6.3   D+6.3  Our average of 8 polls, Oct 22–Nov 1: YouGov D+4, NYT/Siena D+11, Michigan State Department D+7.4, CNN/SSRS D+
+Michigan                       D+6.3     D+7  Our average of 6 polls, Oct 23–Nov 1: YouGov D+4, NYT/Siena D+11, Michigan State Department D+7.4, CNN/SSRS D+
 Maine                          D+5.4   D+5.4  Our average of 6 polls, Oct 23–Nov 1: University of New D+9, Survey 160 D+4, Marist D+2, NYT/Siena D+6 …
 New Hampshire                 D+10.6  D+10.6  Our average of 2 polls, Oct 29–31: University of New D+12, National Public Affairs D+6
 Nebraska                         R+2     R+2  Our average of 2 polls, Oct 18–23: Echelon R+1, National Public Affairs R+3
@@ -153,5 +153,5 @@ VA-07                              —       —  no recent polls — kept
 WA-03                          D+0.2   D+0.2  Our average of 2 polls, Sep 27–Oct 21: Change D+1, DHM R+1
 WI-03                            D+4       —  no recent polls — kept
 
-2 race polling values changed.
+6 race polling values changed.
 Updated index.html
